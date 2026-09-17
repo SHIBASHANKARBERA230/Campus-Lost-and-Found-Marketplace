@@ -1,68 +1,25 @@
-# Smart-Hostel-Complaint-Management
-# Smart Hostel Complaint Management System
+🏫 Campus Lost & Found Marketplace 📱
 
-## 📱 About the Project
+🔍 An Android-based application designed to help students and campus staff report, search, and manage lost and found items in a college campus.
 
-Smart Hostel Complaint Management System is an Android-based application designed to digitize and simplify the hostel complaint process.
+✨ Features:
+🔐 User Login & Registration
+🔴 Report Lost Items
+🟢 Report Found Items
+📋 Browse Lost & Found Items
+🔎 Search Items
+📄 View Item Details
+📍 Location & Date Information
+💾 Room Database Storage
+📱 RecyclerView-based Item Listing
 
-Students can submit complaints related to hostel facilities, track their complaint status, and receive updates. Wardens and administrators can manage, assign, monitor, and resolve complaints efficiently.
+🛠️ Technologies:
+Kotlin • Android Studio • XML • RecyclerView • Room Database • Git • GitHub
 
-## 🎯 Objectives
+🚀 Future Enhancements:
+Firebase Authentication • Spring Boot REST API • Image Upload • Notifications • Google Maps • AI-Based Item Matching
 
-- Digitize the hostel complaint process
-- Reduce manual complaint handling
-- Allow students to track complaint status
-- Help wardens manage complaints efficiently
-- Improve transparency and response time
+🎯 Project Goal:
+To provide a centralized digital platform that makes it easier to report, search, and recover lost belongings within a campus.
 
-## 🚀 Features
-
-### Student
-- User Registration & Login
-- Submit Complaints
-- Upload Complaint Images
-- Select Complaint Category
-- Track Complaint Status
-- View Complaint History
-- Receive Notifications
-- Give Feedback
-
-### Warden / Admin
-- Secure Login
-- View All Complaints
-- Assign Complaints
-- Change Complaint Status
-- Manage Complaint Categories
-- Monitor Pending and Resolved Complaints
-- View Complaint Reports
-
-## 🔄 Complaint Status
-
-Pending → Assigned → In Progress → Resolved
-
-## 🛠️ Technologies Used
-
-- Android
-- Java
-- XML
-- Spring Boot
-- REST API
-- MySQL
-- Firebase
-
-## 👥 User Roles
-
-1. Student
-2. Warden
-3. Administrator
-
-## 📂 Project Structure
-
-```text
-Smart-Hostel-Complaint-Management/
-│
-├── Android-App/
-├── Backend/
-├── Database/
-├── Documentation/
-└── README.md
+💡 Find it. Report it. Return it. 🎓
