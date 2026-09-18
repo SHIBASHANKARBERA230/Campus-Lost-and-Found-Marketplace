@@ -28,6 +28,9 @@ class MainActivity : AppCompatActivity() {
         val profileButton =
             findViewById<Button>(R.id.btnProfile)
 
+        val myItemsButton =
+            findViewById<Button>(R.id.btnMyItems)
+
         lostItems.setOnClickListener {
             startActivity(
                 Intent(
@@ -69,6 +72,15 @@ class MainActivity : AppCompatActivity() {
                 Intent(
                     this,
                     ProfileActivity::class.java
+                )
+            )
+        }
+
+        myItemsButton.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    MyItemsActivity::class.java
                 )
             )
         }

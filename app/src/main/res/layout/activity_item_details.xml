@@ -1,92 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tvDetailName"
+            android:id="@+id/tvItemName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Item Name"
             android:textSize="28sp"
             android:textStyle="bold"
-            android:layout_marginBottom="16dp" />
+            android:padding="8dp" />
 
         <TextView
-            android:id="@+id/tvDetailDescription"
+            android:id="@+id/tvDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Description"
-            android:textSize="18sp"
-            android:layout_marginBottom="12dp" />
+            android:textSize="17sp"
+            android:padding="8dp" />
 
         <TextView
-            android:id="@+id/tvDetailCategory"
+            android:id="@+id/tvCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Category"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp" />
+            android:textSize="17sp"
+            android:padding="8dp" />
 
         <TextView
-            android:id="@+id/tvDetailType"
+            android:id="@+id/tvType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Type"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp" />
+            android:textSize="17sp"
+            android:padding="8dp" />
 
         <TextView
-            android:id="@+id/tvDetailLocation"
+            android:id="@+id/tvLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Location"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp" />
+            android:textSize="17sp"
+            android:padding="8dp" />
 
         <TextView
-            android:id="@+id/tvDetailDate"
+            android:id="@+id/tvDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Date"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp" />
+            android:textSize="17sp"
+            android:padding="8dp" />
 
         <TextView
-            android:id="@+id/tvDetailStatus"
+            android:id="@+id/tvStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Status"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="24dp" />
+            android:textSize="17sp"
+            android:padding="8dp" />
 
         <Button
             android:id="@+id/btnContactOwner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="58dp"
+            android:layout_marginTop="20dp"
             android:text="📞 CONTACT OWNER"
-            android:layout_marginBottom="12dp" />
+            android:textSize="15sp" />
 
         <Button
-            android:id="@+id/btnEditItem"
+            android:id="@+id/btnEdit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
+            android:layout_marginTop="12dp"
             android:text="✏️ EDIT ITEM"
-            android:layout_marginBottom="12dp" />
+            android:textSize="14sp" />
 
         <Button
-            android:id="@+id/btnDeleteItem"
+            android:id="@+id/btnDelete"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="🗑️ DELETE ITEM" />
+            android:layout_height="55dp"
+            android:layout_marginTop="12dp"
+            android:text="🗑️ DELETE ITEM"
+            android:textSize="14sp" />
 
     </LinearLayout>
 

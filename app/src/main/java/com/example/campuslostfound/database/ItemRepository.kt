@@ -4,15 +4,11 @@ class ItemRepository(
     private val itemDao: ItemDao
 ) {
 
-    suspend fun insertItem(
-        item: ItemEntity
-    ) {
+    suspend fun insertItem(item: ItemEntity) {
         itemDao.insertItem(item)
     }
 
-    suspend fun updateItem(
-        item: ItemEntity
-    ): Int {
+    suspend fun updateItem(item: ItemEntity): Int {
         return itemDao.updateItem(item)
     }
 
@@ -28,10 +24,24 @@ class ItemRepository(
         return itemDao.getFoundItems()
     }
 
-    suspend fun searchItems(
-        query: String
-    ): List<ItemEntity> {
+    suspend fun searchItems(query: String): List<ItemEntity> {
         return itemDao.searchItems(query)
+    }
+
+    suspend fun getItemsByCategory(
+        category: String
+    ): List<ItemEntity> {
+        return itemDao.getItemsByCategory(category)
+    }
+
+    suspend fun getItemsByTypeAndCategory(
+        type: String,
+        category: String
+    ): List<ItemEntity> {
+        return itemDao.getItemsByTypeAndCategory(
+            type,
+            category
+        )
     }
 
     suspend fun getItemByOwner(
@@ -55,13 +65,13 @@ class ItemRepository(
     ): Int {
 
         return itemDao.updateItemByOwner(
-            itemId,
-            userId,
-            name,
-            description,
-            category,
-            location,
-            date
+            itemId = itemId,
+            userId = userId,
+            name = name,
+            description = description,
+            category = category,
+            location = location,
+            date = date
         )
     }
 
@@ -74,5 +84,12 @@ class ItemRepository(
             itemId,
             userId
         )
+    }
+
+    suspend fun getItemsByUser(
+        userId: Int
+    ): List<ItemEntity> {
+
+        return itemDao.getItemsByUser(userId)
     }
 }

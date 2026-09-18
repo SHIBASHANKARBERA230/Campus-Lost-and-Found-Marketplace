@@ -1,6 +1,8 @@
 package com.example.campuslostfound
 
 import android.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -9,13 +11,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.campuslostfound.database.AppDatabase
-import com.example.campuslostfound.database.ItemEntity
 import com.example.campuslostfound.database.ItemRepository
+import com.example.campuslostfound.database.UserRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ItemDetailsActivity : AppCompatActivity() {
 
-    private lateinit var tvName: TextView
+    private lateinit var tvItemName: TextView
     private lateinit var tvDescription: TextView
     private lateinit var tvCategory: TextView
     private lateinit var tvType: TextView
@@ -27,9 +31,17 @@ class ItemDetailsActivity : AppCompatActivity() {
     private lateinit var btnEdit: Button
     private lateinit var btnDelete: Button
 
-    private val repository by lazy {
+    // Item repository
+    private val itemRepository by lazy {
         ItemRepository(
             AppDatabase.getDatabase(this).itemDao()
+        )
+    }
+
+    // User repository
+    private val userRepository by lazy {
+        UserRepository(
+            AppDatabase.getDatabase(this).userDao()
         )
     }
 
@@ -37,34 +49,45 @@ class ItemDetailsActivity : AppCompatActivity() {
     private var itemOwnerId = 0
     private var currentUserId = 0
 
-    private lateinit var itemName: String
-    private lateinit var description: String
-    private lateinit var category: String
-    private lateinit var type: String
-    private lateinit var location: String
-    private lateinit var date: String
-    private lateinit var status: String
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_item_details)
 
-        tvName = findViewById(R.id.tvDetailName)
-        tvDescription = findViewById(R.id.tvDetailDescription)
-        tvCategory = findViewById(R.id.tvDetailCategory)
-        tvType = findViewById(R.id.tvDetailType)
-        tvLocation = findViewById(R.id.tvDetailLocation)
-        tvDate = findViewById(R.id.tvDetailDate)
-        tvStatus = findViewById(R.id.tvDetailStatus)
+        // -----------------------------
+        // Find Views
+        // -----------------------------
+
+        tvItemName = findViewById(R.id.tvItemName)
+        tvDescription = findViewById(R.id.tvDescription)
+        tvCategory = findViewById(R.id.tvCategory)
+        tvType = findViewById(R.id.tvType)
+        tvLocation = findViewById(R.id.tvLocation)
+        tvDate = findViewById(R.id.tvDate)
+        tvStatus = findViewById(R.id.tvStatus)
 
         btnContactOwner = findViewById(R.id.btnContactOwner)
-        btnEdit = findViewById(R.id.btnEditItem)
-        btnDelete = findViewById(R.id.btnDeleteItem)
+        btnEdit = findViewById(R.id.btnEdit)
+        btnDelete = findViewById(R.id.btnDelete)
 
-        itemId = intent.getIntExtra("itemId", 0)
+        // -----------------------------
+        // Get Item ID
+        // -----------------------------
 
-        itemOwnerId = intent.getIntExtra("userId", 0)
+        itemId = intent.getIntExtra(
+            "itemId",
+            0
+        )
+
+        // Owner ID stored in item
+        itemOwnerId = intent.getIntExtra(
+            "userId",
+            0
+        )
+
+        // -----------------------------
+        // Get Current Logged-in User
+        // -----------------------------
 
         val preferences =
             getSharedPreferences(
@@ -78,109 +101,202 @@ class ItemDetailsActivity : AppCompatActivity() {
                 0
             )
 
-        itemName =
-            intent.getStringExtra("itemName") ?: ""
+        // -----------------------------
+        // Display Item Details
+        // -----------------------------
 
-        description =
-            intent.getStringExtra("description") ?: ""
+        tvItemName.text =
+            intent.getStringExtra("itemName")
+                ?: "Unknown Item"
 
-        category =
-            intent.getStringExtra("category") ?: ""
+        tvDescription.text =
+            "Description: ${
+                intent.getStringExtra("description")
+                    ?: ""
+            }"
 
-        type =
-            intent.getStringExtra("type") ?: ""
+        tvCategory.text =
+            "Category: ${
+                intent.getStringExtra("category")
+                    ?: ""
+            }"
 
-        location =
-            intent.getStringExtra("location") ?: ""
+        tvType.text =
+            "Type: ${
+                intent.getStringExtra("type")
+                    ?: ""
+            }"
 
-        date =
-            intent.getStringExtra("date") ?: ""
+        tvLocation.text =
+            "Location: ${
+                intent.getStringExtra("location")
+                    ?: ""
+            }"
 
-        status =
-            intent.getStringExtra("status") ?: ""
+        tvDate.text =
+            "Date: ${
+                intent.getStringExtra("date")
+                    ?: ""
+            }"
 
-        if (itemId == 0) {
+        tvStatus.text =
+            "Status: ${
+                intent.getStringExtra("status")
+                    ?: ""
+            }"
 
-            Toast.makeText(
-                this,
-                "Invalid item ID",
-                Toast.LENGTH_SHORT
-            ).show()
+        // -----------------------------
+        // Owner / Other User
+        // -----------------------------
 
-            finish()
-            return
+        if (itemOwnerId == currentUserId) {
+
+            // This is user's own item
+
+            btnContactOwner.isEnabled = false
+
+            btnContactOwner.text =
+                "📞 THIS IS YOUR ITEM"
+
+            btnEdit.visibility =
+                Button.VISIBLE
+
+            btnDelete.visibility =
+                Button.VISIBLE
+
+        } else {
+
+            // Someone else's item
+
+            btnContactOwner.isEnabled = true
+
+            btnContactOwner.text =
+                "📞 CONTACT OWNER"
+
+            btnEdit.visibility =
+                Button.GONE
+
+            btnDelete.visibility =
+                Button.GONE
         }
 
-        showItemDetails()
-
-        // Check ownership
-        if (itemOwnerId != currentUserId) {
-
-            btnEdit.isEnabled = false
-            btnDelete.isEnabled = false
-
-            btnEdit.alpha = 0.5f
-            btnDelete.alpha = 0.5f
-        }
+        // -----------------------------
+        // Contact Owner
+        // -----------------------------
 
         btnContactOwner.setOnClickListener {
 
-            Toast.makeText(
-                this,
-                "Contact owner feature coming soon 📞",
-                Toast.LENGTH_SHORT
-            ).show()
+            contactOwner()
         }
 
+        // -----------------------------
+        // Edit
+        // -----------------------------
+
         btnEdit.setOnClickListener {
-
-            if (itemOwnerId != currentUserId) {
-
-                Toast.makeText(
-                    this,
-                    "You can only edit your own items 🔒",
-                    Toast.LENGTH_SHORT
-                ).show()
-
-                return@setOnClickListener
-            }
 
             showEditDialog()
         }
 
+        // -----------------------------
+        // Delete
+        // -----------------------------
+
         btnDelete.setOnClickListener {
 
-            if (itemOwnerId != currentUserId) {
-
-                Toast.makeText(
-                    this,
-                    "You can only delete your own items 🔒",
-                    Toast.LENGTH_SHORT
-                ).show()
-
-                return@setOnClickListener
-            }
-
-            showDeleteDialog()
+            confirmDelete()
         }
     }
 
-    private fun showItemDetails() {
+    // =========================================================
+    // CONTACT OWNER
+    // =========================================================
 
-        tvName.text = itemName
+    private fun contactOwner() {
 
-        tvDescription.text = description
+        if (itemOwnerId == 0) {
 
-        tvCategory.text = "Category: $category"
+            Toast.makeText(
+                this,
+                "Owner information not available ❌",
+                Toast.LENGTH_SHORT
+            ).show()
 
-        tvType.text = "Type: $type"
+            return
+        }
 
-        tvLocation.text = "Location: $location"
+        lifecycleScope.launch {
 
-        tvDate.text = "Date: $date"
+            val owner =
+                withContext(Dispatchers.IO) {
 
-        tvStatus.text = "Status: $status"
+                    userRepository.getUserById(
+                        itemOwnerId
+                    )
+                }
+
+            if (owner == null) {
+
+                Toast.makeText(
+                    this@ItemDetailsActivity,
+                    "Owner not found ❌",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                return@launch
+            }
+
+            val ownerName =
+                owner.name
+
+            val phoneNumber =
+                owner.phone
+
+            if (phoneNumber.isBlank()) {
+
+                Toast.makeText(
+                    this@ItemDetailsActivity,
+                    "Owner phone number not available ❌",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                return@launch
+            }
+
+            AlertDialog.Builder(
+                this@ItemDetailsActivity
+            )
+                .setTitle("📞 Contact Owner")
+                .setMessage(
+                    "Owner: $ownerName\n\n" +
+                            "Phone: $phoneNumber\n\n" +
+                            "Do you want to call this owner?"
+                )
+                .setNegativeButton(
+                    "CANCEL",
+                    null
+                )
+                .setPositiveButton(
+                    "CALL"
+                ) { _, _ ->
+
+                    val callIntent =
+                        Intent(
+                            Intent.ACTION_DIAL,
+                            Uri.parse(
+                                "tel:$phoneNumber"
+                            )
+                        )
+
+                    startActivity(callIntent)
+                }
+                .show()
+        }
     }
+
+    // =========================================================
+    // EDIT ITEM
+    // =========================================================
 
     private fun showEditDialog() {
 
@@ -215,130 +331,235 @@ class ItemDetailsActivity : AppCompatActivity() {
                 R.id.etEditDate
             )
 
-        etName.setText(itemName)
-        etDescription.setText(description)
-        etCategory.setText(category)
-        etLocation.setText(location)
-        etDate.setText(date)
+        // Fill current values
+
+        etName.setText(
+            intent.getStringExtra(
+                "itemName"
+            ) ?: ""
+        )
+
+        etDescription.setText(
+            intent.getStringExtra(
+                "description"
+            ) ?: ""
+        )
+
+        etCategory.setText(
+            intent.getStringExtra(
+                "category"
+            ) ?: ""
+        )
+
+        etLocation.setText(
+            intent.getStringExtra(
+                "location"
+            ) ?: ""
+        )
+
+        etDate.setText(
+            intent.getStringExtra(
+                "date"
+            ) ?: ""
+        )
 
         AlertDialog.Builder(this)
             .setTitle("✏️ Edit Item")
             .setView(dialogView)
-            .setPositiveButton("UPDATE") { _, _ ->
+            .setNegativeButton(
+                "CANCEL",
+                null
+            )
+            .setPositiveButton(
+                "UPDATE"
+            ) { _, _ ->
 
-                val updatedName =
-                    etName.text.toString().trim()
+                updateItem(
+                    name = etName.text
+                        .toString()
+                        .trim(),
 
-                val updatedDescription =
-                    etDescription.text.toString().trim()
+                    description = etDescription.text
+                        .toString()
+                        .trim(),
 
-                val updatedCategory =
-                    etCategory.text.toString().trim()
+                    category = etCategory.text
+                        .toString()
+                        .trim(),
 
-                val updatedLocation =
-                    etLocation.text.toString().trim()
+                    location = etLocation.text
+                        .toString()
+                        .trim(),
 
-                val updatedDate =
-                    etDate.text.toString().trim()
-
-                if (
-                    updatedName.isEmpty() ||
-                    updatedDescription.isEmpty() ||
-                    updatedCategory.isEmpty() ||
-                    updatedLocation.isEmpty() ||
-                    updatedDate.isEmpty()
-                ) {
-
-                    Toast.makeText(
-                        this,
-                        "Please fill all fields",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    return@setPositiveButton
-                }
-
-                lifecycleScope.launch {
-
-                    val rowsUpdated =
-                        repository.updateItemByOwner(
-                            itemId = itemId,
-                            userId = currentUserId,
-                            name = updatedName,
-                            description = updatedDescription,
-                            category = updatedCategory,
-                            location = updatedLocation,
-                            date = updatedDate
-                        )
-
-                    if (rowsUpdated > 0) {
-
-                        itemName = updatedName
-                        description = updatedDescription
-                        category = updatedCategory
-                        location = updatedLocation
-                        date = updatedDate
-
-                        showItemDetails()
-
-                        Toast.makeText(
-                            this@ItemDetailsActivity,
-                            "Item updated successfully ✅",
-                            Toast.LENGTH_SHORT
-                        ).show()
-
-                    } else {
-
-                        Toast.makeText(
-                            this@ItemDetailsActivity,
-                            "Update failed 🔒",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
+                    date = etDate.text
+                        .toString()
+                        .trim()
+                )
             }
-            .setNegativeButton("CANCEL", null)
             .show()
     }
 
-    private fun showDeleteDialog() {
+    // =========================================================
+    // UPDATE ITEM
+    // =========================================================
+
+    private fun updateItem(
+        name: String,
+        description: String,
+        category: String,
+        location: String,
+        date: String
+    ) {
+
+        if (name.isEmpty()) {
+
+            Toast.makeText(
+                this,
+                "Item name cannot be empty ❌",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            return
+        }
+
+        lifecycleScope.launch {
+
+            val result =
+                withContext(Dispatchers.IO) {
+
+                    itemRepository.updateItemByOwner(
+                        itemId = itemId,
+                        userId = currentUserId,
+                        name = name,
+                        description = description,
+                        category = category,
+                        location = location,
+                        date = date
+                    )
+                }
+
+            if (result > 0) {
+
+                // Update screen
+
+                tvItemName.text =
+                    name
+
+                tvDescription.text =
+                    "Description: $description"
+
+                tvCategory.text =
+                    "Category: $category"
+
+                tvLocation.text =
+                    "Location: $location"
+
+                tvDate.text =
+                    "Date: $date"
+
+                // Update Intent values
+
+                intent.putExtra(
+                    "itemName",
+                    name
+                )
+
+                intent.putExtra(
+                    "description",
+                    description
+                )
+
+                intent.putExtra(
+                    "category",
+                    category
+                )
+
+                intent.putExtra(
+                    "location",
+                    location
+                )
+
+                intent.putExtra(
+                    "date",
+                    date
+                )
+
+                Toast.makeText(
+                    this@ItemDetailsActivity,
+                    "Item updated successfully ✅",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+            } else {
+
+                Toast.makeText(
+                    this@ItemDetailsActivity,
+                    "Update failed ❌",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    // =========================================================
+    // DELETE CONFIRMATION
+    // =========================================================
+
+    private fun confirmDelete() {
 
         AlertDialog.Builder(this)
             .setTitle("🗑️ Delete Item")
             .setMessage(
                 "Are you sure you want to delete this item?"
             )
-            .setPositiveButton("DELETE") { _, _ ->
+            .setNegativeButton(
+                "CANCEL",
+                null
+            )
+            .setPositiveButton(
+                "DELETE"
+            ) { _, _ ->
 
-                lifecycleScope.launch {
-
-                    val rowsDeleted =
-                        repository.deleteItemByOwner(
-                            itemId = itemId,
-                            userId = currentUserId
-                        )
-
-                    if (rowsDeleted > 0) {
-
-                        Toast.makeText(
-                            this@ItemDetailsActivity,
-                            "Item deleted successfully 🗑️",
-                            Toast.LENGTH_SHORT
-                        ).show()
-
-                        finish()
-
-                    } else {
-
-                        Toast.makeText(
-                            this@ItemDetailsActivity,
-                            "Delete failed 🔒",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
+                deleteItem()
             }
-            .setNegativeButton("CANCEL", null)
             .show()
+    }
+
+    // =========================================================
+    // DELETE ITEM
+    // =========================================================
+
+    private fun deleteItem() {
+
+        lifecycleScope.launch {
+
+            val result =
+                withContext(Dispatchers.IO) {
+
+                    itemRepository.deleteItemByOwner(
+                        itemId = itemId,
+                        userId = currentUserId
+                    )
+                }
+
+            if (result > 0) {
+
+                Toast.makeText(
+                    this@ItemDetailsActivity,
+                    "Item deleted successfully ✅",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                finish()
+
+            } else {
+
+                Toast.makeText(
+                    this@ItemDetailsActivity,
+                    "Delete failed ❌",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 }

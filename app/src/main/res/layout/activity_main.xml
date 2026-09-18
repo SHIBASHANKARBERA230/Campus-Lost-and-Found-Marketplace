@@ -127,6 +127,17 @@
             android:paddingEnd="12dp" />
 
 
+        <!-- MY ITEMS -->
+
+        <Button
+            android:id="@+id/btnMyItems"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:layout_marginTop="12dp"
+            android:text="👤 MY ITEMS"
+            android:textSize="14sp" />
+
+
         <!-- RECENT ITEMS -->
 
         <TextView

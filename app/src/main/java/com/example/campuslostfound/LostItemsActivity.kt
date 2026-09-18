@@ -2,130 +2,210 @@ package com.example.campuslostfound
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.campuslostfound.adapter.ItemAdapter
 import com.example.campuslostfound.database.AppDatabase
 import com.example.campuslostfound.database.ItemRepository
 import com.example.campuslostfound.model.Item
-import com.example.campuslostfound.viewmodel.ItemViewModel
-import com.example.campuslostfound.viewmodel.ItemViewModelFactory
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LostItemsActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
+    private lateinit var tvResult: TextView
+    private lateinit var spinnerCategory: Spinner
 
-    private val viewModel: ItemViewModel by viewModels {
-        ItemViewModelFactory(
-            ItemRepository(
-                AppDatabase.getDatabase(this).itemDao()
-            )
+    private val repository by lazy {
+        ItemRepository(
+            AppDatabase.getDatabase(this).itemDao()
         )
     }
+
+    private val categories = arrayOf(
+        "All Categories",
+        "Electronics",
+        "Books",
+        "Bags",
+        "Keys",
+        "Clothing",
+        "ID / Cards",
+        "Documents",
+        "Accessories",
+        "Other"
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_lost_items)
 
-        recyclerView =
-            findViewById(R.id.recyclerLostItems)
+        recyclerView = findViewById(R.id.recyclerLostItems)
+        tvResult = findViewById(R.id.tvLostItemsResult)
+        spinnerCategory = findViewById(R.id.spinnerCategory)
 
         recyclerView.layoutManager =
             LinearLayoutManager(this)
 
-        observeLostItems()
+        setupCategorySpinner()
 
-        viewModel.loadLostItems()
+        loadLostItems("All Categories")
     }
 
-    private fun observeLostItems() {
+    private fun setupCategorySpinner() {
+
+        val adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item,
+            categories
+        )
+
+        adapter.setDropDownViewResource(
+            android.R.layout.simple_spinner_dropdown_item
+        )
+
+        spinnerCategory.adapter = adapter
+
+        spinnerCategory.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+
+                    val selectedCategory =
+                        categories[position]
+
+                    loadLostItems(selectedCategory)
+                }
+
+                override fun onNothingSelected(
+                    parent: AdapterView<*>?
+                ) {
+                }
+            }
+    }
+
+    private fun loadLostItems(category: String) {
 
         lifecycleScope.launch {
 
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            val databaseItems =
+                withContext(Dispatchers.IO) {
 
-                viewModel.lostItems.collect { databaseItems ->
+                    if (category == "All Categories") {
 
-                    val items =
-                        databaseItems.map { entity ->
+                        repository.getLostItems()
 
-                            Item(
-                                id = entity.id,
-                                userId = entity.userId,
-                                name = entity.name,
-                                description = entity.description,
-                                category = entity.category,
-                                type = entity.type,
-                                location = entity.location,
-                                date = entity.date,
-                                status = entity.status
-                            )
-                        }
+                    } else {
 
-                    recyclerView.adapter =
-                        ItemAdapter(items) { item ->
-
-                            val intent =
-                                Intent(
-                                    this@LostItemsActivity,
-                                    ItemDetailsActivity::class.java
-                                )
-
-                            intent.putExtra(
-                                "itemId",
-                                item.id
-                            )
-
-                            intent.putExtra(
-                                "userId",
-                                item.userId
-                            )
-
-                            intent.putExtra(
-                                "itemName",
-                                item.name
-                            )
-
-                            intent.putExtra(
-                                "description",
-                                item.description
-                            )
-
-                            intent.putExtra(
-                                "category",
-                                item.category
-                            )
-
-                            intent.putExtra(
-                                "type",
-                                item.type
-                            )
-
-                            intent.putExtra(
-                                "location",
-                                item.location
-                            )
-
-                            intent.putExtra(
-                                "date",
-                                item.date
-                            )
-
-                            intent.putExtra(
-                                "status",
-                                item.status
-                            )
-
-                            startActivity(intent)
-                        }
+                        repository.getItemsByTypeAndCategory(
+                            "LOST",
+                            category
+                        )
+                    }
                 }
+
+            val items = databaseItems.map { entity ->
+
+                Item(
+                    id = entity.id,
+                    userId = entity.userId,
+                    name = entity.name,
+                    description = entity.description,
+                    category = entity.category,
+                    type = entity.type,
+                    location = entity.location,
+                    date = entity.date,
+                    status = entity.status
+                )
+            }
+
+            if (items.isEmpty()) {
+
+                tvResult.text =
+                    if (category == "All Categories") {
+                        "No lost items found 📭"
+                    } else {
+                        "No lost items found in $category 📭"
+                    }
+
+                recyclerView.adapter =
+                    ItemAdapter(emptyList())
+
+            } else {
+
+                tvResult.text =
+                    "${items.size} lost item(s) found"
+
+                recyclerView.adapter =
+                    ItemAdapter(items) { item ->
+
+                        val intent =
+                            Intent(
+                                this@LostItemsActivity,
+                                ItemDetailsActivity::class.java
+                            )
+
+                        intent.putExtra(
+                            "itemId",
+                            item.id
+                        )
+
+                        intent.putExtra(
+                            "userId",
+                            item.userId
+                        )
+
+                        intent.putExtra(
+                            "itemName",
+                            item.name
+                        )
+
+                        intent.putExtra(
+                            "description",
+                            item.description
+                        )
+
+                        intent.putExtra(
+                            "category",
+                            item.category
+                        )
+
+                        intent.putExtra(
+                            "type",
+                            item.type
+                        )
+
+                        intent.putExtra(
+                            "location",
+                            item.location
+                        )
+
+                        intent.putExtra(
+                            "date",
+                            item.date
+                        )
+
+                        intent.putExtra(
+                            "status",
+                            item.status
+                        )
+
+                        startActivity(intent)
+                    }
             }
         }
     }

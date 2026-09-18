@@ -8,24 +8,44 @@
     android:padding="16dp">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/tvFoundItemsTitle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Found Items"
+        android:text="✅ Found Items"
         android:textSize="26sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:padding="8dp" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Items reported as found on campus"
-        android:textSize="14sp" />
+        android:text="Filter by Category"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:paddingStart="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="4dp" />
+
+    <Spinner
+        android:id="@+id/spinnerCategory"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:padding="4dp" />
+
+    <TextView
+        android:id="@+id/tvFoundItemsResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Loading found items..."
+        android:textSize="15sp"
+        android:padding="8dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerFoundItems"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="16dp" />
+        android:clipToPadding="false"
+        android:paddingTop="8dp" />
 
 </LinearLayout>

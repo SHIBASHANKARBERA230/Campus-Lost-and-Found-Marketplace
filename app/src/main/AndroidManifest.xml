@@ -81,6 +81,12 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
+        <!-- My Items -->
+        <activity
+            android:name=".MyItemsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
     </application>
 
 </manifest>
