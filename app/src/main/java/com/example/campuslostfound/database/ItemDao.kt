@@ -8,14 +8,29 @@ import androidx.room.Update
 @Dao
 interface ItemDao {
 
+    // Insert item
     @Insert
     suspend fun insertItem(item: ItemEntity)
 
+    // Update item
     @Update
     suspend fun updateItem(item: ItemEntity): Int
 
+    // Get item by ID
+    @Query("""
+        SELECT * FROM items
+        WHERE id = :itemId
+        LIMIT 1
+    """)
+    suspend fun getItemById(
+        itemId: Int
+    ): ItemEntity?
+
     // Get all items
-    @Query("SELECT * FROM items ORDER BY id DESC")
+    @Query("""
+        SELECT * FROM items
+        ORDER BY id DESC
+    """)
     suspend fun getAllItems(): List<ItemEntity>
 
     // Get LOST items
@@ -43,7 +58,9 @@ interface ItemDao {
         OR location LIKE '%' || :query || '%'
         ORDER BY id DESC
     """)
-    suspend fun searchItems(query: String): List<ItemEntity>
+    suspend fun searchItems(
+        query: String
+    ): List<ItemEntity>
 
     // Get items by category
     @Query("""
@@ -51,9 +68,11 @@ interface ItemDao {
         WHERE category = :category
         ORDER BY id DESC
     """)
-    suspend fun getItemsByCategory(category: String): List<ItemEntity>
+    suspend fun getItemsByCategory(
+        category: String
+    ): List<ItemEntity>
 
-    // Get items by type + category
+    // Get items by type and category
     @Query("""
         SELECT * FROM items
         WHERE type = :type
@@ -65,7 +84,7 @@ interface ItemDao {
         category: String
     ): List<ItemEntity>
 
-    // Get item owned by user
+    // Get item belonging to a particular owner
     @Query("""
         SELECT * FROM items
         WHERE id = :itemId
@@ -77,7 +96,7 @@ interface ItemDao {
         userId: Int
     ): ItemEntity?
 
-    // Delete item owned by user
+    // Delete only owner's item
     @Query("""
         DELETE FROM items
         WHERE id = :itemId
@@ -88,7 +107,7 @@ interface ItemDao {
         userId: Int
     ): Int
 
-    // Update item owned by user
+    // Update only owner's item
     @Query("""
         UPDATE items
         SET name = :name,
@@ -115,13 +134,7 @@ interface ItemDao {
         WHERE userId = :userId
         ORDER BY id DESC
     """)
-    suspend fun getItemsByUser(userId: Int): List<ItemEntity>
-
-    // Get user by ID
-    @Query("""
-        SELECT * FROM users
-        WHERE id = :userId
-        LIMIT 1
-    """)
-    suspend fun getUserById(userId: Int): UserEntity?
+    suspend fun getItemsByUser(
+        userId: Int
+    ): List<ItemEntity>
 }

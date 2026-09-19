@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -11,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.campuslostfound.database.AppDatabase
+import com.example.campuslostfound.database.ItemEntity
 import com.example.campuslostfound.database.ItemRepository
 import com.example.campuslostfound.database.UserRepository
 import kotlinx.coroutines.Dispatchers
@@ -45,49 +47,65 @@ class ItemDetailsActivity : AppCompatActivity() {
         )
     }
 
-    private var itemId = 0
-    private var itemOwnerId = 0
-    private var currentUserId = 0
+    private var itemId: Int = 0
+    private var itemOwnerId: Int = 0
+    private var currentUserId: Int = 0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(
+        savedInstanceState: Bundle?
+    ) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_item_details)
+        setContentView(
+            R.layout.activity_item_details
+        )
 
-        // -----------------------------
+        // --------------------------------
         // Find Views
-        // -----------------------------
+        // --------------------------------
 
-        tvItemName = findViewById(R.id.tvItemName)
-        tvDescription = findViewById(R.id.tvDescription)
-        tvCategory = findViewById(R.id.tvCategory)
-        tvType = findViewById(R.id.tvType)
-        tvLocation = findViewById(R.id.tvLocation)
-        tvDate = findViewById(R.id.tvDate)
-        tvStatus = findViewById(R.id.tvStatus)
+        tvItemName =
+            findViewById(R.id.tvItemName)
 
-        btnContactOwner = findViewById(R.id.btnContactOwner)
-        btnEdit = findViewById(R.id.btnEdit)
-        btnDelete = findViewById(R.id.btnDelete)
+        tvDescription =
+            findViewById(R.id.tvDescription)
 
-        // -----------------------------
+        tvCategory =
+            findViewById(R.id.tvCategory)
+
+        tvType =
+            findViewById(R.id.tvType)
+
+        tvLocation =
+            findViewById(R.id.tvLocation)
+
+        tvDate =
+            findViewById(R.id.tvDate)
+
+        tvStatus =
+            findViewById(R.id.tvStatus)
+
+        btnContactOwner =
+            findViewById(R.id.btnContactOwner)
+
+        btnEdit =
+            findViewById(R.id.btnEdit)
+
+        btnDelete =
+            findViewById(R.id.btnDelete)
+
+        // --------------------------------
         // Get Item ID
-        // -----------------------------
+        // --------------------------------
 
         itemId = intent.getIntExtra(
             "itemId",
             0
         )
 
-        // Owner ID stored in item
-        itemOwnerId = intent.getIntExtra(
-            "userId",
-            0
-        )
-
-        // -----------------------------
-        // Get Current Logged-in User
-        // -----------------------------
+        // --------------------------------
+        // Get Current User ID
+        // --------------------------------
 
         val preferences =
             getSharedPreferences(
@@ -101,124 +119,175 @@ class ItemDetailsActivity : AppCompatActivity() {
                 0
             )
 
-        // -----------------------------
-        // Display Item Details
-        // -----------------------------
+        // --------------------------------
+        // Display Initial Item Details
+        // --------------------------------
 
         tvItemName.text =
-            intent.getStringExtra("itemName")
-                ?: "Unknown Item"
+            intent.getStringExtra(
+                "itemName"
+            ) ?: "Unknown Item"
 
         tvDescription.text =
             "Description: ${
-                intent.getStringExtra("description")
-                    ?: ""
+                intent.getStringExtra(
+                    "description"
+                ) ?: ""
             }"
 
         tvCategory.text =
             "Category: ${
-                intent.getStringExtra("category")
-                    ?: ""
+                intent.getStringExtra(
+                    "category"
+                ) ?: ""
             }"
 
         tvType.text =
             "Type: ${
-                intent.getStringExtra("type")
-                    ?: ""
+                intent.getStringExtra(
+                    "type"
+                ) ?: ""
             }"
 
         tvLocation.text =
             "Location: ${
-                intent.getStringExtra("location")
-                    ?: ""
+                intent.getStringExtra(
+                    "location"
+                ) ?: ""
             }"
 
         tvDate.text =
             "Date: ${
-                intent.getStringExtra("date")
-                    ?: ""
+                intent.getStringExtra(
+                    "date"
+                ) ?: ""
             }"
 
         tvStatus.text =
             "Status: ${
-                intent.getStringExtra("status")
-                    ?: ""
+                intent.getStringExtra(
+                    "status"
+                ) ?: ""
             }"
 
-        // -----------------------------
-        // Owner / Other User
-        // -----------------------------
+        // --------------------------------
+        // Verify Real Owner
+        // --------------------------------
 
-        if (itemOwnerId == currentUserId) {
+        verifyOwnership()
+    }
 
-            // This is user's own item
+    // =====================================================
+    // VERIFY OWNERSHIP
+    // =====================================================
 
-            btnContactOwner.isEnabled = false
+    private fun verifyOwnership() {
 
-            btnContactOwner.text =
-                "📞 THIS IS YOUR ITEM"
+        lifecycleScope.launch {
 
-            btnEdit.visibility =
-                Button.VISIBLE
+            val item: ItemEntity? =
+                withContext(Dispatchers.IO) {
+                    itemRepository.getItemById(
+                        itemId
+                    )
+                }
 
-            btnDelete.visibility =
-                Button.VISIBLE
+            if (item == null) {
 
-        } else {
+                Toast.makeText(
+                    this@ItemDetailsActivity,
+                    "Item not found ❌",
+                    Toast.LENGTH_SHORT
+                ).show()
 
-            // Someone else's item
+                finish()
 
-            btnContactOwner.isEnabled = true
+                return@launch
+            }
 
-            btnContactOwner.text =
-                "📞 CONTACT OWNER"
+            // Get ACTUAL owner from database
+            itemOwnerId = item.userId
 
-            btnEdit.visibility =
-                Button.GONE
+            if (itemOwnerId == currentUserId) {
 
-            btnDelete.visibility =
-                Button.GONE
-        }
+                // =================================
+                // CURRENT USER OWNS THIS ITEM
+                // =================================
 
-        // -----------------------------
-        // Contact Owner
-        // -----------------------------
+                btnContactOwner.isEnabled =
+                    false
 
-        btnContactOwner.setOnClickListener {
+                btnContactOwner.text =
+                    "📞 THIS IS YOUR ITEM"
 
-            contactOwner()
-        }
+                btnEdit.visibility =
+                    View.VISIBLE
 
-        // -----------------------------
-        // Edit
-        // -----------------------------
+                btnDelete.visibility =
+                    View.VISIBLE
 
-        btnEdit.setOnClickListener {
+            } else {
 
-            showEditDialog()
-        }
+                // =================================
+                // SOMEONE ELSE OWNS THIS ITEM
+                // =================================
 
-        // -----------------------------
-        // Delete
-        // -----------------------------
+                btnContactOwner.isEnabled =
+                    true
 
-        btnDelete.setOnClickListener {
+                btnContactOwner.text =
+                    "📞 CONTACT OWNER"
 
-            confirmDelete()
+                btnEdit.visibility =
+                    View.GONE
+
+                btnDelete.visibility =
+                    View.GONE
+            }
+
+            // --------------------------------
+            // Button Listeners
+            // --------------------------------
+
+            btnContactOwner.setOnClickListener {
+
+                contactOwner()
+            }
+
+            btnEdit.setOnClickListener {
+
+                showEditDialog()
+            }
+
+            btnDelete.setOnClickListener {
+
+                confirmDelete()
+            }
         }
     }
 
-    // =========================================================
+    // =====================================================
     // CONTACT OWNER
-    // =========================================================
+    // =====================================================
 
     private fun contactOwner() {
+
+        if (itemOwnerId == currentUserId) {
+
+            Toast.makeText(
+                this,
+                "This is your own item",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            return
+        }
 
         if (itemOwnerId == 0) {
 
             Toast.makeText(
                 this,
-                "Owner information not available ❌",
+                "Owner information unavailable ❌",
                 Toast.LENGTH_SHORT
             ).show()
 
@@ -229,7 +298,6 @@ class ItemDetailsActivity : AppCompatActivity() {
 
             val owner =
                 withContext(Dispatchers.IO) {
-
                     userRepository.getUserById(
                         itemOwnerId
                     )
@@ -246,10 +314,10 @@ class ItemDetailsActivity : AppCompatActivity() {
                 return@launch
             }
 
-            val ownerName =
+            val ownerName: String =
                 owner.name
 
-            val phoneNumber =
+            val phoneNumber: String =
                 owner.phone
 
             if (phoneNumber.isBlank()) {
@@ -266,7 +334,9 @@ class ItemDetailsActivity : AppCompatActivity() {
             AlertDialog.Builder(
                 this@ItemDetailsActivity
             )
-                .setTitle("📞 Contact Owner")
+                .setTitle(
+                    "📞 Contact Owner"
+                )
                 .setMessage(
                     "Owner: $ownerName\n\n" +
                             "Phone: $phoneNumber\n\n" +
@@ -288,15 +358,17 @@ class ItemDetailsActivity : AppCompatActivity() {
                             )
                         )
 
-                    startActivity(callIntent)
+                    startActivity(
+                        callIntent
+                    )
                 }
                 .show()
         }
     }
 
-    // =========================================================
+    // =====================================================
     // EDIT ITEM
-    // =========================================================
+    // =====================================================
 
     private fun showEditDialog() {
 
@@ -364,7 +436,9 @@ class ItemDetailsActivity : AppCompatActivity() {
         )
 
         AlertDialog.Builder(this)
-            .setTitle("✏️ Edit Item")
+            .setTitle(
+                "✏️ Edit Item"
+            )
             .setView(dialogView)
             .setNegativeButton(
                 "CANCEL",
@@ -399,9 +473,9 @@ class ItemDetailsActivity : AppCompatActivity() {
             .show()
     }
 
-    // =========================================================
+    // =====================================================
     // UPDATE ITEM
-    // =========================================================
+    // =====================================================
 
     private fun updateItem(
         name: String,
@@ -457,7 +531,7 @@ class ItemDetailsActivity : AppCompatActivity() {
                 tvDate.text =
                     "Date: $date"
 
-                // Update Intent values
+                // Update Intent data
 
                 intent.putExtra(
                     "itemName",
@@ -501,14 +575,16 @@ class ItemDetailsActivity : AppCompatActivity() {
         }
     }
 
-    // =========================================================
+    // =====================================================
     // DELETE CONFIRMATION
-    // =========================================================
+    // =====================================================
 
     private fun confirmDelete() {
 
         AlertDialog.Builder(this)
-            .setTitle("🗑️ Delete Item")
+            .setTitle(
+                "🗑️ Delete Item"
+            )
             .setMessage(
                 "Are you sure you want to delete this item?"
             )
@@ -525,9 +601,9 @@ class ItemDetailsActivity : AppCompatActivity() {
             .show()
     }
 
-    // =========================================================
+    // =====================================================
     // DELETE ITEM
-    // =========================================================
+    // =====================================================
 
     private fun deleteItem() {
 

@@ -4,36 +4,57 @@ class ItemRepository(
     private val itemDao: ItemDao
 ) {
 
-    suspend fun insertItem(item: ItemEntity) {
+    // Insert item
+    suspend fun insertItem(
+        item: ItemEntity
+    ) {
         itemDao.insertItem(item)
     }
 
-    suspend fun updateItem(item: ItemEntity): Int {
+    // Update item
+    suspend fun updateItem(
+        item: ItemEntity
+    ): Int {
         return itemDao.updateItem(item)
     }
 
+    // Get item by ID
+    suspend fun getItemById(
+        itemId: Int
+    ): ItemEntity? {
+        return itemDao.getItemById(itemId)
+    }
+
+    // Get all items
     suspend fun getAllItems(): List<ItemEntity> {
         return itemDao.getAllItems()
     }
 
+    // Get LOST items
     suspend fun getLostItems(): List<ItemEntity> {
         return itemDao.getLostItems()
     }
 
+    // Get FOUND items
     suspend fun getFoundItems(): List<ItemEntity> {
         return itemDao.getFoundItems()
     }
 
-    suspend fun searchItems(query: String): List<ItemEntity> {
+    // Search items
+    suspend fun searchItems(
+        query: String
+    ): List<ItemEntity> {
         return itemDao.searchItems(query)
     }
 
+    // Get items by category
     suspend fun getItemsByCategory(
         category: String
     ): List<ItemEntity> {
         return itemDao.getItemsByCategory(category)
     }
 
+    // Get items by type and category
     suspend fun getItemsByTypeAndCategory(
         type: String,
         category: String
@@ -44,6 +65,7 @@ class ItemRepository(
         )
     }
 
+    // Get owner's item
     suspend fun getItemByOwner(
         itemId: Int,
         userId: Int
@@ -54,6 +76,7 @@ class ItemRepository(
         )
     }
 
+    // Update owner's item
     suspend fun updateItemByOwner(
         itemId: Int,
         userId: Int,
@@ -75,6 +98,7 @@ class ItemRepository(
         )
     }
 
+    // Delete owner's item
     suspend fun deleteItemByOwner(
         itemId: Int,
         userId: Int
@@ -86,10 +110,13 @@ class ItemRepository(
         )
     }
 
+    // Get current user's items
     suspend fun getItemsByUser(
         userId: Int
     ): List<ItemEntity> {
 
-        return itemDao.getItemsByUser(userId)
+        return itemDao.getItemsByUser(
+            userId
+        )
     }
 }
