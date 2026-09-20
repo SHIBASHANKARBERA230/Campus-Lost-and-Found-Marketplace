@@ -1,0 +1,134 @@
+[
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\layout_activity_my_items.xml.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\layout\\activity_my_items.xml"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\mipmap-hdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\layout_activity_login.xml.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\layout\\activity_login.xml"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\layout_dialog_edit_item.xml.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\layout\\dialog_edit_item.xml"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\mipmap-xxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\layout_activity_register.xml.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\layout\\activity_register.xml"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\mipmap-xxxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\layout_item_lost_found.xml.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\layout\\item_lost_found.xml"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\xml_backup_rules.xml.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\xml\\backup_rules.xml"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\mipmap-xhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\layout_activity_profile.xml.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\layout\\activity_profile.xml"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\layout_activity_post_item.xml.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\layout\\activity_post_item.xml"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\mipmap-xxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\mipmap-hdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\layout_activity_search.xml.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\layout\\activity_search.xml"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\layout_activity_notifications.xml.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\layout\\activity_notifications.xml"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\layout_item_notification.xml.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\layout\\item_notification.xml"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\layout_activity_item_details.xml.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\layout\\activity_item_details.xml"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\drawable_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\drawable\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\xml_data_extraction_rules.xml.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\xml\\data_extraction_rules.xml"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\drawable_ic_launcher_background.xml.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\drawable\\ic_launcher_background.xml"
+    },
+    {
+        "merged": "com.example.campuslostfound.app-debug-42:/layout_activity_notifications.xml.flat",
+        "source": "com.example.campuslostfound.app-main-44:/layout/activity_notifications.xml"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\mipmap-xhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\layout_activity_found_items.xml.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\layout\\activity_found_items.xml"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\mipmap-mdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\layout_activity_splash.xml.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\layout\\activity_splash.xml"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\mipmap-anydpi-v26\\ic_launcher.xml"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\layout_activity_lost_items.xml.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\layout\\activity_lost_items.xml"
+    },
+    {
+        "merged": "com.example.campuslostfound.app-debug-42:/layout_activity_main.xml.flat",
+        "source": "com.example.campuslostfound.app-main-44:/layout/activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-debug-42:\\mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\shiba\\.gradle\\daemon\\9.4.1\\com.example.campuslostfound.app-main-44:\\mipmap-mdpi\\ic_launcher.webp"
+    }
+]

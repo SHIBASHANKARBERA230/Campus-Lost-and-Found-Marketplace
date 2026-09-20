@@ -1,0 +1,257 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.campuslostfound"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+7-->INJECTED
+8        android:minSdkVersion="24"
+8-->INJECTED
+9        android:targetSdkVersion="36" />
+9-->INJECTED
+10
+11    <permission
+11-->[androidx.core:core:1.19.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\889273319fc96c84969a221ba8db17a3\transformed\core-1.19.0\AndroidManifest.xml:22:5-24:47
+12        android:name="com.example.campuslostfound.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+12-->[androidx.core:core:1.19.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\889273319fc96c84969a221ba8db17a3\transformed\core-1.19.0\AndroidManifest.xml:23:9-81
+13        android:protectionLevel="signature" />
+13-->[androidx.core:core:1.19.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\889273319fc96c84969a221ba8db17a3\transformed\core-1.19.0\AndroidManifest.xml:24:9-44
+14
+15    <uses-permission android:name="com.example.campuslostfound.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+15-->[androidx.core:core:1.19.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\889273319fc96c84969a221ba8db17a3\transformed\core-1.19.0\AndroidManifest.xml:26:5-97
+15-->[androidx.core:core:1.19.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\889273319fc96c84969a221ba8db17a3\transformed\core-1.19.0\AndroidManifest.xml:26:22-94
+16
+17    <application
+17-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:7:5-96:19
+18        android:allowBackup="true"
+18-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:8:9-35
+19        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+19-->[androidx.core:core:1.19.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\889273319fc96c84969a221ba8db17a3\transformed\core-1.19.0\AndroidManifest.xml:28:18-86
+20        android:dataExtractionRules="@xml/data_extraction_rules"
+20-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:9:9-65
+21        android:debuggable="true"
+22        android:extractNativeLibs="false"
+22-->INJECTED
+23        android:fullBackupContent="@xml/backup_rules"
+23-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:10:9-54
+24        android:icon="@mipmap/ic_launcher"
+24-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:11:9-43
+25        android:label="@string/app_name"
+25-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:12:9-41
+26        android:roundIcon="@mipmap/ic_launcher_round"
+26-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:13:9-54
+27        android:supportsRtl="true"
+27-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:14:9-35
+28        android:testOnly="true"
+29        android:theme="@style/Theme.CampusLostFound" >
+29-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:15:9-53
+30
+31        <!-- Splash Screen -->
+32        <activity
+32-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:18:9-28:20
+33            android:name="com.example.campuslostfound.SplashActivity"
+33-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:19:13-43
+34            android:exported="true"
+34-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:20:13-36
+35            android:windowSoftInputMode="adjustResize" >
+35-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:21:13-55
+36            <intent-filter>
+36-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:23:13-26:29
+37                <action android:name="android.intent.action.MAIN" />
+37-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:24:17-69
+37-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:24:25-66
+38
+39                <category android:name="android.intent.category.LAUNCHER" />
+39-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:25:17-77
+39-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:25:27-74
+40            </intent-filter>
+41        </activity>
+42
+43        <!-- Login -->
+44        <activity
+44-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:31:9-34:58
+45            android:name="com.example.campuslostfound.LoginActivity"
+45-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:32:13-42
+46            android:exported="false"
+46-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:33:13-37
+47            android:windowSoftInputMode="adjustResize" />
+47-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:34:13-55
+48
+49        <!-- Register -->
+50        <activity
+50-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:37:9-40:58
+51            android:name="com.example.campuslostfound.RegisterActivity"
+51-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:38:13-45
+52            android:exported="false"
+52-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:39:13-37
+53            android:windowSoftInputMode="adjustResize" />
+53-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:40:13-55
+54
+55        <!-- Main -->
+56        <activity
+56-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:43:9-46:58
+57            android:name="com.example.campuslostfound.MainActivity"
+57-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:44:13-41
+58            android:exported="false"
+58-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:45:13-37
+59            android:windowSoftInputMode="adjustResize" />
+59-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:46:13-55
+60
+61        <!-- Lost Items -->
+62        <activity
+62-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:49:9-52:58
+63            android:name="com.example.campuslostfound.LostItemsActivity"
+63-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:50:13-46
+64            android:exported="false"
+64-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:51:13-37
+65            android:windowSoftInputMode="adjustResize" />
+65-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:52:13-55
+66
+67        <!-- Found Items -->
+68        <activity
+68-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:55:9-58:58
+69            android:name="com.example.campuslostfound.FoundItemsActivity"
+69-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:56:13-47
+70            android:exported="false"
+70-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:57:13-37
+71            android:windowSoftInputMode="adjustResize" />
+71-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:58:13-55
+72
+73        <!-- Item Details -->
+74        <activity
+74-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:61:9-64:58
+75            android:name="com.example.campuslostfound.ItemDetailsActivity"
+75-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:62:13-48
+76            android:exported="false"
+76-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:63:13-37
+77            android:windowSoftInputMode="adjustResize" />
+77-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:64:13-55
+78
+79        <!-- Post Item -->
+80        <activity
+80-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:67:9-70:58
+81            android:name="com.example.campuslostfound.PostItemActivity"
+81-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:68:13-45
+82            android:exported="false"
+82-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:69:13-37
+83            android:windowSoftInputMode="adjustResize" />
+83-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:70:13-55
+84
+85        <!-- Search Items -->
+86        <activity
+86-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:73:9-76:58
+87            android:name="com.example.campuslostfound.SearchActivity"
+87-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:74:13-43
+88            android:exported="false"
+88-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:75:13-37
+89            android:windowSoftInputMode="adjustResize" />
+89-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:76:13-55
+90
+91        <!-- Profile -->
+92        <activity
+92-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:79:9-82:58
+93            android:name="com.example.campuslostfound.ProfileActivity"
+93-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:80:13-44
+94            android:exported="false"
+94-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:81:13-37
+95            android:windowSoftInputMode="adjustResize" />
+95-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:82:13-55
+96
+97        <!-- My Items -->
+98        <activity
+98-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:85:9-88:58
+99            android:name="com.example.campuslostfound.MyItemsActivity"
+99-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:86:13-44
+100            android:exported="false"
+100-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:87:13-37
+101            android:windowSoftInputMode="adjustResize" />
+101-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:88:13-55
+102
+103        <!-- Notifications -->
+104        <activity
+104-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:91:9-94:58
+105            android:name="com.example.campuslostfound.NotificationActivity"
+105-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:92:13-49
+106            android:exported="false"
+106-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:93:13-37
+107            android:windowSoftInputMode="adjustResize" />
+107-->C:\Users\shiba\AndroidStudioProjects\CampusLostFound\app\src\main\AndroidManifest.xml:94:13-55
+108
+109        <provider
+109-->[androidx.emoji2:emoji2:1.3.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a8dd32d4b1f0a563857140245ddc89b8\transformed\emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+110            android:name="androidx.startup.InitializationProvider"
+110-->[androidx.emoji2:emoji2:1.3.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a8dd32d4b1f0a563857140245ddc89b8\transformed\emoji2-1.3.0\AndroidManifest.xml:25:13-67
+111            android:authorities="com.example.campuslostfound.androidx-startup"
+111-->[androidx.emoji2:emoji2:1.3.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a8dd32d4b1f0a563857140245ddc89b8\transformed\emoji2-1.3.0\AndroidManifest.xml:26:13-68
+112            android:exported="false" >
+112-->[androidx.emoji2:emoji2:1.3.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a8dd32d4b1f0a563857140245ddc89b8\transformed\emoji2-1.3.0\AndroidManifest.xml:27:13-37
+113            <meta-data
+113-->[androidx.emoji2:emoji2:1.3.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a8dd32d4b1f0a563857140245ddc89b8\transformed\emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+114                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+114-->[androidx.emoji2:emoji2:1.3.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a8dd32d4b1f0a563857140245ddc89b8\transformed\emoji2-1.3.0\AndroidManifest.xml:30:17-75
+115                android:value="androidx.startup" />
+115-->[androidx.emoji2:emoji2:1.3.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a8dd32d4b1f0a563857140245ddc89b8\transformed\emoji2-1.3.0\AndroidManifest.xml:31:17-49
+116            <meta-data
+116-->[androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\shiba\.gradle\caches\9.4.1\transforms\d27e7c5b9d4606ef772066d308c6ff72\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:29:13-31:52
+117                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+117-->[androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\shiba\.gradle\caches\9.4.1\transforms\d27e7c5b9d4606ef772066d308c6ff72\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:30:17-78
+118                android:value="androidx.startup" />
+118-->[androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\shiba\.gradle\caches\9.4.1\transforms\d27e7c5b9d4606ef772066d308c6ff72\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:31:17-49
+119            <meta-data
+119-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a7c45d342f5fc6639d8c0a3ded20e839\transformed\profileinstaller-1.4.0\AndroidManifest.xml:29:13-31:52
+120                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+120-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a7c45d342f5fc6639d8c0a3ded20e839\transformed\profileinstaller-1.4.0\AndroidManifest.xml:30:17-85
+121                android:value="androidx.startup" />
+121-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a7c45d342f5fc6639d8c0a3ded20e839\transformed\profileinstaller-1.4.0\AndroidManifest.xml:31:17-49
+122        </provider>
+123
+124        <service
+124-->[androidx.room:room-runtime-android:2.8.5] C:\Users\shiba\.gradle\caches\9.4.1\transforms\c319db0a588285caf2408b083c8d8872\transformed\room-runtime\AndroidManifest.xml:24:9-28:63
+125            android:name="androidx.room.MultiInstanceInvalidationService"
+125-->[androidx.room:room-runtime-android:2.8.5] C:\Users\shiba\.gradle\caches\9.4.1\transforms\c319db0a588285caf2408b083c8d8872\transformed\room-runtime\AndroidManifest.xml:25:13-74
+126            android:directBootAware="true"
+126-->[androidx.room:room-runtime-android:2.8.5] C:\Users\shiba\.gradle\caches\9.4.1\transforms\c319db0a588285caf2408b083c8d8872\transformed\room-runtime\AndroidManifest.xml:26:13-43
+127            android:exported="false" />
+127-->[androidx.room:room-runtime-android:2.8.5] C:\Users\shiba\.gradle\caches\9.4.1\transforms\c319db0a588285caf2408b083c8d8872\transformed\room-runtime\AndroidManifest.xml:27:13-37
+128
+129        <receiver
+129-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a7c45d342f5fc6639d8c0a3ded20e839\transformed\profileinstaller-1.4.0\AndroidManifest.xml:34:9-52:20
+130            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+130-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a7c45d342f5fc6639d8c0a3ded20e839\transformed\profileinstaller-1.4.0\AndroidManifest.xml:35:13-76
+131            android:directBootAware="false"
+131-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a7c45d342f5fc6639d8c0a3ded20e839\transformed\profileinstaller-1.4.0\AndroidManifest.xml:36:13-44
+132            android:enabled="true"
+132-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a7c45d342f5fc6639d8c0a3ded20e839\transformed\profileinstaller-1.4.0\AndroidManifest.xml:37:13-35
+133            android:exported="true"
+133-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a7c45d342f5fc6639d8c0a3ded20e839\transformed\profileinstaller-1.4.0\AndroidManifest.xml:38:13-36
+134            android:permission="android.permission.DUMP" >
+134-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a7c45d342f5fc6639d8c0a3ded20e839\transformed\profileinstaller-1.4.0\AndroidManifest.xml:39:13-57
+135            <intent-filter>
+135-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a7c45d342f5fc6639d8c0a3ded20e839\transformed\profileinstaller-1.4.0\AndroidManifest.xml:40:13-42:29
+136                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+136-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a7c45d342f5fc6639d8c0a3ded20e839\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:17-91
+136-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a7c45d342f5fc6639d8c0a3ded20e839\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:25-88
+137            </intent-filter>
+138            <intent-filter>
+138-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a7c45d342f5fc6639d8c0a3ded20e839\transformed\profileinstaller-1.4.0\AndroidManifest.xml:43:13-45:29
+139                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+139-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a7c45d342f5fc6639d8c0a3ded20e839\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:17-85
+139-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a7c45d342f5fc6639d8c0a3ded20e839\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:25-82
+140            </intent-filter>
+141            <intent-filter>
+141-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a7c45d342f5fc6639d8c0a3ded20e839\transformed\profileinstaller-1.4.0\AndroidManifest.xml:46:13-48:29
+142                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+142-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a7c45d342f5fc6639d8c0a3ded20e839\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:17-88
+142-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a7c45d342f5fc6639d8c0a3ded20e839\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:25-85
+143            </intent-filter>
+144            <intent-filter>
+144-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a7c45d342f5fc6639d8c0a3ded20e839\transformed\profileinstaller-1.4.0\AndroidManifest.xml:49:13-51:29
+145                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+145-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a7c45d342f5fc6639d8c0a3ded20e839\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:17-95
+145-->[androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\shiba\.gradle\caches\9.4.1\transforms\a7c45d342f5fc6639d8c0a3ded20e839\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:25-92
+146            </intent-filter>
+147        </receiver>
+148    </application>
+149
+150</manifest>
