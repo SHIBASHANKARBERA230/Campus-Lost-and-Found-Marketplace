@@ -2,6 +2,7 @@ package com.example.campuslostfound
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -37,7 +38,6 @@ class RegisterActivity : AppCompatActivity() {
 
         registerButton.setOnClickListener {
 
-            // First prove the click works
             registerButton.text = "PROCESSING..."
 
             val nameText = name.text.toString().trim()
@@ -45,6 +45,7 @@ class RegisterActivity : AppCompatActivity() {
             val phoneText = phone.text.toString().trim()
             val passwordText = password.text.toString()
 
+            // Validate required fields
             if (nameText.isEmpty() ||
                 emailText.isEmpty() ||
                 phoneText.isEmpty() ||
@@ -58,12 +59,41 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            // Validate email format
+            if (!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
+
+                registerButton.text = "REGISTER"
+
+                loginText.text =
+                    "Please enter a valid email address ❌"
+
+                email.requestFocus()
+
+                return@setOnClickListener
+            }
+
+            // Validate phone number
+            if (!phoneText.matches(Regex("^[0-9]{10}$"))) {
+
+                registerButton.text = "REGISTER"
+
+                loginText.text =
+                    "Phone number must contain 10 digits ❌"
+
+                phone.requestFocus()
+
+                return@setOnClickListener
+            }
+
+            // Validate password length
             if (passwordText.length < 6) {
 
                 registerButton.text = "REGISTER"
 
                 loginText.text =
                     "Password must contain at least 6 characters ❌"
+
+                password.requestFocus()
 
                 return@setOnClickListener
             }
@@ -80,14 +110,14 @@ class RegisterActivity : AppCompatActivity() {
                 registerButton.isEnabled = true
                 registerButton.text = "REGISTER"
 
-                // SHOW RESULT DIRECTLY ON SCREEN
+                // Show registration result
                 loginText.text = message
 
                 if (success) {
 
                     registerButton.text = "SUCCESS ✅"
 
-                    // Wait so you can see SUCCESS
+                    // Open Login screen after successful registration
                     registerButton.postDelayed({
 
                         startActivity(
@@ -104,6 +134,7 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
+        // Open Login screen
         loginText.setOnClickListener {
 
             startActivity(
