@@ -2,6 +2,7 @@ package com.example.campuslostfound
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -42,14 +43,44 @@ class LoginActivity : AppCompatActivity() {
             val emailText = email.text.toString().trim()
             val passwordText = password.text.toString()
 
+            // Validate empty fields
             if (emailText.isEmpty() || passwordText.isEmpty()) {
 
                 registerText.text =
                     "Please enter email and password ❌"
 
+                if (emailText.isEmpty()) {
+                    email.requestFocus()
+                } else {
+                    password.requestFocus()
+                }
+
                 return@setOnClickListener
             }
 
+            // Validate email format
+            if (!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
+
+                registerText.text =
+                    "Please enter a valid email address ❌"
+
+                email.requestFocus()
+
+                return@setOnClickListener
+            }
+
+            // Validate password length
+            if (passwordText.length < 6) {
+
+                registerText.text =
+                    "Password must contain at least 6 characters ❌"
+
+                password.requestFocus()
+
+                return@setOnClickListener
+            }
+
+            // Disable button while login is processing
             loginButton.isEnabled = false
             loginButton.text = "LOGGING IN..."
 
@@ -63,7 +94,10 @@ class LoginActivity : AppCompatActivity() {
 
                 if (success && user != null) {
 
-                    // Save session
+                    // =========================
+                    // SAVE SESSION
+                    // =========================
+
                     val preferences =
                         getSharedPreferences(
                             "user_session",
@@ -77,7 +111,10 @@ class LoginActivity : AppCompatActivity() {
                         .putString("userEmail", user.email)
                         .apply()
 
-                    // SHOW SUCCESS ON SCREEN
+                    // =========================
+                    // LOGIN SUCCESS
+                    // =========================
+
                     registerText.text =
                         "Login successful ✅"
 
@@ -99,6 +136,10 @@ class LoginActivity : AppCompatActivity() {
                     }, 1200)
 
                 } else {
+
+                    // =========================
+                    // LOGIN FAILED
+                    // =========================
 
                     registerText.text =
                         "Invalid email or password ❌"
