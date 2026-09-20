@@ -25,25 +25,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
 
-        setContentView(
-            R.layout.activity_main
-        )
-
+        setContentView(R.layout.activity_main)
 
         // =========================================
         // PROFILE
         // =========================================
 
-        val btnProfile =
-            findViewById<Button>(
-                R.id.btnProfile
-            )
+        val btnProfile = findViewById<Button>(R.id.btnProfile)
 
         btnProfile.setOnClickListener {
-
             startActivity(
                 Intent(
                     this,
@@ -52,18 +44,13 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-
         // =========================================
         // LOST ITEMS
         // =========================================
 
-        val btnLostItems =
-            findViewById<Button>(
-                R.id.btnLostItems
-            )
+        val btnLostItems = findViewById<Button>(R.id.btnLostItems)
 
         btnLostItems.setOnClickListener {
-
             startActivity(
                 Intent(
                     this,
@@ -72,18 +59,13 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-
         // =========================================
         // FOUND ITEMS
         // =========================================
 
-        val btnFoundItems =
-            findViewById<Button>(
-                R.id.btnFoundItems
-            )
+        val btnFoundItems = findViewById<Button>(R.id.btnFoundItems)
 
         btnFoundItems.setOnClickListener {
-
             startActivity(
                 Intent(
                     this,
@@ -92,18 +74,13 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-
         // =========================================
         // POST ITEM
         // =========================================
 
-        val btnPostItem =
-            findViewById<Button>(
-                R.id.btnPostItem
-            )
+        val btnPostItem = findViewById<Button>(R.id.btnPostItem)
 
         btnPostItem.setOnClickListener {
-
             startActivity(
                 Intent(
                     this,
@@ -112,18 +89,13 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-
         // =========================================
         // MY ITEMS
         // =========================================
 
-        val btnMyItems =
-            findViewById<Button>(
-                R.id.btnMyItems
-            )
+        val btnMyItems = findViewById<Button>(R.id.btnMyItems)
 
         btnMyItems.setOnClickListener {
-
             startActivity(
                 Intent(
                     this,
@@ -132,18 +104,13 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-
         // =========================================
         // NOTIFICATIONS
         // =========================================
 
-        btnNotifications =
-            findViewById(
-                R.id.btnNotifications
-            )
+        btnNotifications = findViewById(R.id.btnNotifications)
 
         btnNotifications.setOnClickListener {
-
             startActivity(
                 Intent(
                     this,
@@ -152,44 +119,38 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-
         // =========================================
         // SEARCH
         // =========================================
 
-        val etSearch =
-            findViewById<EditText>(
-                R.id.etSearch
-            )
+        val etSearch = findViewById<EditText>(R.id.etSearch)
 
         etSearch.setOnEditorActionListener { _, _, _ ->
 
-            val query =
-                etSearch.text
-                    .toString()
-                    .trim()
+            val query = etSearch.text
+                .toString()
+                .trim()
 
             if (query.isNotEmpty()) {
 
-                val intent =
-                    Intent(
-                        this,
-                        SearchActivity::class.java
-                    )
+                val intent = Intent(
+                    this,
+                    SearchActivity::class.java
+                )
 
                 intent.putExtra(
                     "searchQuery",
                     query
                 )
 
-                startActivity(
-                    intent
-                )
+                startActivity(intent)
+
+                // Clear search field after navigation
+                etSearch.text.clear()
             }
 
             true
         }
-
 
         // =========================================
         // LOAD UNREAD NOTIFICATION COUNT
@@ -198,28 +159,23 @@ class MainActivity : AppCompatActivity() {
         loadUnreadNotificationCount()
     }
 
-
     // =============================================
     // LOAD UNREAD NOTIFICATION COUNT
     // =============================================
 
     private fun loadUnreadNotificationCount() {
 
-        val preferences =
-            getSharedPreferences(
-                "user_session",
-                MODE_PRIVATE
-            )
+        val preferences = getSharedPreferences(
+            "user_session",
+            MODE_PRIVATE
+        )
 
-        val userId =
-            preferences.getInt(
-                "userId",
-                0
-            )
-
+        val userId = preferences.getInt(
+            "userId",
+            0
+        )
 
         // User not logged in
-
         if (userId == 0) {
 
             btnNotifications.text =
@@ -228,18 +184,13 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-
         lifecycleScope.launch {
 
-            val unreadCount =
-                withContext(Dispatchers.IO) {
+            val unreadCount = withContext(Dispatchers.IO) {
 
-                    notificationRepository
-                        .getUnreadCount(
-                            userId
-                        )
-                }
-
+                notificationRepository
+                    .getUnreadCount(userId)
+            }
 
             if (unreadCount > 0) {
 
@@ -254,7 +205,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     // =============================================
     // REFRESH WHEN RETURNING TO MAIN SCREEN
     // =============================================
@@ -264,7 +214,6 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
 
         if (::btnNotifications.isInitialized) {
-
             loadUnreadNotificationCount()
         }
     }
