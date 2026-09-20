@@ -23,5 +23,7 @@ data class ItemEntity(
 
     val date: String,
 
-    val status: String
+    val status: String,
+
+    val imageUri: String? = null
 )

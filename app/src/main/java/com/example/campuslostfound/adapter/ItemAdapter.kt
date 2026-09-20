@@ -1,35 +1,53 @@
 package com.example.campuslostfound.adapter
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.campuslostfound.R
-import com.example.campuslostfound.model.Item
+import com.example.campuslostfound.database.ItemEntity
 
 class ItemAdapter(
-    private val itemList: List<Item>,
-    private val onItemClick: (Item) -> Unit = {}
+    private var items: List<ItemEntity>,
+    private val onItemClick: (ItemEntity) -> Unit
 ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
-    class ItemViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
+    class ItemViewHolder(
+        itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
 
-        val itemName: TextView =
-            itemView.findViewById(R.id.tvItemName)
+        val ivItemImage: ImageView =
+            itemView.findViewById(
+                R.id.ivItemImage
+            )
 
-        val category: TextView =
-            itemView.findViewById(R.id.tvCategory)
+        val tvItemName: TextView =
+            itemView.findViewById(
+                R.id.tvItemName
+            )
 
-        val location: TextView =
-            itemView.findViewById(R.id.tvLocation)
+        val tvCategory: TextView =
+            itemView.findViewById(
+                R.id.tvCategory
+            )
 
-        val date: TextView =
-            itemView.findViewById(R.id.tvDate)
+        val tvLocation: TextView =
+            itemView.findViewById(
+                R.id.tvLocation
+            )
 
-        val status: TextView =
-            itemView.findViewById(R.id.tvStatus)
+        val tvDate: TextView =
+            itemView.findViewById(
+                R.id.tvDate
+            )
+
+        val tvStatus: TextView =
+            itemView.findViewById(
+                R.id.tvStatus
+            )
     }
 
     override fun onCreateViewHolder(
@@ -38,12 +56,13 @@ class ItemAdapter(
     ): ItemViewHolder {
 
         val view =
-            LayoutInflater.from(parent.context)
-                .inflate(
-                    R.layout.item_lost_found,
-                    parent,
-                    false
-                )
+            LayoutInflater.from(
+                parent.context
+            ).inflate(
+                R.layout.item_lost_found,
+                parent,
+                false
+            )
 
         return ItemViewHolder(view)
     }
@@ -54,22 +73,41 @@ class ItemAdapter(
     ) {
 
         val item =
-            itemList[position]
+            items[position]
 
-        holder.itemName.text =
+        holder.tvItemName.text =
             item.name
 
-        holder.category.text =
+        holder.tvCategory.text =
             "Category: ${item.category}"
 
-        holder.location.text =
-            "📍 ${item.location}"
+        holder.tvLocation.text =
+            "Location: ${item.location}"
 
-        holder.date.text =
-            "📅 ${item.date}"
+        holder.tvDate.text =
+            "Date: ${item.date}"
 
-        holder.status.text =
+        holder.tvStatus.text =
             "Status: ${item.status}"
+
+        if (
+            !item.imageUri.isNullOrEmpty()
+        ) {
+
+            holder.ivItemImage
+                .setImageURI(
+                    Uri.parse(
+                        item.imageUri
+                    )
+                )
+
+        } else {
+
+            holder.ivItemImage
+                .setImageResource(
+                    android.R.drawable.ic_menu_gallery
+                )
+        }
 
         holder.itemView.setOnClickListener {
 
@@ -79,6 +117,15 @@ class ItemAdapter(
 
     override fun getItemCount(): Int {
 
-        return itemList.size
+        return items.size
+    }
+
+    fun updateItems(
+        newItems: List<ItemEntity>
+    ) {
+
+        items = newItems
+
+        notifyDataSetChanged()
     }
 }

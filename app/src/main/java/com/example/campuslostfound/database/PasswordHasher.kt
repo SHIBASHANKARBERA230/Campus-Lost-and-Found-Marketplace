@@ -1,7 +1,7 @@
 package com.example.campuslostfound.database
 
+import android.util.Base64
 import java.security.SecureRandom
-import java.util.Base64
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
 
@@ -17,8 +17,10 @@ object PasswordHasher {
 
         SecureRandom().nextBytes(salt)
 
-        return Base64.getEncoder()
-            .encodeToString(salt)
+        return Base64.encodeToString(
+            salt,
+            Base64.NO_WRAP
+        )
     }
 
     fun hashPassword(
@@ -26,8 +28,10 @@ object PasswordHasher {
         saltString: String
     ): String {
 
-        val salt = Base64.getDecoder()
-            .decode(saltString)
+        val salt = Base64.decode(
+            saltString,
+            Base64.NO_WRAP
+        )
 
         val spec = PBEKeySpec(
             password.toCharArray(),
@@ -36,17 +40,18 @@ object PasswordHasher {
             KEY_LENGTH
         )
 
-        val factory =
-            SecretKeyFactory.getInstance(
-                "PBKDF2WithHmacSHA256"
-            )
+        val factory = SecretKeyFactory.getInstance(
+            "PBKDF2WithHmacSHA256"
+        )
 
         val hash = factory
             .generateSecret(spec)
             .encoded
 
-        return Base64.getEncoder()
-            .encodeToString(hash)
+        return Base64.encodeToString(
+            hash,
+            Base64.NO_WRAP
+        )
     }
 
     fun verifyPassword(

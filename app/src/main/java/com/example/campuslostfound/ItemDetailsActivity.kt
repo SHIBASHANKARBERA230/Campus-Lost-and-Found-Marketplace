@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +22,12 @@ import kotlinx.coroutines.withContext
 
 class ItemDetailsActivity : AppCompatActivity() {
 
+    // =============================================
+    // VIEWS
+    // =============================================
+
+    private lateinit var ivItemImage: ImageView
+
     private lateinit var tvItemName: TextView
     private lateinit var tvDescription: TextView
     private lateinit var tvCategory: TextView
@@ -31,38 +38,66 @@ class ItemDetailsActivity : AppCompatActivity() {
 
     private lateinit var btnContactOwner: Button
     private lateinit var btnEdit: Button
+    private lateinit var btnMarkResolved: Button
     private lateinit var btnDelete: Button
 
-    // Item repository
+
+    // =============================================
+    // REPOSITORIES
+    // =============================================
+
     private val itemRepository by lazy {
         ItemRepository(
-            AppDatabase.getDatabase(this).itemDao()
+            AppDatabase
+                .getDatabase(this)
+                .itemDao()
         )
     }
 
-    // User repository
     private val userRepository by lazy {
         UserRepository(
-            AppDatabase.getDatabase(this).userDao()
+            AppDatabase
+                .getDatabase(this)
+                .userDao()
         )
     }
 
+
+    // =============================================
+    // VARIABLES
+    // =============================================
+
     private var itemId: Int = 0
+
     private var itemOwnerId: Int = 0
+
     private var currentUserId: Int = 0
 
-    override fun onCreate(
-        savedInstanceState: Bundle?
-    ) {
+
+    // =============================================
+    // ON CREATE
+    // =============================================
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
         setContentView(
             R.layout.activity_item_details
         )
 
-        // --------------------------------
-        // Find Views
-        // --------------------------------
+
+        // =========================================
+        // IMAGE
+        // =========================================
+
+        ivItemImage =
+            findViewById(R.id.ivItemImage)
+
+
+        // =========================================
+        // TEXT VIEWS
+        // =========================================
 
         tvItemName =
             findViewById(R.id.tvItemName)
@@ -85,27 +120,52 @@ class ItemDetailsActivity : AppCompatActivity() {
         tvStatus =
             findViewById(R.id.tvStatus)
 
+
+        // =========================================
+        // BUTTONS
+        // =========================================
+
         btnContactOwner =
             findViewById(R.id.btnContactOwner)
 
         btnEdit =
             findViewById(R.id.btnEdit)
 
+        btnMarkResolved =
+            findViewById(R.id.btnMarkResolved)
+
         btnDelete =
             findViewById(R.id.btnDelete)
 
-        // --------------------------------
-        // Get Item ID
-        // --------------------------------
 
-        itemId = intent.getIntExtra(
-            "itemId",
-            0
-        )
+        // =========================================
+        // GET ITEM ID
+        // =========================================
 
-        // --------------------------------
-        // Get Current User ID
-        // --------------------------------
+        itemId =
+            intent.getIntExtra(
+                "itemId",
+                0
+            )
+
+
+        if (itemId == 0) {
+
+            Toast.makeText(
+                this,
+                "Invalid item ID ❌",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            finish()
+
+            return
+        }
+
+
+        // =========================================
+        // CURRENT USER
+        // =========================================
 
         val preferences =
             getSharedPreferences(
@@ -119,78 +179,35 @@ class ItemDetailsActivity : AppCompatActivity() {
                 0
             )
 
-        // --------------------------------
-        // Display Initial Item Details
-        // --------------------------------
 
-        tvItemName.text =
-            intent.getStringExtra(
-                "itemName"
-            ) ?: "Unknown Item"
+        // =========================================
+        // LOAD ITEM FROM ROOM
+        // =========================================
 
-        tvDescription.text =
-            "Description: ${
-                intent.getStringExtra(
-                    "description"
-                ) ?: ""
-            }"
-
-        tvCategory.text =
-            "Category: ${
-                intent.getStringExtra(
-                    "category"
-                ) ?: ""
-            }"
-
-        tvType.text =
-            "Type: ${
-                intent.getStringExtra(
-                    "type"
-                ) ?: ""
-            }"
-
-        tvLocation.text =
-            "Location: ${
-                intent.getStringExtra(
-                    "location"
-                ) ?: ""
-            }"
-
-        tvDate.text =
-            "Date: ${
-                intent.getStringExtra(
-                    "date"
-                ) ?: ""
-            }"
-
-        tvStatus.text =
-            "Status: ${
-                intent.getStringExtra(
-                    "status"
-                ) ?: ""
-            }"
-
-        // --------------------------------
-        // Verify Real Owner
-        // --------------------------------
-
-        verifyOwnership()
+        loadItem()
     }
 
-    // =====================================================
-    // VERIFY OWNERSHIP
-    // =====================================================
 
-    private fun verifyOwnership() {
+    // =============================================
+    // LOAD ITEM
+    // =============================================
+
+    private fun loadItem() {
 
         lifecycleScope.launch {
 
             val item: ItemEntity? =
                 withContext(Dispatchers.IO) {
+
                     itemRepository.getItemById(
                         itemId
                     )
                 }
+
+
+            // =====================================
+            // ITEM NOT FOUND
+            // =====================================
 
             if (item == null) {
 
@@ -205,14 +222,61 @@ class ItemDetailsActivity : AppCompatActivity() {
                 return@launch
             }
 
-            // Get ACTUAL owner from database
-            itemOwnerId = item.userId
+
+            // =====================================
+            // LOAD ALL ITEM DATA
+            // =====================================
+
+            tvItemName.text =
+                item.name
+
+
+            tvDescription.text =
+                "Description: ${item.description}"
+
+
+            tvCategory.text =
+                "Category: ${item.category}"
+
+
+            tvType.text =
+                "Type: ${item.type}"
+
+
+            tvLocation.text =
+                "Location: ${item.location}"
+
+
+            tvDate.text =
+                "Date: ${item.date}"
+
+
+            tvStatus.text =
+                "Status: ${item.status}"
+
+
+            // =====================================
+            // LOAD IMAGE
+            // =====================================
+
+            loadItemImage(item)
+
+
+            // =====================================
+            // OWNER
+            // =====================================
+
+            itemOwnerId =
+                item.userId
+
+
+            // =====================================
+            // CHECK OWNERSHIP
+            // =====================================
 
             if (itemOwnerId == currentUserId) {
 
-                // =================================
-                // CURRENT USER OWNS THIS ITEM
-                // =================================
+                // This is user's own item
 
                 btnContactOwner.isEnabled =
                     false
@@ -220,17 +284,34 @@ class ItemDetailsActivity : AppCompatActivity() {
                 btnContactOwner.text =
                     "📞 THIS IS YOUR ITEM"
 
+
                 btnEdit.visibility =
                     View.VISIBLE
+
 
                 btnDelete.visibility =
                     View.VISIBLE
 
+
+                btnMarkResolved.visibility =
+                    View.VISIBLE
+
+
+                // Already resolved
+
+                if (item.status == "RESOLVED") {
+
+                    btnMarkResolved.isEnabled =
+                        false
+
+                    btnMarkResolved.text =
+                        "✅ ITEM RESOLVED"
+                }
+
+
             } else {
 
-                // =================================
-                // SOMEONE ELSE OWNS THIS ITEM
-                // =================================
+                // Someone else's item
 
                 btnContactOwner.isEnabled =
                     true
@@ -238,26 +319,41 @@ class ItemDetailsActivity : AppCompatActivity() {
                 btnContactOwner.text =
                     "📞 CONTACT OWNER"
 
+
                 btnEdit.visibility =
                     View.GONE
 
+
                 btnDelete.visibility =
+                    View.GONE
+
+
+                btnMarkResolved.visibility =
                     View.GONE
             }
 
-            // --------------------------------
-            // Button Listeners
-            // --------------------------------
+
+            // =====================================
+            // BUTTON LISTENERS
+            // =====================================
 
             btnContactOwner.setOnClickListener {
 
                 contactOwner()
             }
 
+
             btnEdit.setOnClickListener {
 
                 showEditDialog()
             }
+
+
+            btnMarkResolved.setOnClickListener {
+
+                markItemAsResolved()
+            }
+
 
             btnDelete.setOnClickListener {
 
@@ -266,9 +362,44 @@ class ItemDetailsActivity : AppCompatActivity() {
         }
     }
 
-    // =====================================================
+
+    // =============================================
+    // LOAD IMAGE
+    // =============================================
+
+    private fun loadItemImage(
+        item: ItemEntity
+    ) {
+
+        if (!item.imageUri.isNullOrEmpty()) {
+
+            try {
+
+                ivItemImage.setImageURI(
+                    Uri.parse(
+                        item.imageUri
+                    )
+                )
+
+            } catch (e: Exception) {
+
+                ivItemImage.setImageResource(
+                    android.R.drawable.ic_menu_gallery
+                )
+            }
+
+        } else {
+
+            ivItemImage.setImageResource(
+                android.R.drawable.ic_menu_gallery
+            )
+        }
+    }
+
+
+    // =============================================
     // CONTACT OWNER
-    // =====================================================
+    // =============================================
 
     private fun contactOwner() {
 
@@ -283,6 +414,7 @@ class ItemDetailsActivity : AppCompatActivity() {
             return
         }
 
+
         if (itemOwnerId == 0) {
 
             Toast.makeText(
@@ -294,14 +426,17 @@ class ItemDetailsActivity : AppCompatActivity() {
             return
         }
 
+
         lifecycleScope.launch {
 
             val owner =
                 withContext(Dispatchers.IO) {
+
                     userRepository.getUserById(
                         itemOwnerId
                     )
                 }
+
 
             if (owner == null) {
 
@@ -314,11 +449,14 @@ class ItemDetailsActivity : AppCompatActivity() {
                 return@launch
             }
 
-            val ownerName: String =
+
+            val ownerName =
                 owner.name
 
-            val phoneNumber: String =
+
+            val phoneNumber =
                 owner.phone
+
 
             if (phoneNumber.isBlank()) {
 
@@ -330,6 +468,7 @@ class ItemDetailsActivity : AppCompatActivity() {
 
                 return@launch
             }
+
 
             AlertDialog.Builder(
                 this@ItemDetailsActivity
@@ -366,9 +505,10 @@ class ItemDetailsActivity : AppCompatActivity() {
         }
     }
 
-    // =====================================================
+
+    // =============================================
     // EDIT ITEM
-    // =====================================================
+    // =============================================
 
     private fun showEditDialog() {
 
@@ -378,104 +518,140 @@ class ItemDetailsActivity : AppCompatActivity() {
                 null
             )
 
+
         val etName =
             dialogView.findViewById<EditText>(
                 R.id.etEditName
             )
+
 
         val etDescription =
             dialogView.findViewById<EditText>(
                 R.id.etEditDescription
             )
 
+
         val etCategory =
             dialogView.findViewById<EditText>(
                 R.id.etEditCategory
             )
+
 
         val etLocation =
             dialogView.findViewById<EditText>(
                 R.id.etEditLocation
             )
 
+
         val etDate =
             dialogView.findViewById<EditText>(
                 R.id.etEditDate
             )
 
-        // Fill current values
 
-        etName.setText(
-            intent.getStringExtra(
-                "itemName"
-            ) ?: ""
-        )
+        // =========================================
+        // LOAD CURRENT VALUES FROM DATABASE
+        // =========================================
 
-        etDescription.setText(
-            intent.getStringExtra(
-                "description"
-            ) ?: ""
-        )
+        lifecycleScope.launch {
 
-        etCategory.setText(
-            intent.getStringExtra(
-                "category"
-            ) ?: ""
-        )
+            val item =
+                withContext(Dispatchers.IO) {
 
-        etLocation.setText(
-            intent.getStringExtra(
-                "location"
-            ) ?: ""
-        )
+                    itemRepository.getItemById(
+                        itemId
+                    )
+                }
 
-        etDate.setText(
-            intent.getStringExtra(
-                "date"
-            ) ?: ""
-        )
 
-        AlertDialog.Builder(this)
-            .setTitle(
-                "✏️ Edit Item"
-            )
-            .setView(dialogView)
-            .setNegativeButton(
-                "CANCEL",
-                null
-            )
-            .setPositiveButton(
-                "UPDATE"
-            ) { _, _ ->
+            if (item == null) {
 
-                updateItem(
-                    name = etName.text
-                        .toString()
-                        .trim(),
+                Toast.makeText(
+                    this@ItemDetailsActivity,
+                    "Item not found ❌",
+                    Toast.LENGTH_SHORT
+                ).show()
 
-                    description = etDescription.text
-                        .toString()
-                        .trim(),
-
-                    category = etCategory.text
-                        .toString()
-                        .trim(),
-
-                    location = etLocation.text
-                        .toString()
-                        .trim(),
-
-                    date = etDate.text
-                        .toString()
-                        .trim()
-                )
+                return@launch
             }
-            .show()
+
+
+            etName.setText(
+                item.name
+            )
+
+
+            etDescription.setText(
+                item.description
+            )
+
+
+            etCategory.setText(
+                item.category
+            )
+
+
+            etLocation.setText(
+                item.location
+            )
+
+
+            etDate.setText(
+                item.date
+            )
+
+
+            AlertDialog.Builder(
+                this@ItemDetailsActivity
+            )
+                .setTitle(
+                    "✏️ Edit Item"
+                )
+                .setView(dialogView)
+                .setNegativeButton(
+                    "CANCEL",
+                    null
+                )
+                .setPositiveButton(
+                    "UPDATE"
+                ) { _, _ ->
+
+                    updateItem(
+
+                        name =
+                            etName.text
+                                .toString()
+                                .trim(),
+
+                        description =
+                            etDescription.text
+                                .toString()
+                                .trim(),
+
+                        category =
+                            etCategory.text
+                                .toString()
+                                .trim(),
+
+                        location =
+                            etLocation.text
+                                .toString()
+                                .trim(),
+
+                        date =
+                            etDate.text
+                                .toString()
+                                .trim()
+                    )
+                }
+                .show()
+        }
     }
 
-    // =====================================================
+
+    // =============================================
     // UPDATE ITEM
-    // =====================================================
+    // =============================================
 
     private fun updateItem(
         name: String,
@@ -496,67 +672,61 @@ class ItemDetailsActivity : AppCompatActivity() {
             return
         }
 
+
         lifecycleScope.launch {
 
             val result =
                 withContext(Dispatchers.IO) {
 
                     itemRepository.updateItemByOwner(
-                        itemId = itemId,
-                        userId = currentUserId,
-                        name = name,
-                        description = description,
-                        category = category,
-                        location = location,
-                        date = date
+
+                        itemId =
+                            itemId,
+
+                        userId =
+                            currentUserId,
+
+                        name =
+                            name,
+
+                        description =
+                            description,
+
+                        category =
+                            category,
+
+                        location =
+                            location,
+
+                        date =
+                            date
                     )
                 }
 
+
             if (result > 0) {
 
-                // Update screen
+                // Update screen immediately
 
                 tvItemName.text =
                     name
 
+
                 tvDescription.text =
                     "Description: $description"
+
 
                 tvCategory.text =
                     "Category: $category"
 
+
                 tvLocation.text =
                     "Location: $location"
+
 
                 tvDate.text =
                     "Date: $date"
 
-                // Update Intent data
-
-                intent.putExtra(
-                    "itemName",
-                    name
-                )
-
-                intent.putExtra(
-                    "description",
-                    description
-                )
-
-                intent.putExtra(
-                    "category",
-                    category
-                )
-
-                intent.putExtra(
-                    "location",
-                    location
-                )
-
-                intent.putExtra(
-                    "date",
-                    date
-                )
 
                 Toast.makeText(
                     this@ItemDetailsActivity,
@@ -575,9 +745,85 @@ class ItemDetailsActivity : AppCompatActivity() {
         }
     }
 
-    // =====================================================
-    // DELETE CONFIRMATION
-    // =====================================================
+
+    // =============================================
+    // MARK ITEM AS RESOLVED
+    // =============================================
+
+    private fun markItemAsResolved() {
+
+        AlertDialog.Builder(this)
+            .setTitle(
+                "✅ Mark as Resolved"
+            )
+            .setMessage(
+                "Are you sure you want to mark this item as resolved?"
+            )
+            .setNegativeButton(
+                "CANCEL",
+                null
+            )
+            .setPositiveButton(
+                "RESOLVE"
+            ) { _, _ ->
+
+                lifecycleScope.launch {
+
+                    val result =
+                        withContext(Dispatchers.IO) {
+
+                            itemRepository
+                                .updateItemStatusByOwner(
+
+                                    itemId =
+                                        itemId,
+
+                                    userId =
+                                        currentUserId,
+
+                                    status =
+                                        "RESOLVED"
+                                )
+                        }
+
+
+                    if (result > 0) {
+
+                        tvStatus.text =
+                            "Status: RESOLVED"
+
+
+                        btnMarkResolved.isEnabled =
+                            false
+
+
+                        btnMarkResolved.text =
+                            "✅ ITEM RESOLVED"
+
+
+                        Toast.makeText(
+                            this@ItemDetailsActivity,
+                            "Item marked as resolved ✅",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                    } else {
+
+                        Toast.makeText(
+                            this@ItemDetailsActivity,
+                            "Failed to update status ❌",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+            .show()
+    }
+
+
+    // =============================================
+    // DELETE ITEM
+    // =============================================
 
     private fun confirmDelete() {
 
@@ -601,9 +847,10 @@ class ItemDetailsActivity : AppCompatActivity() {
             .show()
     }
 
-    // =====================================================
+
+    // =============================================
     // DELETE ITEM
-    // =====================================================
+    // =============================================
 
     private fun deleteItem() {
 
@@ -613,10 +860,15 @@ class ItemDetailsActivity : AppCompatActivity() {
                 withContext(Dispatchers.IO) {
 
                     itemRepository.deleteItemByOwner(
-                        itemId = itemId,
-                        userId = currentUserId
+
+                        itemId =
+                            itemId,
+
+                        userId =
+                            currentUserId
                     )
                 }
+
 
             if (result > 0) {
 

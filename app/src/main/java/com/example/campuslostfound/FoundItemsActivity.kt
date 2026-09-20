@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.campuslostfound.adapter.ItemAdapter
 import com.example.campuslostfound.database.AppDatabase
+import com.example.campuslostfound.database.ItemEntity
 import com.example.campuslostfound.database.ItemRepository
-import com.example.campuslostfound.model.Item
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -107,7 +107,7 @@ class FoundItemsActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
 
-            val databaseItems =
+            val databaseItems: List<ItemEntity> =
                 withContext(Dispatchers.IO) {
 
                     if (category == "All Categories") {
@@ -123,22 +123,7 @@ class FoundItemsActivity : AppCompatActivity() {
                     }
                 }
 
-            val items = databaseItems.map { entity ->
-
-                Item(
-                    id = entity.id,
-                    userId = entity.userId,
-                    name = entity.name,
-                    description = entity.description,
-                    category = entity.category,
-                    type = entity.type,
-                    location = entity.location,
-                    date = entity.date,
-                    status = entity.status
-                )
-            }
-
-            if (items.isEmpty()) {
+            if (databaseItems.isEmpty()) {
 
                 tvResult.text =
                     if (category == "All Categories") {
@@ -148,15 +133,17 @@ class FoundItemsActivity : AppCompatActivity() {
                     }
 
                 recyclerView.adapter =
-                    ItemAdapter(emptyList())
+                    ItemAdapter(emptyList()) {
+                        // No item to open
+                    }
 
             } else {
 
                 tvResult.text =
-                    "${items.size} found item(s) available"
+                    "${databaseItems.size} found item(s) available"
 
                 recyclerView.adapter =
-                    ItemAdapter(items) { item ->
+                    ItemAdapter(databaseItems) { item ->
 
                         val intent =
                             Intent(
@@ -207,6 +194,11 @@ class FoundItemsActivity : AppCompatActivity() {
                         intent.putExtra(
                             "status",
                             item.status
+                        )
+
+                        intent.putExtra(
+                            "imageUri",
+                            item.imageUri
                         )
 
                         startActivity(intent)

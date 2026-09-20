@@ -2,6 +2,8 @@ package com.example.campuslostfound
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -14,8 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.campuslostfound.adapter.ItemAdapter
 import com.example.campuslostfound.database.AppDatabase
+import com.example.campuslostfound.database.ItemEntity
 import com.example.campuslostfound.database.ItemRepository
-import com.example.campuslostfound.model.Item
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -59,7 +61,6 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_search)
 
         searchBox = findViewById(R.id.etSearchItems)
@@ -150,7 +151,7 @@ class SearchActivity : AppCompatActivity() {
         searchBox.requestFocus()
 
         searchBox.addTextChangedListener(
-            object : android.text.TextWatcher {
+            object : TextWatcher {
 
                 override fun beforeTextChanged(
                     s: CharSequence?,
@@ -177,7 +178,7 @@ class SearchActivity : AppCompatActivity() {
                 }
 
                 override fun afterTextChanged(
-                    s: android.text.Editable?
+                    s: Editable?
                 ) {
                 }
             }
@@ -186,8 +187,9 @@ class SearchActivity : AppCompatActivity() {
 
     private fun performSearch() {
 
-        val query =
-            searchBox.text.toString().trim()
+        val query = searchBox.text
+            .toString()
+            .trim()
 
         val selectedType =
             spinnerType.selectedItem?.toString() ?: "All"
@@ -196,9 +198,23 @@ class SearchActivity : AppCompatActivity() {
             spinnerCategory.selectedItem?.toString()
                 ?: "All Categories"
 
+        // If search box is empty, don't show results
+        if (query.isEmpty()) {
+
+            recyclerView.adapter =
+                ItemAdapter(emptyList()) {
+                    // No item
+                }
+
+            tvResult.text =
+                "Enter an item name, category or location"
+
+            return
+        }
+
         lifecycleScope.launch {
 
-            val databaseItems =
+            val databaseItems: List<ItemEntity> =
                 withContext(Dispatchers.IO) {
 
                     repository.searchItems(query)
@@ -206,12 +222,16 @@ class SearchActivity : AppCompatActivity() {
 
             var filteredItems = databaseItems
 
-            // Filter by type
+            // Filter by LOST / FOUND
             if (selectedType != "All") {
 
                 filteredItems =
-                    filteredItems.filter {
-                        it.type == selectedType
+                    filteredItems.filter { item ->
+
+                        item.type.equals(
+                            selectedType,
+                            ignoreCase = true
+                        )
                     }
             }
 
@@ -219,109 +239,92 @@ class SearchActivity : AppCompatActivity() {
             if (selectedCategory != "All Categories") {
 
                 filteredItems =
-                    filteredItems.filter {
-                        it.category == selectedCategory
+                    filteredItems.filter { item ->
+
+                        item.category.equals(
+                            selectedCategory,
+                            ignoreCase = true
+                        )
                     }
             }
 
-            val items =
-                filteredItems.map { entity ->
-
-                    Item(
-                        id = entity.id,
-                        userId = entity.userId,
-                        name = entity.name,
-                        description = entity.description,
-                        category = entity.category,
-                        type = entity.type,
-                        location = entity.location,
-                        date = entity.date,
-                        status = entity.status
-                    )
-                }
-
-            if (query.isEmpty()) {
+            if (filteredItems.isEmpty()) {
 
                 recyclerView.adapter =
-                    ItemAdapter(emptyList())
-
-                tvResult.text =
-                    "Enter an item name, category or location"
-
-                return@launch
-            }
-
-            if (items.isEmpty()) {
-
-                recyclerView.adapter =
-                    ItemAdapter(emptyList())
+                    ItemAdapter(emptyList()) {
+                        // No item
+                    }
 
                 tvResult.text =
                     "No matching items found 📭"
 
-            } else {
-
-                tvResult.text =
-                    "${items.size} item(s) found 🔎"
-
-                recyclerView.adapter =
-                    ItemAdapter(items) { item ->
-
-                        val intent =
-                            Intent(
-                                this@SearchActivity,
-                                ItemDetailsActivity::class.java
-                            )
-
-                        intent.putExtra(
-                            "itemId",
-                            item.id
-                        )
-
-                        intent.putExtra(
-                            "userId",
-                            item.userId
-                        )
-
-                        intent.putExtra(
-                            "itemName",
-                            item.name
-                        )
-
-                        intent.putExtra(
-                            "description",
-                            item.description
-                        )
-
-                        intent.putExtra(
-                            "category",
-                            item.category
-                        )
-
-                        intent.putExtra(
-                            "type",
-                            item.type
-                        )
-
-                        intent.putExtra(
-                            "location",
-                            item.location
-                        )
-
-                        intent.putExtra(
-                            "date",
-                            item.date
-                        )
-
-                        intent.putExtra(
-                            "status",
-                            item.status
-                        )
-
-                        startActivity(intent)
-                    }
+                return@launch
             }
+
+            tvResult.text =
+                "${filteredItems.size} item(s) found 🔎"
+
+            recyclerView.adapter =
+                ItemAdapter(filteredItems) { item ->
+
+                    openItemDetails(item)
+                }
         }
+    }
+
+    private fun openItemDetails(item: ItemEntity) {
+
+        val intent = Intent(
+            this@SearchActivity,
+            ItemDetailsActivity::class.java
+        )
+
+        intent.putExtra(
+            "itemId",
+            item.id
+        )
+
+        intent.putExtra(
+            "userId",
+            item.userId
+        )
+
+        intent.putExtra(
+            "itemName",
+            item.name
+        )
+
+        intent.putExtra(
+            "description",
+            item.description
+        )
+
+        intent.putExtra(
+            "category",
+            item.category
+        )
+
+        intent.putExtra(
+            "type",
+            item.type
+        )
+
+        intent.putExtra(
+            "location",
+            item.location
+        )
+
+        intent.putExtra(
+            "date",
+            item.date
+        )
+
+        intent.putExtra(
+            "status",
+            item.status
+        )
+
+        startActivity(intent)
     }
 
     override fun onDestroy() {

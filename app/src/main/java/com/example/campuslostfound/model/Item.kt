@@ -1,6 +1,7 @@
 package com.example.campuslostfound.model
 
 data class Item(
+
     val id: Int = 0,
 
     val userId: Int = 0,
@@ -17,5 +18,7 @@ data class Item(
 
     val date: String,
 
-    val status: String = "LOST"
+    val status: String = "LOST",
+
+    val imageUri: String? = null
 )

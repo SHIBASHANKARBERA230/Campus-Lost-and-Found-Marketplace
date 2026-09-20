@@ -8,15 +8,16 @@ import androidx.room.Update
 @Dao
 interface ItemDao {
 
-    // Insert item
     @Insert
-    suspend fun insertItem(item: ItemEntity)
+    suspend fun insertItem(
+        item: ItemEntity
+    ): Long
 
-    // Update item
     @Update
-    suspend fun updateItem(item: ItemEntity): Int
+    suspend fun updateItem(
+        item: ItemEntity
+    ): Int
 
-    // Get item by ID
     @Query("""
         SELECT * FROM items
         WHERE id = :itemId
@@ -26,14 +27,12 @@ interface ItemDao {
         itemId: Int
     ): ItemEntity?
 
-    // Get all items
     @Query("""
         SELECT * FROM items
         ORDER BY id DESC
     """)
     suspend fun getAllItems(): List<ItemEntity>
 
-    // Get LOST items
     @Query("""
         SELECT * FROM items
         WHERE type = 'LOST'
@@ -41,7 +40,6 @@ interface ItemDao {
     """)
     suspend fun getLostItems(): List<ItemEntity>
 
-    // Get FOUND items
     @Query("""
         SELECT * FROM items
         WHERE type = 'FOUND'
@@ -49,7 +47,6 @@ interface ItemDao {
     """)
     suspend fun getFoundItems(): List<ItemEntity>
 
-    // Search items
     @Query("""
         SELECT * FROM items
         WHERE name LIKE '%' || :query || '%'
@@ -62,7 +59,6 @@ interface ItemDao {
         query: String
     ): List<ItemEntity>
 
-    // Get items by category
     @Query("""
         SELECT * FROM items
         WHERE category = :category
@@ -72,7 +68,6 @@ interface ItemDao {
         category: String
     ): List<ItemEntity>
 
-    // Get items by type and category
     @Query("""
         SELECT * FROM items
         WHERE type = :type
@@ -84,7 +79,6 @@ interface ItemDao {
         category: String
     ): List<ItemEntity>
 
-    // Get item belonging to a particular owner
     @Query("""
         SELECT * FROM items
         WHERE id = :itemId
@@ -96,7 +90,6 @@ interface ItemDao {
         userId: Int
     ): ItemEntity?
 
-    // Delete only owner's item
     @Query("""
         DELETE FROM items
         WHERE id = :itemId
@@ -107,7 +100,6 @@ interface ItemDao {
         userId: Int
     ): Int
 
-    // Update only owner's item
     @Query("""
         UPDATE items
         SET name = :name,
@@ -128,13 +120,43 @@ interface ItemDao {
         date: String
     ): Int
 
-    // Get current user's items
+    @Query("""
+        UPDATE items
+        SET status = :status
+        WHERE id = :itemId
+        AND userId = :userId
+    """)
+    suspend fun updateItemStatusByOwner(
+        itemId: Int,
+        userId: Int,
+        status: String
+    ): Int
+
     @Query("""
         SELECT * FROM items
         WHERE userId = :userId
         ORDER BY id DESC
     """)
     suspend fun getItemsByUser(
+        userId: Int
+    ): List<ItemEntity>
+
+    // Find possible LOST/FOUND matches
+    @Query("""
+        SELECT * FROM items
+        WHERE type = :oppositeType
+        AND category = :category
+        AND userId != :userId
+        AND (
+            name LIKE '%' || :name || '%'
+            OR :name LIKE '%' || name || '%'
+        )
+        ORDER BY id DESC
+    """)
+    suspend fun findMatchingItems(
+        oppositeType: String,
+        category: String,
+        name: String,
         userId: Int
     ): List<ItemEntity>
 }

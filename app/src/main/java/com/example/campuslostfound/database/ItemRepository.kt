@@ -4,57 +4,48 @@ class ItemRepository(
     private val itemDao: ItemDao
 ) {
 
-    // Insert item
     suspend fun insertItem(
         item: ItemEntity
-    ) {
-        itemDao.insertItem(item)
+    ): Long {
+        return itemDao.insertItem(item)
     }
 
-    // Update item
     suspend fun updateItem(
         item: ItemEntity
     ): Int {
         return itemDao.updateItem(item)
     }
 
-    // Get item by ID
     suspend fun getItemById(
         itemId: Int
     ): ItemEntity? {
         return itemDao.getItemById(itemId)
     }
 
-    // Get all items
     suspend fun getAllItems(): List<ItemEntity> {
         return itemDao.getAllItems()
     }
 
-    // Get LOST items
     suspend fun getLostItems(): List<ItemEntity> {
         return itemDao.getLostItems()
     }
 
-    // Get FOUND items
     suspend fun getFoundItems(): List<ItemEntity> {
         return itemDao.getFoundItems()
     }
 
-    // Search items
     suspend fun searchItems(
         query: String
     ): List<ItemEntity> {
         return itemDao.searchItems(query)
     }
 
-    // Get items by category
     suspend fun getItemsByCategory(
         category: String
     ): List<ItemEntity> {
         return itemDao.getItemsByCategory(category)
     }
 
-    // Get items by type and category
     suspend fun getItemsByTypeAndCategory(
         type: String,
         category: String
@@ -65,7 +56,6 @@ class ItemRepository(
         )
     }
 
-    // Get owner's item
     suspend fun getItemByOwner(
         itemId: Int,
         userId: Int
@@ -76,7 +66,16 @@ class ItemRepository(
         )
     }
 
-    // Update owner's item
+    suspend fun deleteItemByOwner(
+        itemId: Int,
+        userId: Int
+    ): Int {
+        return itemDao.deleteItemByOwner(
+            itemId,
+            userId
+        )
+    }
+
     suspend fun updateItemByOwner(
         itemId: Int,
         userId: Int,
@@ -88,35 +87,47 @@ class ItemRepository(
     ): Int {
 
         return itemDao.updateItemByOwner(
-            itemId = itemId,
-            userId = userId,
-            name = name,
-            description = description,
-            category = category,
-            location = location,
-            date = date
+            itemId,
+            userId,
+            name,
+            description,
+            category,
+            location,
+            date
         )
     }
 
-    // Delete owner's item
-    suspend fun deleteItemByOwner(
+    suspend fun updateItemStatusByOwner(
         itemId: Int,
-        userId: Int
+        userId: Int,
+        status: String
     ): Int {
 
-        return itemDao.deleteItemByOwner(
-            itemId,
-            userId
+        return itemDao.updateItemStatusByOwner(
+            itemId = itemId,
+            userId = userId,
+            status = status
         )
     }
 
-    // Get current user's items
     suspend fun getItemsByUser(
         userId: Int
     ): List<ItemEntity> {
+        return itemDao.getItemsByUser(userId)
+    }
 
-        return itemDao.getItemsByUser(
-            userId
+    suspend fun findMatchingItems(
+        oppositeType: String,
+        category: String,
+        name: String,
+        userId: Int
+    ): List<ItemEntity> {
+
+        return itemDao.findMatchingItems(
+            oppositeType = oppositeType,
+            category = category,
+            name = name,
+            userId = userId
         )
     }
 }
