@@ -4,14 +4,80 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.example.campuslostfound.database.AppDatabase
+import com.example.campuslostfound.database.UserRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ProfileActivity : AppCompatActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    private lateinit var tvProfileName: TextView
+    private lateinit var tvProfileEmail: TextView
+    private lateinit var tvProfilePhone: TextView
+
+    private val userRepository by lazy {
+        UserRepository(
+            AppDatabase
+                .getDatabase(this)
+                .userDao()
+        )
+    }
+
+    override fun onCreate(
+        savedInstanceState: Bundle?
+    ) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_profile)
+        setContentView(
+            R.layout.activity_profile
+        )
+
+        tvProfileName =
+            findViewById(
+                R.id.tvProfileName
+            )
+
+        tvProfileEmail =
+            findViewById(
+                R.id.tvProfileEmail
+            )
+
+        tvProfilePhone =
+            findViewById(
+                R.id.tvProfilePhone
+            )
+
+        findViewById<Button>(
+            R.id.btnEditProfile
+        ).setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    EditProfileActivity::class.java
+                )
+            )
+        }
+
+        findViewById<Button>(
+            R.id.btnLogout
+        ).setOnClickListener {
+
+            logout()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        loadProfile()
+    }
+
+    private fun loadProfile() {
 
         val preferences =
             getSharedPreferences(
@@ -19,42 +85,74 @@ class ProfileActivity : AppCompatActivity() {
                 MODE_PRIVATE
             )
 
-        val userName =
-            preferences.getString(
-                "userName",
-                "User"
+        val userId =
+            preferences.getInt(
+                "userId",
+                -1
             )
 
-        val userEmail =
-            preferences.getString(
-                "userEmail",
-                ""
-            )
+        if (userId == -1) {
 
-        findViewById<TextView>(
-            R.id.tvProfileName
-        ).text = userName
+            Toast.makeText(
+                this,
+                "Please login again",
+                Toast.LENGTH_SHORT
+            ).show()
 
-        findViewById<TextView>(
-            R.id.tvProfileEmail
-        ).text = userEmail
-
-        findViewById<Button>(
-            R.id.btnLogout
-        ).setOnClickListener {
-
-            preferences.edit()
-                .clear()
-                .apply()
-
-            startActivity(
-                Intent(
-                    this,
-                    LoginActivity::class.java
-                )
-            )
-
-            finishAffinity()
+            finish()
+            return
         }
+
+        lifecycleScope.launch {
+
+            val user =
+                withContext(Dispatchers.IO) {
+                    userRepository.getUserById(
+                        userId
+                    )
+                }
+
+            if (user == null) {
+
+                Toast.makeText(
+                    this@ProfileActivity,
+                    "User not found",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                return@launch
+            }
+
+            tvProfileName.text =
+                user.name
+
+            tvProfileEmail.text =
+                user.email
+
+            tvProfilePhone.text =
+                user.phone
+        }
+    }
+
+    private fun logout() {
+
+        val preferences =
+            getSharedPreferences(
+                "user_session",
+                MODE_PRIVATE
+            )
+
+        preferences.edit()
+            .clear()
+            .apply()
+
+        startActivity(
+            Intent(
+                this,
+                LoginActivity::class.java
+            )
+        )
+
+        finishAffinity()
     }
 }

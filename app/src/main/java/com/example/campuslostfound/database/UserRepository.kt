@@ -22,10 +22,21 @@ class UserRepository(
         return userDao.emailExists(email) > 0
     }
 
-    // Get user/owner by ID
     suspend fun getUserById(
         userId: Int
     ): UserEntity? {
         return userDao.getUserById(userId)
+    }
+
+    suspend fun updateUserProfile(
+        userId: Int,
+        name: String,
+        phone: String
+    ) {
+        userDao.updateUserProfile(
+            userId,
+            name,
+            phone
+        )
     }
 }

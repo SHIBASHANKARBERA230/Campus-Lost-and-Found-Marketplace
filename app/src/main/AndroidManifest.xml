@@ -125,6 +125,11 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
+        <activity
+            android:name=".EditProfileActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
 
         <!-- ===================================== -->
         <!-- MY ITEMS -->
@@ -154,6 +159,11 @@
             android:name=".ClaimItemActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
+
+        <!-- ===================================== -->
+        <!-- CLAIM REQUESTS -->
+        <!-- ===================================== -->
 
         <activity
             android:name=".ClaimRequestsActivity"

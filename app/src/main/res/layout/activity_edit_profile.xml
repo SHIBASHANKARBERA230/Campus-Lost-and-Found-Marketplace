@@ -10,47 +10,48 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="👤 My Profile"
+        android:text="✏️ Edit Profile"
         android:textSize="28sp"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/tvProfileName"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="Name"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tvProfileEmail"
+    <EditText
+        android:id="@+id/etEditProfileName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="Email"
-        android:textSize="16sp" />
+        android:hint="Enter your name"
+        android:inputType="textPersonName"
+        android:padding="12dp" />
 
     <TextView
-        android:id="@+id/tvProfilePhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Phone"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/etEditProfilePhone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="Phone"
-        android:textSize="16sp" />
+        android:hint="Enter 10 digit phone number"
+        android:inputType="phone"
+        android:maxLength="10"
+        android:padding="12dp" />
 
     <Button
-        android:id="@+id/btnEditProfile"
+        android:id="@+id/btnSaveProfile"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginTop="32dp"
-        android:text="✏️ EDIT PROFILE" />
-
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginTop="16dp"
-        android:text="🚪 LOGOUT" />
+        android:text="💾 SAVE PROFILE" />
 
 </LinearLayout>

@@ -26,11 +26,24 @@ interface UserDao {
         email: String
     ): Int
 
-    // Get owner information using user ID
     @Query(
         "SELECT * FROM users WHERE id = :userId LIMIT 1"
     )
     suspend fun getUserById(
         userId: Int
     ): UserEntity?
+
+    @Query(
+        """
+        UPDATE users
+        SET name = :name,
+            phone = :phone
+        WHERE id = :userId
+        """
+    )
+    suspend fun updateUserProfile(
+        userId: Int,
+        name: String,
+        phone: String
+    )
 }
