@@ -4,14 +4,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+
 import com.example.campuslostfound.adapter.NotificationAdapter
 import com.example.campuslostfound.database.AppDatabase
 import com.example.campuslostfound.database.NotificationEntity
 import com.example.campuslostfound.database.NotificationRepository
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -19,33 +22,49 @@ import kotlinx.coroutines.withContext
 class NotificationActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
+
     private lateinit var tvResult: TextView
+
     private lateinit var btnMarkAllRead: Button
 
     private val repository by lazy {
+
         NotificationRepository(
-            AppDatabase.getDatabase(this).notificationDao()
+            AppDatabase
+                .getDatabase(this)
+                .notificationDao()
         )
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(
+        savedInstanceState: Bundle?
+    ) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_notifications)
+        setContentView(
+            R.layout.activity_notifications
+        )
 
         recyclerView =
-            findViewById(R.id.recyclerNotifications)
+            findViewById(
+                R.id.recyclerNotifications
+            )
 
         tvResult =
-            findViewById(R.id.tvNotificationResult)
+            findViewById(
+                R.id.tvNotificationResult
+            )
 
         btnMarkAllRead =
-            findViewById(R.id.btnMarkAllRead)
+            findViewById(
+                R.id.btnMarkAllRead
+            )
 
         recyclerView.layoutManager =
             LinearLayoutManager(this)
 
         btnMarkAllRead.setOnClickListener {
+
             markAllAsRead()
         }
 
@@ -54,15 +73,17 @@ class NotificationActivity : AppCompatActivity() {
 
     private fun loadNotifications() {
 
-        val preferences = getSharedPreferences(
-            "user_session",
-            MODE_PRIVATE
-        )
+        val preferences =
+            getSharedPreferences(
+                "user_session",
+                MODE_PRIVATE
+            )
 
-        val userId = preferences.getInt(
-            "userId",
-            0
-        )
+        val userId =
+            preferences.getInt(
+                "userId",
+                0
+            )
 
         if (userId == 0) {
 
@@ -74,12 +95,19 @@ class NotificationActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
 
-            val notifications: List<NotificationEntity> =
+            val notifications:
+                    List<NotificationEntity> =
+
                 withContext(Dispatchers.IO) {
-                    repository.getNotifications(userId)
+
+                    repository.getNotifications(
+                        userId
+                    )
                 }
 
-            displayNotifications(notifications)
+            displayNotifications(
+                notifications
+            )
         }
     }
 
@@ -110,12 +138,16 @@ class NotificationActivity : AppCompatActivity() {
                 notifications
             ) { notification ->
 
-                // Mark notification as read
+                /*
+                 * Mark notification as read.
+                 */
                 markNotificationAsRead(
                     notification.id
                 )
 
-                // Open matched item
+                /*
+                 * Open the matched item.
+                 */
                 val intent = Intent(
                     this,
                     ItemDetailsActivity::class.java
@@ -149,15 +181,17 @@ class NotificationActivity : AppCompatActivity() {
 
     private fun markAllAsRead() {
 
-        val preferences = getSharedPreferences(
-            "user_session",
-            MODE_PRIVATE
-        )
+        val preferences =
+            getSharedPreferences(
+                "user_session",
+                MODE_PRIVATE
+            )
 
-        val userId = preferences.getInt(
-            "userId",
-            0
-        )
+        val userId =
+            preferences.getInt(
+                "userId",
+                0
+            )
 
         if (userId == 0) {
             return
@@ -181,6 +215,7 @@ class NotificationActivity : AppCompatActivity() {
         super.onResume()
 
         if (::recyclerView.isInitialized) {
+
             loadNotifications()
         }
     }

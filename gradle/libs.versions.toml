@@ -13,18 +13,36 @@ ksp = "2.3.10"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
+
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+
+[libraries.androidx-recyclerview]
+module = "androidx.recyclerview:recyclerview"
+version = "1.4.0"
+
+[libraries.lifecycle-viewmodel-ktx]
+module = "androidx.lifecycle:lifecycle-viewmodel-ktx"
+version = "2.9.4"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

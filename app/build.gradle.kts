@@ -12,8 +12,10 @@ android {
 
     defaultConfig {
         applicationId = "com.example.campuslostfound"
+
         minSdk = 24
         targetSdk = 36
+
         versionCode = 1
         versionName = "1.0"
 
@@ -37,24 +39,30 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.activity.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.constraintlayout)
+    // AndroidX
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.constraintlayout)
+
+    // Material
     implementation(libs.material)
 
-    implementation("androidx.recyclerview:recyclerview:1.4.0")
+    // RecyclerView
+    implementation(libs.androidx.recyclerview)
 
-    // Room
+    // Room Database
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
-    // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4")
+    // Lifecycle
+    implementation(libs.lifecycle.viewmodel.ktx)
 
+    // Unit testing
     testImplementation(libs.junit)
 
-    androidTestImplementation(libs.androidx.espresso.core)
+    // Android testing
     androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }

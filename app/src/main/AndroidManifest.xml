@@ -14,82 +14,149 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CampusLostFound">
 
-        <!-- Splash Screen -->
+        <!-- ===================================== -->
+        <!-- SPLASH SCREEN -->
+        <!-- ===================================== -->
+
         <activity
             android:name=".SplashActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
 
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+
+                <action
+                    android:name="android.intent.action.MAIN" />
+
+                <category
+                    android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
 
         </activity>
 
-        <!-- Login -->
+
+        <!-- ===================================== -->
+        <!-- LOGIN -->
+        <!-- ===================================== -->
+
         <activity
             android:name=".LoginActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- Register -->
+
+        <!-- ===================================== -->
+        <!-- REGISTER -->
+        <!-- ===================================== -->
+
         <activity
             android:name=".RegisterActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- Main -->
+
+        <!-- ===================================== -->
+        <!-- MAIN -->
+        <!-- ===================================== -->
+
         <activity
             android:name=".MainActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- Lost Items -->
+
+        <!-- ===================================== -->
+        <!-- LOST ITEMS -->
+        <!-- ===================================== -->
+
         <activity
             android:name=".LostItemsActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- Found Items -->
+
+        <!-- ===================================== -->
+        <!-- FOUND ITEMS -->
+        <!-- ===================================== -->
+
         <activity
             android:name=".FoundItemsActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- Item Details -->
+
+        <!-- ===================================== -->
+        <!-- ITEM DETAILS -->
+        <!-- ===================================== -->
+
         <activity
             android:name=".ItemDetailsActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- Post Item -->
+
+        <!-- ===================================== -->
+        <!-- POST ITEM -->
+        <!-- ===================================== -->
+
         <activity
             android:name=".PostItemActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- Search Items -->
+
+        <!-- ===================================== -->
+        <!-- SEARCH -->
+        <!-- ===================================== -->
+
         <activity
             android:name=".SearchActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- Profile -->
+
+        <!-- ===================================== -->
+        <!-- PROFILE -->
+        <!-- ===================================== -->
+
         <activity
             android:name=".ProfileActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- My Items -->
+
+        <!-- ===================================== -->
+        <!-- MY ITEMS -->
+        <!-- ===================================== -->
+
         <activity
             android:name=".MyItemsActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- Notifications -->
+
+        <!-- ===================================== -->
+        <!-- NOTIFICATIONS -->
+        <!-- ===================================== -->
+
         <activity
             android:name=".NotificationActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+
+        <!-- ===================================== -->
+        <!-- CLAIM ITEM -->
+        <!-- ===================================== -->
+
+        <activity
+            android:name=".ClaimItemActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ClaimRequestsActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 

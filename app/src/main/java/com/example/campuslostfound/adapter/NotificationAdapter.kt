@@ -5,15 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+
 import androidx.recyclerview.widget.RecyclerView
+
 import com.example.campuslostfound.R
 import com.example.campuslostfound.database.NotificationEntity
 
 class NotificationAdapter(
-    private val notifications: List<NotificationEntity>,
+    private val notifications:
+    List<NotificationEntity>,
+
     private val onNotificationClick:
         (NotificationEntity) -> Unit
-) : RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>() {
+
+) : RecyclerView.Adapter<
+        NotificationAdapter.NotificationViewHolder>() {
 
     class NotificationViewHolder(
         itemView: View
@@ -40,13 +46,14 @@ class NotificationAdapter(
         viewType: Int
     ): NotificationViewHolder {
 
-        val view = LayoutInflater
-            .from(parent.context)
-            .inflate(
-                R.layout.item_notification,
-                parent,
-                false
-            )
+        val view =
+            LayoutInflater
+                .from(parent.context)
+                .inflate(
+                    R.layout.item_notification,
+                    parent,
+                    false
+                )
 
         return NotificationViewHolder(view)
     }
@@ -96,6 +103,7 @@ class NotificationAdapter(
     }
 
     override fun getItemCount(): Int {
+
         return notifications.size
     }
 }

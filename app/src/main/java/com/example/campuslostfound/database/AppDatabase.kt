@@ -11,9 +11,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase
     entities = [
         ItemEntity::class,
         UserEntity::class,
-        NotificationEntity::class
+        NotificationEntity::class,
+        ClaimEntity::class
     ],
-    version = 5,
+    version = 6,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -24,12 +25,19 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun notificationDao(): NotificationDao
 
+    abstract fun claimDao(): ClaimDao
+
     companion object {
 
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
+
+        // =============================================
         // Migration 1 → 2
+        // Adds users table
+        // =============================================
+
         private val MIGRATION_1_2 =
             object : Migration(1, 2) {
 
@@ -52,7 +60,12 @@ abstract class AppDatabase : RoomDatabase() {
                 }
             }
 
+
+        // =============================================
         // Migration 2 → 3
+        // Adds userId to items
+        // =============================================
+
         private val MIGRATION_2_3 =
             object : Migration(2, 3) {
 
@@ -69,8 +82,12 @@ abstract class AppDatabase : RoomDatabase() {
                 }
             }
 
+
+        // =============================================
         // Migration 3 → 4
-        // Adds imageUri column
+        // Adds imageUri
+        // =============================================
+
         private val MIGRATION_3_4 =
             object : Migration(3, 4) {
 
@@ -87,8 +104,12 @@ abstract class AppDatabase : RoomDatabase() {
                 }
             }
 
+
+        // =============================================
         // Migration 4 → 5
-        // Adds notifications table
+        // Adds notifications
+        // =============================================
+
         private val MIGRATION_4_5 =
             object : Migration(4, 5) {
 
@@ -112,6 +133,59 @@ abstract class AppDatabase : RoomDatabase() {
                 }
             }
 
+
+        // =============================================
+        // Migration 5 → 6
+        // Adds claims
+        // Adds notificationType
+        // =============================================
+
+        private val MIGRATION_5_6 =
+            object : Migration(5, 6) {
+
+                override fun migrate(
+                    database: SupportSQLiteDatabase
+                ) {
+
+                    // -----------------------------
+                    // Create claims table
+                    // -----------------------------
+
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS claims (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                            itemId INTEGER NOT NULL,
+                            claimantUserId INTEGER NOT NULL,
+                            ownerUserId INTEGER NOT NULL,
+                            reason TEXT NOT NULL,
+                            additionalDetails TEXT NOT NULL,
+                            status TEXT NOT NULL,
+                            createdAt INTEGER NOT NULL
+                        )
+                        """.trimIndent()
+                    )
+
+
+                    // -----------------------------
+                    // Add notification type
+                    // -----------------------------
+
+                    database.execSQL(
+                        """
+                        ALTER TABLE notifications
+                        ADD COLUMN notificationType TEXT NOT NULL
+                        DEFAULT 'ITEM_MATCH'
+                        """.trimIndent()
+                    )
+                }
+            }
+
+
+        // =============================================
+        // GET DATABASE
+        // =============================================
+
         fun getDatabase(
             context: Context
         ): AppDatabase {
@@ -129,7 +203,8 @@ abstract class AppDatabase : RoomDatabase() {
                                 MIGRATION_1_2,
                                 MIGRATION_2_3,
                                 MIGRATION_3_4,
-                                MIGRATION_4_5
+                                MIGRATION_4_5,
+                                MIGRATION_5_6
                             )
                             .build()
                             .also {

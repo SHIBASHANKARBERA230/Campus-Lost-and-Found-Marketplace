@@ -10,14 +10,17 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
+
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+
 import com.example.campuslostfound.adapter.ItemAdapter
 import com.example.campuslostfound.database.AppDatabase
 import com.example.campuslostfound.database.ItemEntity
 import com.example.campuslostfound.database.ItemRepository
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -34,7 +37,9 @@ class SearchActivity : AppCompatActivity() {
 
     private val repository by lazy {
         ItemRepository(
-            AppDatabase.getDatabase(this).itemDao()
+            AppDatabase
+                .getDatabase(this)
+                .itemDao()
         )
     }
 
@@ -59,15 +64,29 @@ class SearchActivity : AppCompatActivity() {
         "Other"
     )
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(
+        savedInstanceState: Bundle?
+    ) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
 
-        searchBox = findViewById(R.id.etSearchItems)
-        recyclerView = findViewById(R.id.recyclerSearchResults)
-        tvResult = findViewById(R.id.tvSearchResult)
-        spinnerType = findViewById(R.id.spinnerType)
-        spinnerCategory = findViewById(R.id.spinnerCategory)
+        setContentView(
+            R.layout.activity_search
+        )
+
+        searchBox =
+            findViewById(R.id.etSearchItems)
+
+        recyclerView =
+            findViewById(R.id.recyclerSearchResults)
+
+        tvResult =
+            findViewById(R.id.tvSearchResult)
+
+        spinnerType =
+            findViewById(R.id.spinnerType)
+
+        spinnerCategory =
+            findViewById(R.id.spinnerCategory)
 
         recyclerView.layoutManager =
             LinearLayoutManager(this)
@@ -76,8 +95,29 @@ class SearchActivity : AppCompatActivity() {
         setupCategorySpinner()
         setupSearch()
 
-        tvResult.text =
-            "Enter an item name, category or location"
+        /*
+         * Receive search text from MainActivity.
+         */
+        val initialQuery =
+            intent.getStringExtra("searchQuery")
+
+        if (!initialQuery.isNullOrBlank()) {
+
+            searchBox.setText(initialQuery)
+
+            searchBox.setSelection(
+                searchBox.text.length
+            )
+
+            searchBox.post {
+                performSearch()
+            }
+
+        } else {
+
+            tvResult.text =
+                "Enter an item name, category or location"
+        }
     }
 
     private fun setupTypeSpinner() {
@@ -103,7 +143,15 @@ class SearchActivity : AppCompatActivity() {
                     position: Int,
                     id: Long
                 ) {
-                    performSearch()
+
+                    if (
+                        searchBox.text
+                            .toString()
+                            .trim()
+                            .isNotEmpty()
+                    ) {
+                        performSearch()
+                    }
                 }
 
                 override fun onNothingSelected(
@@ -136,7 +184,15 @@ class SearchActivity : AppCompatActivity() {
                     position: Int,
                     id: Long
                 ) {
-                    performSearch()
+
+                    if (
+                        searchBox.text
+                            .toString()
+                            .trim()
+                            .isNotEmpty()
+                    ) {
+                        performSearch()
+                    }
                 }
 
                 override fun onNothingSelected(
@@ -147,8 +203,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun setupSearch() {
-
-        searchBox.requestFocus()
 
         searchBox.addTextChangedListener(
             object : TextWatcher {
@@ -167,14 +221,16 @@ class SearchActivity : AppCompatActivity() {
                     before: Int,
                     count: Int
                 ) {
+
                     searchJob?.cancel()
 
-                    searchJob = lifecycleScope.launch {
+                    searchJob =
+                        lifecycleScope.launch {
 
-                        delay(300)
+                            delay(300)
 
-                        performSearch()
-                    }
+                            performSearch()
+                        }
                 }
 
                 override fun afterTextChanged(
@@ -187,18 +243,21 @@ class SearchActivity : AppCompatActivity() {
 
     private fun performSearch() {
 
-        val query = searchBox.text
-            .toString()
-            .trim()
+        val query =
+            searchBox.text
+                .toString()
+                .trim()
 
         val selectedType =
-            spinnerType.selectedItem?.toString() ?: "All"
+            spinnerType.selectedItem
+                ?.toString()
+                ?: "All"
 
         val selectedCategory =
-            spinnerCategory.selectedItem?.toString()
+            spinnerCategory.selectedItem
+                ?.toString()
                 ?: "All Categories"
 
-        // If search box is empty, don't show results
         if (query.isEmpty()) {
 
             recyclerView.adapter =
@@ -214,15 +273,19 @@ class SearchActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
 
-            val databaseItems: List<ItemEntity> =
+            val databaseItems:
+                    List<ItemEntity> =
                 withContext(Dispatchers.IO) {
 
                     repository.searchItems(query)
                 }
 
-            var filteredItems = databaseItems
+            var filteredItems =
+                databaseItems
 
-            // Filter by LOST / FOUND
+            /*
+             * Filter by LOST / FOUND.
+             */
             if (selectedType != "All") {
 
                 filteredItems =
@@ -235,7 +298,9 @@ class SearchActivity : AppCompatActivity() {
                     }
             }
 
-            // Filter by category
+            /*
+             * Filter by category.
+             */
             if (selectedCategory != "All Categories") {
 
                 filteredItems =
@@ -265,63 +330,27 @@ class SearchActivity : AppCompatActivity() {
                 "${filteredItems.size} item(s) found 🔎"
 
             recyclerView.adapter =
-                ItemAdapter(filteredItems) { item ->
+                ItemAdapter(
+                    filteredItems
+                ) { item ->
 
                     openItemDetails(item)
                 }
         }
     }
 
-    private fun openItemDetails(item: ItemEntity) {
+    private fun openItemDetails(
+        item: ItemEntity
+    ) {
 
         val intent = Intent(
-            this@SearchActivity,
+            this,
             ItemDetailsActivity::class.java
         )
 
         intent.putExtra(
             "itemId",
             item.id
-        )
-
-        intent.putExtra(
-            "userId",
-            item.userId
-        )
-
-        intent.putExtra(
-            "itemName",
-            item.name
-        )
-
-        intent.putExtra(
-            "description",
-            item.description
-        )
-
-        intent.putExtra(
-            "category",
-            item.category
-        )
-
-        intent.putExtra(
-            "type",
-            item.type
-        )
-
-        intent.putExtra(
-            "location",
-            item.location
-        )
-
-        intent.putExtra(
-            "date",
-            item.date
-        )
-
-        intent.putExtra(
-            "status",
-            item.status
         )
 
         startActivity(intent)

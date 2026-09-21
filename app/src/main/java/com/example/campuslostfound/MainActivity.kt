@@ -33,7 +33,8 @@ class MainActivity : AppCompatActivity() {
         // PROFILE
         // =========================================
 
-        val btnProfile = findViewById<Button>(R.id.btnProfile)
+        val btnProfile =
+            findViewById<Button>(R.id.btnProfile)
 
         btnProfile.setOnClickListener {
             startActivity(
@@ -48,7 +49,8 @@ class MainActivity : AppCompatActivity() {
         // LOST ITEMS
         // =========================================
 
-        val btnLostItems = findViewById<Button>(R.id.btnLostItems)
+        val btnLostItems =
+            findViewById<Button>(R.id.btnLostItems)
 
         btnLostItems.setOnClickListener {
             startActivity(
@@ -63,7 +65,8 @@ class MainActivity : AppCompatActivity() {
         // FOUND ITEMS
         // =========================================
 
-        val btnFoundItems = findViewById<Button>(R.id.btnFoundItems)
+        val btnFoundItems =
+            findViewById<Button>(R.id.btnFoundItems)
 
         btnFoundItems.setOnClickListener {
             startActivity(
@@ -78,7 +81,8 @@ class MainActivity : AppCompatActivity() {
         // POST ITEM
         // =========================================
 
-        val btnPostItem = findViewById<Button>(R.id.btnPostItem)
+        val btnPostItem =
+            findViewById<Button>(R.id.btnPostItem)
 
         btnPostItem.setOnClickListener {
             startActivity(
@@ -93,7 +97,8 @@ class MainActivity : AppCompatActivity() {
         // MY ITEMS
         // =========================================
 
-        val btnMyItems = findViewById<Button>(R.id.btnMyItems)
+        val btnMyItems =
+            findViewById<Button>(R.id.btnMyItems)
 
         btnMyItems.setOnClickListener {
             startActivity(
@@ -108,7 +113,8 @@ class MainActivity : AppCompatActivity() {
         // NOTIFICATIONS
         // =========================================
 
-        btnNotifications = findViewById(R.id.btnNotifications)
+        btnNotifications =
+            findViewById(R.id.btnNotifications)
 
         btnNotifications.setOnClickListener {
             startActivity(
@@ -120,10 +126,27 @@ class MainActivity : AppCompatActivity() {
         }
 
         // =========================================
+        // CLAIM REQUESTS
+        // =========================================
+
+        val btnClaimRequests =
+            findViewById<Button>(R.id.btnClaimRequests)
+
+        btnClaimRequests.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    ClaimRequestsActivity::class.java
+                )
+            )
+        }
+
+        // =========================================
         // SEARCH
         // =========================================
 
-        val etSearch = findViewById<EditText>(R.id.etSearch)
+        val etSearch =
+            findViewById<EditText>(R.id.etSearch)
 
         etSearch.setOnEditorActionListener { _, _, _ ->
 
@@ -145,7 +168,6 @@ class MainActivity : AppCompatActivity() {
 
                 startActivity(intent)
 
-                // Clear search field after navigation
                 etSearch.text.clear()
             }
 
@@ -165,42 +187,51 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadUnreadNotificationCount() {
 
-        val preferences = getSharedPreferences(
-            "user_session",
-            MODE_PRIVATE
-        )
+        val preferences =
+            getSharedPreferences(
+                "user_session",
+                MODE_PRIVATE
+            )
 
-        val userId = preferences.getInt(
-            "userId",
-            0
-        )
+        val userId =
+            preferences.getInt(
+                "userId",
+                0
+            )
 
-        // User not logged in
         if (userId == 0) {
 
             btnNotifications.text =
-                "🔔 NOTIFICATIONS"
+                getString(
+                    R.string.notifications
+                )
 
             return
         }
 
         lifecycleScope.launch {
 
-            val unreadCount = withContext(Dispatchers.IO) {
+            val unreadCount =
+                withContext(Dispatchers.IO) {
 
-                notificationRepository
-                    .getUnreadCount(userId)
-            }
+                    notificationRepository
+                        .getUnreadCount(userId)
+                }
 
             if (unreadCount > 0) {
 
                 btnNotifications.text =
-                    "🔔 NOTIFICATIONS ($unreadCount)"
+                    getString(
+                        R.string.notifications_with_count,
+                        unreadCount
+                    )
 
             } else {
 
                 btnNotifications.text =
-                    "🔔 NOTIFICATIONS"
+                    getString(
+                        R.string.notifications
+                    )
             }
         }
     }

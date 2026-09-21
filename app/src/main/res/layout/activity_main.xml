@@ -156,6 +156,18 @@
             android:textSize="14sp" />
 
 
+        <!-- ================= CLAIM REQUESTS ================= -->
+
+        <Button
+            android:id="@+id/btnClaimRequests"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="10dp"
+            android:minHeight="0dp"
+            android:text="@string/claim_requests"
+            android:textSize="14sp" />
+
+
         <!-- ================= RECENT ITEMS ================= -->
 
         <TextView

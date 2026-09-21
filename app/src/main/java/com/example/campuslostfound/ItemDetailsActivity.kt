@@ -37,6 +37,7 @@ class ItemDetailsActivity : AppCompatActivity() {
     private lateinit var tvStatus: TextView
 
     private lateinit var btnContactOwner: Button
+    private lateinit var btnClaimItem: Button
     private lateinit var btnEdit: Button
     private lateinit var btnMarkResolved: Button
     private lateinit var btnDelete: Button
@@ -78,7 +79,9 @@ class ItemDetailsActivity : AppCompatActivity() {
     // ON CREATE
     // =============================================
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(
+        savedInstanceState: Bundle?
+    ) {
 
         super.onCreate(savedInstanceState)
 
@@ -127,6 +130,9 @@ class ItemDetailsActivity : AppCompatActivity() {
 
         btnContactOwner =
             findViewById(R.id.btnContactOwner)
+
+        btnClaimItem =
+            findViewById(R.id.btnClaimItem)
 
         btnEdit =
             findViewById(R.id.btnEdit)
@@ -181,7 +187,7 @@ class ItemDetailsActivity : AppCompatActivity() {
 
 
         // =========================================
-        // LOAD ITEM FROM ROOM
+        // LOAD ITEM
         // =========================================
 
         loadItem()
@@ -224,32 +230,26 @@ class ItemDetailsActivity : AppCompatActivity() {
 
 
             // =====================================
-            // LOAD ALL ITEM DATA
+            // LOAD ITEM DATA
             // =====================================
 
             tvItemName.text =
                 item.name
 
-
             tvDescription.text =
                 "Description: ${item.description}"
-
 
             tvCategory.text =
                 "Category: ${item.category}"
 
-
             tvType.text =
                 "Type: ${item.type}"
-
 
             tvLocation.text =
                 "Location: ${item.location}"
 
-
             tvDate.text =
                 "Date: ${item.date}"
-
 
             tvStatus.text =
                 "Status: ${item.status}"
@@ -276,7 +276,9 @@ class ItemDetailsActivity : AppCompatActivity() {
 
             if (itemOwnerId == currentUserId) {
 
-                // This is user's own item
+                // =================================
+                // USER'S OWN ITEM
+                // =================================
 
                 btnContactOwner.isEnabled =
                     false
@@ -284,22 +286,29 @@ class ItemDetailsActivity : AppCompatActivity() {
                 btnContactOwner.text =
                     "📞 THIS IS YOUR ITEM"
 
+                btnClaimItem.visibility =
+                    View.GONE
 
                 btnEdit.visibility =
                     View.VISIBLE
 
-
                 btnDelete.visibility =
                     View.VISIBLE
-
 
                 btnMarkResolved.visibility =
                     View.VISIBLE
 
 
-                // Already resolved
+                // ================================
+                // ALREADY RESOLVED
+                // ================================
 
-                if (item.status == "RESOLVED") {
+                if (
+                    item.status.equals(
+                        "RESOLVED",
+                        ignoreCase = true
+                    )
+                ) {
 
                     btnMarkResolved.isEnabled =
                         false
@@ -308,10 +317,11 @@ class ItemDetailsActivity : AppCompatActivity() {
                         "✅ ITEM RESOLVED"
                 }
 
-
             } else {
 
-                // Someone else's item
+                // =================================
+                // SOMEONE ELSE'S ITEM
+                // =================================
 
                 btnContactOwner.isEnabled =
                     true
@@ -319,17 +329,66 @@ class ItemDetailsActivity : AppCompatActivity() {
                 btnContactOwner.text =
                     "📞 CONTACT OWNER"
 
-
                 btnEdit.visibility =
                     View.GONE
-
 
                 btnDelete.visibility =
                     View.GONE
 
-
                 btnMarkResolved.visibility =
                     View.GONE
+
+
+                // =================================
+                // CLAIM FEATURE
+                // =================================
+                //
+                // Only FOUND items can be claimed.
+                //
+                // RESOLVED items cannot be claimed.
+                //
+
+                if (
+                    item.type.equals(
+                        "FOUND",
+                        ignoreCase = true
+                    ) &&
+                    !item.status.equals(
+                        "RESOLVED",
+                        ignoreCase = true
+                    )
+                ) {
+
+                    btnClaimItem.visibility =
+                        View.VISIBLE
+
+                    btnClaimItem.isEnabled =
+                        true
+
+                    btnClaimItem.text =
+                        "🔵 CLAIM THIS ITEM"
+
+                    btnClaimItem.setOnClickListener {
+
+                        val intent =
+                            Intent(
+                                this@ItemDetailsActivity,
+                                ClaimItemActivity::class.java
+                            )
+
+                        intent.putExtra(
+                            "itemId",
+                            item.id
+                        )
+
+                        startActivity(intent)
+                    }
+
+                } else {
+
+                    btnClaimItem.visibility =
+                        View.GONE
+                }
             }
 
 
@@ -550,7 +609,7 @@ class ItemDetailsActivity : AppCompatActivity() {
 
 
         // =========================================
-        // LOAD CURRENT VALUES FROM DATABASE
+        // LOAD CURRENT VALUES
         // =========================================
 
         lifecycleScope.launch {
@@ -706,23 +765,21 @@ class ItemDetailsActivity : AppCompatActivity() {
 
             if (result > 0) {
 
-                // Update screen immediately
+                // =================================
+                // UPDATE SCREEN
+                // =================================
 
                 tvItemName.text =
                     name
 
-
                 tvDescription.text =
                     "Description: $description"
-
 
                 tvCategory.text =
                     "Category: $category"
 
-
                 tvLocation.text =
                     "Location: $location"
-
 
                 tvDate.text =
                     "Date: $date"
@@ -792,14 +849,11 @@ class ItemDetailsActivity : AppCompatActivity() {
                         tvStatus.text =
                             "Status: RESOLVED"
 
-
                         btnMarkResolved.isEnabled =
                             false
 
-
                         btnMarkResolved.text =
                             "✅ ITEM RESOLVED"
-
 
                         Toast.makeText(
                             this@ItemDetailsActivity,

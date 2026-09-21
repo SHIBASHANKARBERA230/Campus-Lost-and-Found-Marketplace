@@ -19,5 +19,7 @@ data class NotificationEntity(
 
     val isRead: Boolean = false,
 
-    val createdAt: Long = System.currentTimeMillis()
+    val createdAt: Long = System.currentTimeMillis(),
+
+    val notificationType: String = "ITEM_MATCH"
 )
