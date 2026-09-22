@@ -200,6 +200,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" />
 
+        <Button
+            android:id="@+id/btnFavorites"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="⭐ FAVORITES" />
+
     </LinearLayout>
 
 </ScrollView>

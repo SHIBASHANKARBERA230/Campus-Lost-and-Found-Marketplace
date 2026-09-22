@@ -38,9 +38,19 @@ class ItemDetailsActivity : AppCompatActivity() {
 
     private lateinit var btnContactOwner: Button
     private lateinit var btnClaimItem: Button
+    private lateinit var btnFavorite: Button
     private lateinit var btnEdit: Button
     private lateinit var btnMarkResolved: Button
     private lateinit var btnDelete: Button
+
+
+    // =============================================
+    // DATABASE
+    // =============================================
+
+    private val database by lazy {
+        AppDatabase.getDatabase(this)
+    }
 
 
     // =============================================
@@ -49,17 +59,13 @@ class ItemDetailsActivity : AppCompatActivity() {
 
     private val itemRepository by lazy {
         ItemRepository(
-            AppDatabase
-                .getDatabase(this)
-                .itemDao()
+            database.itemDao()
         )
     }
 
     private val userRepository by lazy {
         UserRepository(
-            AppDatabase
-                .getDatabase(this)
-                .userDao()
+            database.userDao()
         )
     }
 
@@ -73,6 +79,8 @@ class ItemDetailsActivity : AppCompatActivity() {
     private var itemOwnerId: Int = 0
 
     private var currentUserId: Int = 0
+
+    private var isFavorite = false
 
 
     // =============================================
@@ -134,6 +142,9 @@ class ItemDetailsActivity : AppCompatActivity() {
         btnClaimItem =
             findViewById(R.id.btnClaimItem)
 
+        btnFavorite =
+            findViewById(R.id.btnFavorite)
+
         btnEdit =
             findViewById(R.id.btnEdit)
 
@@ -184,6 +195,16 @@ class ItemDetailsActivity : AppCompatActivity() {
                 "userId",
                 0
             )
+
+
+        // =========================================
+        // FAVORITE BUTTON
+        // =========================================
+
+        btnFavorite.setOnClickListener {
+
+            toggleFavorite()
+        }
 
 
         // =========================================
@@ -268,6 +289,13 @@ class ItemDetailsActivity : AppCompatActivity() {
 
             itemOwnerId =
                 item.userId
+
+
+            // =====================================
+            // LOAD FAVORITE STATUS
+            // =====================================
+
+            loadFavoriteStatus()
 
 
             // =====================================
@@ -423,6 +451,138 @@ class ItemDetailsActivity : AppCompatActivity() {
 
 
     // =============================================
+    // LOAD FAVORITE STATUS
+    // =============================================
+
+    private fun loadFavoriteStatus() {
+
+        if (currentUserId == 0) {
+
+            btnFavorite.isEnabled =
+                false
+
+            btnFavorite.text =
+                "⭐ LOGIN TO SAVE"
+
+            return
+        }
+
+
+        lifecycleScope.launch {
+
+            val result =
+                withContext(Dispatchers.IO) {
+
+                    database
+                        .favoriteDao()
+                        .isFavorite(
+                            currentUserId,
+                            itemId
+                        )
+                }
+
+            isFavorite = result
+
+            updateFavoriteButton()
+        }
+    }
+
+
+    // =============================================
+    // TOGGLE FAVORITE
+    // =============================================
+
+    private fun toggleFavorite() {
+
+        if (currentUserId == 0) {
+
+            Toast.makeText(
+                this,
+                "Please login again",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            return
+        }
+
+
+        lifecycleScope.launch {
+
+            withContext(Dispatchers.IO) {
+
+                if (isFavorite) {
+
+                    database
+                        .favoriteDao()
+                        .removeFavorite(
+                            currentUserId,
+                            itemId
+                        )
+
+                } else {
+
+                    database
+                        .favoriteDao()
+                        .addFavorite(
+
+                            com.example.campuslostfound.database.FavoriteEntity(
+                                userId =
+                                    currentUserId,
+
+                                itemId =
+                                    itemId
+                            )
+                        )
+                }
+            }
+
+
+            isFavorite =
+                !isFavorite
+
+            updateFavoriteButton()
+
+
+            if (isFavorite) {
+
+                Toast.makeText(
+                    this@ItemDetailsActivity,
+                    "Added to favorites ⭐",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+            } else {
+
+                Toast.makeText(
+                    this@ItemDetailsActivity,
+                    "Removed from favorites",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+
+    // =============================================
+    // UPDATE FAVORITE BUTTON
+    // =============================================
+
+    private fun updateFavoriteButton() {
+
+        if (isFavorite) {
+
+            btnFavorite.text =
+                "★ REMOVE FROM FAVORITES"
+
+        } else {
+
+            btnFavorite.text =
+                "☆ ADD TO FAVORITES"
+        }
+    }
+
+
+    // =============================================
     // LOAD IMAGE
     // =============================================
 
@@ -511,7 +671,6 @@ class ItemDetailsActivity : AppCompatActivity() {
 
             val ownerName =
                 owner.name
-
 
             val phoneNumber =
                 owner.phone

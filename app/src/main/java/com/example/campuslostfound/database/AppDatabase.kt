@@ -12,9 +12,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase
         ItemEntity::class,
         UserEntity::class,
         NotificationEntity::class,
-        ClaimEntity::class
+        ClaimEntity::class,
+        FavoriteEntity::class
     ],
-    version = 6,
+    version = 7,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -26,6 +27,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun notificationDao(): NotificationDao
 
     abstract fun claimDao(): ClaimDao
+
+    abstract fun favoriteDao(): FavoriteDao
 
     companion object {
 
@@ -183,6 +186,32 @@ abstract class AppDatabase : RoomDatabase() {
 
 
         // =============================================
+        // Migration 6 → 7
+        // Adds favorites table
+        // =============================================
+
+        private val MIGRATION_6_7 =
+            object : Migration(6, 7) {
+
+                override fun migrate(
+                    database: SupportSQLiteDatabase
+                ) {
+
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS favorites (
+                            userId INTEGER NOT NULL,
+                            itemId INTEGER NOT NULL,
+                            createdAt INTEGER NOT NULL,
+                            PRIMARY KEY(userId, itemId)
+                        )
+                        """.trimIndent()
+                    )
+                }
+            }
+
+
+        // =============================================
         // GET DATABASE
         // =============================================
 
@@ -204,7 +233,8 @@ abstract class AppDatabase : RoomDatabase() {
                                 MIGRATION_2_3,
                                 MIGRATION_3_4,
                                 MIGRATION_4_5,
-                                MIGRATION_5_6
+                                MIGRATION_5_6,
+                                MIGRATION_6_7
                             )
                             .build()
                             .also {

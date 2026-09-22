@@ -177,6 +177,23 @@ class MainActivity : AppCompatActivity() {
         }
 
         // =========================================
+        // FAVORITES
+        // =========================================
+
+        val btnFavorites =
+            findViewById<Button>(R.id.btnFavorites)
+
+        btnFavorites.setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    FavoriteItemsActivity::class.java
+                )
+            )
+        }
+
+        // =========================================
         // SEARCH
         // =========================================
 
@@ -567,7 +584,6 @@ class MainActivity : AppCompatActivity() {
         if (::btnNotifications.isInitialized) {
 
             loadUnreadNotificationCount()
-
             loadRecentItems()
         }
     }

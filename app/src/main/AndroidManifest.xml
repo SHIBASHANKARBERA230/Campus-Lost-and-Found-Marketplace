@@ -180,6 +180,10 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
+        <activity
+            android:name=".FavoriteItemsActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>
