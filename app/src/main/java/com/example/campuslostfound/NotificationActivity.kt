@@ -4,17 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
-
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.example.campuslostfound.adapter.NotificationAdapter
 import com.example.campuslostfound.database.AppDatabase
 import com.example.campuslostfound.database.NotificationEntity
 import com.example.campuslostfound.database.NotificationRepository
-
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -138,16 +135,29 @@ class NotificationActivity : AppCompatActivity() {
                 notifications
             ) { notification ->
 
-                /*
-                 * Mark notification as read.
-                 */
+                // Mark notification as read
                 markNotificationAsRead(
                     notification.id
                 )
 
-                /*
-                 * Open the matched item.
-                 */
+                openNotification(
+                    notification
+                )
+            }
+    }
+
+    private fun openNotification(
+        notification: NotificationEntity
+    ) {
+
+        when (notification.notificationType) {
+
+            // ---------------------------------
+            // ITEM MATCH
+            // ---------------------------------
+
+            "ITEM_MATCH" -> {
+
                 val intent = Intent(
                     this,
                     ItemDetailsActivity::class.java
@@ -160,6 +170,78 @@ class NotificationActivity : AppCompatActivity() {
 
                 startActivity(intent)
             }
+
+            // ---------------------------------
+            // CLAIM REQUEST
+            // ---------------------------------
+
+            "CLAIM_REQUEST" -> {
+
+                val intent = Intent(
+                    this,
+                    ClaimRequestsActivity::class.java
+                )
+
+                startActivity(intent)
+            }
+
+            // ---------------------------------
+            // CLAIM APPROVED
+            // ---------------------------------
+
+            "CLAIM_APPROVED" -> {
+
+                val intent = Intent(
+                    this,
+                    ItemDetailsActivity::class.java
+                )
+
+                intent.putExtra(
+                    "itemId",
+                    notification.itemId
+                )
+
+                startActivity(intent)
+            }
+
+            // ---------------------------------
+            // CLAIM REJECTED
+            // ---------------------------------
+
+            "CLAIM_REJECTED" -> {
+
+                val intent = Intent(
+                    this,
+                    ItemDetailsActivity::class.java
+                )
+
+                intent.putExtra(
+                    "itemId",
+                    notification.itemId
+                )
+
+                startActivity(intent)
+            }
+
+            // ---------------------------------
+            // UNKNOWN NOTIFICATION
+            // ---------------------------------
+
+            else -> {
+
+                val intent = Intent(
+                    this,
+                    ItemDetailsActivity::class.java
+                )
+
+                intent.putExtra(
+                    "itemId",
+                    notification.itemId
+                )
+
+                startActivity(intent)
+            }
+        }
     }
 
     private fun markNotificationAsRead(

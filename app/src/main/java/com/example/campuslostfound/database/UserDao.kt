@@ -46,4 +46,18 @@ interface UserDao {
         name: String,
         phone: String
     )
+
+    @Query(
+        """
+        UPDATE users
+        SET passwordHash = :passwordHash,
+            passwordSalt = :passwordSalt
+        WHERE id = :userId
+        """
+    )
+    suspend fun updatePassword(
+        userId: Int,
+        passwordHash: String,
+        passwordSalt: String
+    )
 }

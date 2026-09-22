@@ -39,4 +39,16 @@ class UserRepository(
             phone
         )
     }
+
+    suspend fun updatePassword(
+        userId: Int,
+        passwordHash: String,
+        passwordSalt: String
+    ) {
+        userDao.updatePassword(
+            userId,
+            passwordHash,
+            passwordSalt
+        )
+    }
 }

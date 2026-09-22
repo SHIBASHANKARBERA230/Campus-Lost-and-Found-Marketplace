@@ -130,6 +130,11 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
 
         <!-- ===================================== -->
         <!-- MY ITEMS -->
@@ -167,6 +172,11 @@
 
         <activity
             android:name=".ClaimRequestsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".MyClaimsActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 

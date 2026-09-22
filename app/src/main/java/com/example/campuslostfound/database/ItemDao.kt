@@ -141,7 +141,10 @@ interface ItemDao {
         userId: Int
     ): List<ItemEntity>
 
-    // Find possible LOST/FOUND matches
+    // =========================================
+    // FIND POSSIBLE LOST / FOUND MATCHES
+    // =========================================
+
     @Query("""
         SELECT * FROM items
         WHERE type = :oppositeType
@@ -159,4 +162,15 @@ interface ItemDao {
         name: String,
         userId: Int
     ): List<ItemEntity>
+
+    // =========================================
+    // GET RECENT ITEMS
+    // =========================================
+
+    @Query("""
+        SELECT * FROM items
+        ORDER BY id DESC
+        LIMIT 5
+    """)
+    suspend fun getRecentItems(): List<ItemEntity>
 }

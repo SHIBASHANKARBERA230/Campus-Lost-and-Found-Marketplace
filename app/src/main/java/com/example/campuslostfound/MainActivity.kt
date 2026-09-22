@@ -1,12 +1,17 @@
 package com.example.campuslostfound
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.campuslostfound.database.AppDatabase
+import com.example.campuslostfound.database.ItemEntity
 import com.example.campuslostfound.database.NotificationRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,12 +21,18 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var btnNotifications: Button
 
+    private val database by lazy {
+        AppDatabase.getDatabase(this)
+    }
+
     private val notificationRepository by lazy {
         NotificationRepository(
-            AppDatabase
-                .getDatabase(this)
-                .notificationDao()
+            database.notificationDao()
         )
+    }
+
+    private val itemDao by lazy {
+        database.itemDao()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +48,7 @@ class MainActivity : AppCompatActivity() {
             findViewById<Button>(R.id.btnProfile)
 
         btnProfile.setOnClickListener {
+
             startActivity(
                 Intent(
                     this,
@@ -53,6 +65,7 @@ class MainActivity : AppCompatActivity() {
             findViewById<Button>(R.id.btnLostItems)
 
         btnLostItems.setOnClickListener {
+
             startActivity(
                 Intent(
                     this,
@@ -69,6 +82,7 @@ class MainActivity : AppCompatActivity() {
             findViewById<Button>(R.id.btnFoundItems)
 
         btnFoundItems.setOnClickListener {
+
             startActivity(
                 Intent(
                     this,
@@ -85,6 +99,7 @@ class MainActivity : AppCompatActivity() {
             findViewById<Button>(R.id.btnPostItem)
 
         btnPostItem.setOnClickListener {
+
             startActivity(
                 Intent(
                     this,
@@ -101,6 +116,7 @@ class MainActivity : AppCompatActivity() {
             findViewById<Button>(R.id.btnMyItems)
 
         btnMyItems.setOnClickListener {
+
             startActivity(
                 Intent(
                     this,
@@ -117,6 +133,7 @@ class MainActivity : AppCompatActivity() {
             findViewById(R.id.btnNotifications)
 
         btnNotifications.setOnClickListener {
+
             startActivity(
                 Intent(
                     this,
@@ -133,10 +150,28 @@ class MainActivity : AppCompatActivity() {
             findViewById<Button>(R.id.btnClaimRequests)
 
         btnClaimRequests.setOnClickListener {
+
             startActivity(
                 Intent(
                     this,
                     ClaimRequestsActivity::class.java
+                )
+            )
+        }
+
+        // =========================================
+        // MY CLAIMS
+        // =========================================
+
+        val btnMyClaims =
+            findViewById<Button>(R.id.btnMyClaims)
+
+        btnMyClaims.setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    MyClaimsActivity::class.java
                 )
             )
         }
@@ -150,16 +185,18 @@ class MainActivity : AppCompatActivity() {
 
         etSearch.setOnEditorActionListener { _, _, _ ->
 
-            val query = etSearch.text
-                .toString()
-                .trim()
+            val query =
+                etSearch.text
+                    .toString()
+                    .trim()
 
             if (query.isNotEmpty()) {
 
-                val intent = Intent(
-                    this,
-                    SearchActivity::class.java
-                )
+                val intent =
+                    Intent(
+                        this,
+                        SearchActivity::class.java
+                    )
 
                 intent.putExtra(
                     "searchQuery",
@@ -175,10 +212,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         // =========================================
-        // LOAD UNREAD NOTIFICATION COUNT
+        // INITIAL DATA LOAD
         // =========================================
 
         loadUnreadNotificationCount()
+        loadRecentItems()
     }
 
     // =============================================
@@ -237,6 +275,288 @@ class MainActivity : AppCompatActivity() {
     }
 
     // =============================================
+    // LOAD RECENT ITEMS
+    // =============================================
+
+    private fun loadRecentItems() {
+
+        lifecycleScope.launch {
+
+            val recentItems =
+                withContext(Dispatchers.IO) {
+
+                    itemDao.getRecentItems()
+                }
+
+            displayRecentItems(
+                recentItems
+            )
+        }
+    }
+
+    // =============================================
+    // DISPLAY RECENT ITEMS
+    // =============================================
+
+    private fun displayRecentItems(
+        items: List<ItemEntity>
+    ) {
+
+        val recentItemsContainer =
+            findViewById<LinearLayout>(
+                R.id.recentItemsContainer
+            )
+
+        val tvNoRecentItems =
+            findViewById<TextView>(
+                R.id.tvNoRecentItems
+            )
+
+        // Remove previous dynamically created cards.
+        recentItemsContainer.removeAllViews()
+
+        // =========================================
+        // NO ITEMS
+        // =========================================
+
+        if (items.isEmpty()) {
+
+            tvNoRecentItems.visibility =
+                View.VISIBLE
+
+            return
+        }
+
+        tvNoRecentItems.visibility =
+            View.GONE
+
+        // =========================================
+        // CREATE RECENT ITEM CARDS
+        // =========================================
+
+        for (item in items) {
+
+            val itemCard =
+                LinearLayout(this)
+
+            itemCard.orientation =
+                LinearLayout.VERTICAL
+
+            itemCard.setPadding(
+                16,
+                16,
+                16,
+                16
+            )
+
+            itemCard.setBackgroundColor(
+                0xFFEEEEEE.toInt()
+            )
+
+            val cardParams =
+                LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+
+            cardParams.setMargins(
+                0,
+                10,
+                0,
+                0
+            )
+
+            itemCard.layoutParams =
+                cardParams
+
+            // =====================================
+            // ITEM NAME
+            // =====================================
+
+            val tvName =
+                TextView(this)
+
+            tvName.text =
+                "📦 ${item.name}"
+
+            tvName.textSize =
+                18f
+
+            tvName.setTypeface(
+                null,
+                Typeface.BOLD
+            )
+
+            itemCard.addView(
+                tvName
+            )
+
+            // =====================================
+            // CATEGORY
+            // =====================================
+
+            val tvCategory =
+                TextView(this)
+
+            tvCategory.text =
+                "Category: ${item.category}"
+
+            tvCategory.textSize =
+                14f
+
+            val categoryParams =
+                LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+
+            categoryParams.setMargins(
+                0,
+                7,
+                0,
+                0
+            )
+
+            tvCategory.layoutParams =
+                categoryParams
+
+            itemCard.addView(
+                tvCategory
+            )
+
+            // =====================================
+            // LOCATION
+            // =====================================
+
+            val tvLocation =
+                TextView(this)
+
+            tvLocation.text =
+                "📍 ${item.location}"
+
+            tvLocation.textSize =
+                14f
+
+            val locationParams =
+                LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+
+            locationParams.setMargins(
+                0,
+                5,
+                0,
+                0
+            )
+
+            tvLocation.layoutParams =
+                locationParams
+
+            itemCard.addView(
+                tvLocation
+            )
+
+            // =====================================
+            // TYPE
+            // =====================================
+
+            val tvType =
+                TextView(this)
+
+            tvType.text =
+                "Type: ${item.type}"
+
+            tvType.textSize =
+                14f
+
+            val typeParams =
+                LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+
+            typeParams.setMargins(
+                0,
+                5,
+                0,
+                0
+            )
+
+            tvType.layoutParams =
+                typeParams
+
+            itemCard.addView(
+                tvType
+            )
+
+            // =====================================
+            // STATUS
+            // =====================================
+
+            val tvStatus =
+                TextView(this)
+
+            tvStatus.text =
+                "Status: ${item.status}"
+
+            tvStatus.textSize =
+                14f
+
+            tvStatus.setTypeface(
+                null,
+                Typeface.BOLD
+            )
+
+            val statusParams =
+                LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+
+            statusParams.setMargins(
+                0,
+                5,
+                0,
+                0
+            )
+
+            tvStatus.layoutParams =
+                statusParams
+
+            itemCard.addView(
+                tvStatus
+            )
+
+            // =====================================
+            // OPEN ITEM DETAILS
+            // =====================================
+
+            itemCard.setOnClickListener {
+
+                val intent =
+                    Intent(
+                        this,
+                        ItemDetailsActivity::class.java
+                    )
+
+                intent.putExtra(
+                    "itemId",
+                    item.id
+                )
+
+                startActivity(
+                    intent
+                )
+            }
+
+            recentItemsContainer.addView(
+                itemCard
+            )
+        }
+    }
+
+    // =============================================
     // REFRESH WHEN RETURNING TO MAIN SCREEN
     // =============================================
 
@@ -245,7 +565,10 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
 
         if (::btnNotifications.isInitialized) {
+
             loadUnreadNotificationCount()
+
+            loadRecentItems()
         }
     }
 }

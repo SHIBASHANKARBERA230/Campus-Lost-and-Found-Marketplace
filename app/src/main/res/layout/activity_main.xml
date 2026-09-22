@@ -58,7 +58,6 @@
 
         </LinearLayout>
 
-
         <!-- ================= SEARCH ================= -->
 
         <EditText
@@ -73,7 +72,6 @@
             android:paddingEnd="16dp"
             android:textSize="14sp" />
 
-
         <!-- ================= BROWSE ITEMS ================= -->
 
         <TextView
@@ -83,7 +81,6 @@
             android:text="Browse Items"
             android:textSize="19sp"
             android:textStyle="bold" />
-
 
         <!-- ================= LOST / FOUND ================= -->
 
@@ -117,7 +114,6 @@
 
         </LinearLayout>
 
-
         <!-- ================= POST ITEM ================= -->
 
         <Button
@@ -131,7 +127,6 @@
             android:paddingStart="12dp"
             android:paddingEnd="12dp" />
 
-
         <!-- ================= MY ITEMS ================= -->
 
         <Button
@@ -142,7 +137,6 @@
             android:minHeight="0dp"
             android:text="👤 MY ITEMS"
             android:textSize="14sp" />
-
 
         <!-- ================= NOTIFICATIONS ================= -->
 
@@ -155,7 +149,6 @@
             android:text="🔔 NOTIFICATIONS"
             android:textSize="14sp" />
 
-
         <!-- ================= CLAIM REQUESTS ================= -->
 
         <Button
@@ -167,6 +160,16 @@
             android:text="@string/claim_requests"
             android:textSize="14sp" />
 
+        <!-- ================= MY CLAIMS ================= -->
+
+        <Button
+            android:id="@+id/btnMyClaims"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="10dp"
+            android:minHeight="0dp"
+            android:text="📋 MY CLAIMS"
+            android:textSize="14sp" />
 
         <!-- ================= RECENT ITEMS ================= -->
 
@@ -178,93 +181,24 @@
             android:textSize="19sp"
             android:textStyle="bold" />
 
+        <!-- ================= NO RECENT ITEMS ================= -->
 
-        <!-- ================= ITEM 1 ================= -->
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/tvNoRecentItems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="#EEEEEE"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_marginTop="12dp"
+            android:text="No items posted yet."
+            android:textSize="15sp"
+            android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/tvRecentItemName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="📱 Black Phone"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvRecentCategory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:text="Category: Electronics"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tvRecentLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="📍 Central Library"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tvRecentStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Status: LOST"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-
-        <!-- ================= ITEM 2 ================= -->
+        <!-- ================= DYNAMIC RECENT ITEMS ================= -->
 
         <LinearLayout
+            android:id="@+id/recentItemsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="#EEEEEE"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="🎧 Wireless Earbuds"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:text="Category: Electronics"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="📍 Block A"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Status: FOUND"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
+            android:orientation="vertical" />
 
     </LinearLayout>
 

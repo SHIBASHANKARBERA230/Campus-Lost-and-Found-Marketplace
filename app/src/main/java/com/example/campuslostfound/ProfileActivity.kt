@@ -27,29 +27,21 @@ class ProfileActivity : AppCompatActivity() {
         )
     }
 
-    override fun onCreate(
-        savedInstanceState: Bundle?
-    ) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(
-            R.layout.activity_profile
-        )
+        setContentView(R.layout.activity_profile)
 
         tvProfileName =
-            findViewById(
-                R.id.tvProfileName
-            )
+            findViewById(R.id.tvProfileName)
 
         tvProfileEmail =
-            findViewById(
-                R.id.tvProfileEmail
-            )
+            findViewById(R.id.tvProfileEmail)
 
         tvProfilePhone =
-            findViewById(
-                R.id.tvProfilePhone
-            )
+            findViewById(R.id.tvProfilePhone)
+
+        // EDIT PROFILE
 
         findViewById<Button>(
             R.id.btnEditProfile
@@ -63,6 +55,22 @@ class ProfileActivity : AppCompatActivity() {
             )
         }
 
+        // CHANGE PASSWORD
+
+        findViewById<Button>(
+            R.id.btnChangePassword
+        ).setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    ChangePasswordActivity::class.java
+                )
+            )
+        }
+
+        // LOGOUT
+
         findViewById<Button>(
             R.id.btnLogout
         ).setOnClickListener {
@@ -72,6 +80,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
+
         super.onResume()
 
         loadProfile()
@@ -100,6 +109,7 @@ class ProfileActivity : AppCompatActivity() {
             ).show()
 
             finish()
+
             return
         }
 
@@ -107,9 +117,9 @@ class ProfileActivity : AppCompatActivity() {
 
             val user =
                 withContext(Dispatchers.IO) {
-                    userRepository.getUserById(
-                        userId
-                    )
+
+                    userRepository
+                        .getUserById(userId)
                 }
 
             if (user == null) {
@@ -142,7 +152,8 @@ class ProfileActivity : AppCompatActivity() {
                 MODE_PRIVATE
             )
 
-        preferences.edit()
+        preferences
+            .edit()
             .clear()
             .apply()
 

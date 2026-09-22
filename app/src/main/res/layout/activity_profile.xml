@@ -39,12 +39,25 @@
         android:text="Phone"
         android:textSize="16sp" />
 
+    <!-- EDIT PROFILE -->
+
     <Button
         android:id="@+id/btnEditProfile"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginTop="32dp"
         android:text="✏️ EDIT PROFILE" />
+
+    <!-- CHANGE PASSWORD -->
+
+    <Button
+        android:id="@+id/btnChangePassword"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:text="🔐 CHANGE PASSWORD" />
+
+    <!-- LOGOUT -->
 
     <Button
         android:id="@+id/btnLogout"
