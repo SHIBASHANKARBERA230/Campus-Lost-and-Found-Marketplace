@@ -10,12 +10,16 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+
 import com.example.campuslostfound.database.AppDatabase
+import com.example.campuslostfound.database.FavoriteEntity
 import com.example.campuslostfound.database.ItemEntity
 import com.example.campuslostfound.database.ItemRepository
 import com.example.campuslostfound.database.UserRepository
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -370,11 +374,12 @@ class ItemDetailsActivity : AppCompatActivity() {
                 // =================================
                 // CLAIM FEATURE
                 // =================================
-                //
-                // Only FOUND items can be claimed.
-                //
-                // RESOLVED items cannot be claimed.
-                //
+
+                /*
+                 * Only FOUND items can be claimed.
+                 *
+                 * RESOLVED items cannot be claimed.
+                 */
 
                 if (
                     item.type.equals(
@@ -481,7 +486,8 @@ class ItemDetailsActivity : AppCompatActivity() {
                         )
                 }
 
-            isFavorite = result
+            isFavorite =
+                result
 
             updateFavoriteButton()
         }
@@ -524,8 +530,7 @@ class ItemDetailsActivity : AppCompatActivity() {
                     database
                         .favoriteDao()
                         .addFavorite(
-
-                            com.example.campuslostfound.database.FavoriteEntity(
+                            FavoriteEntity(
                                 userId =
                                     currentUserId,
 
@@ -879,6 +884,10 @@ class ItemDetailsActivity : AppCompatActivity() {
         date: String
     ) {
 
+        // =========================================
+        // VALIDATION
+        // =========================================
+
         if (name.isEmpty()) {
 
             Toast.makeText(
@@ -890,6 +899,58 @@ class ItemDetailsActivity : AppCompatActivity() {
             return
         }
 
+
+        if (description.isEmpty()) {
+
+            Toast.makeText(
+                this,
+                "Description cannot be empty ❌",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            return
+        }
+
+
+        if (category.isEmpty()) {
+
+            Toast.makeText(
+                this,
+                "Category cannot be empty ❌",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            return
+        }
+
+
+        if (location.isEmpty()) {
+
+            Toast.makeText(
+                this,
+                "Location cannot be empty ❌",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            return
+        }
+
+
+        if (date.isEmpty()) {
+
+            Toast.makeText(
+                this,
+                "Date cannot be empty ❌",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            return
+        }
+
+
+        // =========================================
+        // UPDATE DATABASE
+        // =========================================
 
         lifecycleScope.launch {
 
@@ -922,11 +983,11 @@ class ItemDetailsActivity : AppCompatActivity() {
                 }
 
 
-            if (result > 0) {
+            // =====================================
+            // UPDATE SUCCESS
+            // =====================================
 
-                // =================================
-                // UPDATE SCREEN
-                // =================================
+            if (result > 0) {
 
                 tvItemName.text =
                     name
