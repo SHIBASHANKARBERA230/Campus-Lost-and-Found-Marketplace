@@ -52,6 +52,20 @@
         android:layout_height="50dp" />
 
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Location"
+        android:textStyle="bold"
+        android:paddingStart="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="4dp" />
+
+    <Spinner
+        android:id="@+id/spinnerLocation"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
+    <TextView
         android:id="@+id/tvSearchResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

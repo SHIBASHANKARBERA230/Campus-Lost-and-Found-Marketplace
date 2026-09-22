@@ -34,6 +34,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var tvResult: TextView
     private lateinit var spinnerType: Spinner
     private lateinit var spinnerCategory: Spinner
+    private lateinit var spinnerLocation: Spinner
 
     private val repository by lazy {
         ItemRepository(
@@ -64,6 +65,24 @@ class SearchActivity : AppCompatActivity() {
         "Other"
     )
 
+    /*
+     * These are filter options.
+     * Add/change locations here according to your campus.
+     */
+    private val locations = arrayOf(
+        "All Locations",
+        "Library",
+        "Canteen",
+        "Hostel",
+        "Classroom",
+        "Laboratory",
+        "Main Gate",
+        "Parking",
+        "Auditorium",
+        "Sports Ground",
+        "Other"
+    )
+
     override fun onCreate(
         savedInstanceState: Bundle?
     ) {
@@ -88,16 +107,17 @@ class SearchActivity : AppCompatActivity() {
         spinnerCategory =
             findViewById(R.id.spinnerCategory)
 
+        spinnerLocation =
+            findViewById(R.id.spinnerLocation)
+
         recyclerView.layoutManager =
             LinearLayoutManager(this)
 
         setupTypeSpinner()
         setupCategorySpinner()
+        setupLocationSpinner()
         setupSearch()
 
-        /*
-         * Receive search text from MainActivity.
-         */
         val initialQuery =
             intent.getStringExtra("searchQuery")
 
@@ -143,15 +163,7 @@ class SearchActivity : AppCompatActivity() {
                     position: Int,
                     id: Long
                 ) {
-
-                    if (
-                        searchBox.text
-                            .toString()
-                            .trim()
-                            .isNotEmpty()
-                    ) {
-                        performSearch()
-                    }
+                    performSearch()
                 }
 
                 override fun onNothingSelected(
@@ -184,15 +196,40 @@ class SearchActivity : AppCompatActivity() {
                     position: Int,
                     id: Long
                 ) {
+                    performSearch()
+                }
 
-                    if (
-                        searchBox.text
-                            .toString()
-                            .trim()
-                            .isNotEmpty()
-                    ) {
-                        performSearch()
-                    }
+                override fun onNothingSelected(
+                    parent: AdapterView<*>?
+                ) {
+                }
+            }
+    }
+
+    private fun setupLocationSpinner() {
+
+        val adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item,
+            locations
+        )
+
+        adapter.setDropDownViewResource(
+            android.R.layout.simple_spinner_dropdown_item
+        )
+
+        spinnerLocation.adapter = adapter
+
+        spinnerLocation.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    performSearch()
                 }
 
                 override fun onNothingSelected(
@@ -258,33 +295,38 @@ class SearchActivity : AppCompatActivity() {
                 ?.toString()
                 ?: "All Categories"
 
-        if (query.isEmpty()) {
+        val selectedLocation =
+            spinnerLocation.selectedItem
+                ?.toString()
+                ?: "All Locations"
 
-            recyclerView.adapter =
-                ItemAdapter(emptyList()) {
-                    // No item
-                }
-
-            tvResult.text =
-                "Enter an item name, category or location"
-
-            return
-        }
-
+        /*
+         * Don't require search text anymore.
+         *
+         * This allows users to:
+         * - filter only LOST items
+         * - filter only FOUND items
+         * - filter by category
+         * - filter by location
+         */
         lifecycleScope.launch {
 
             val databaseItems:
                     List<ItemEntity> =
                 withContext(Dispatchers.IO) {
 
-                    repository.searchItems(query)
+                    if (query.isEmpty()) {
+                        repository.getAllItems()
+                    } else {
+                        repository.searchItems(query)
+                    }
                 }
 
             var filteredItems =
                 databaseItems
 
             /*
-             * Filter by LOST / FOUND.
+             * LOST / FOUND filter.
              */
             if (selectedType != "All") {
 
@@ -299,7 +341,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             /*
-             * Filter by category.
+             * Category filter.
              */
             if (selectedCategory != "All Categories") {
 
@@ -308,6 +350,25 @@ class SearchActivity : AppCompatActivity() {
 
                         item.category.equals(
                             selectedCategory,
+                            ignoreCase = true
+                        )
+                    }
+            }
+
+            /*
+             * Location filter.
+             *
+             * Contains is used instead of exact matching,
+             * so "Library - Ground Floor" can match
+             * the "Library" filter.
+             */
+            if (selectedLocation != "All Locations") {
+
+                filteredItems =
+                    filteredItems.filter { item ->
+
+                        item.location.contains(
+                            selectedLocation,
                             ignoreCase = true
                         )
                     }
