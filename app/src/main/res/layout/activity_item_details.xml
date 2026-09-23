@@ -99,6 +99,16 @@
             android:text="@string/add_to_favorites"
             android:textSize="12sp" />
 
+        <!-- ================= REPORT ITEM ================= -->
+
+        <Button
+            android:id="@+id/btnReport"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="6dp"
+            android:text="🚩 REPORT ITEM"
+            android:textSize="12sp" />
+
         <!-- ================= CONTACT OWNER ================= -->
 
         <Button

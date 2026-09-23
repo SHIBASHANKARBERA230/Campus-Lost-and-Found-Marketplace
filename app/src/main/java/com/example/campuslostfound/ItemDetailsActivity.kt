@@ -43,6 +43,7 @@ class ItemDetailsActivity : AppCompatActivity() {
     private lateinit var btnContactOwner: Button
     private lateinit var btnClaimItem: Button
     private lateinit var btnFavorite: Button
+    private lateinit var btnReport: Button
     private lateinit var btnEdit: Button
     private lateinit var btnMarkResolved: Button
     private lateinit var btnDelete: Button
@@ -149,6 +150,9 @@ class ItemDetailsActivity : AppCompatActivity() {
         btnFavorite =
             findViewById(R.id.btnFavorite)
 
+        btnReport =
+            findViewById(R.id.btnReport)
+
         btnEdit =
             findViewById(R.id.btnEdit)
 
@@ -208,6 +212,16 @@ class ItemDetailsActivity : AppCompatActivity() {
         btnFavorite.setOnClickListener {
 
             toggleFavorite()
+        }
+
+
+        // =========================================
+        // REPORT BUTTON
+        // =========================================
+
+        btnReport.setOnClickListener {
+
+            openReportScreen()
         }
 
 
@@ -321,6 +335,9 @@ class ItemDetailsActivity : AppCompatActivity() {
                 btnClaimItem.visibility =
                     View.GONE
 
+                btnReport.visibility =
+                    View.GONE
+
                 btnEdit.visibility =
                     View.VISIBLE
 
@@ -360,6 +377,9 @@ class ItemDetailsActivity : AppCompatActivity() {
 
                 btnContactOwner.text =
                     "📞 CONTACT OWNER"
+
+                btnReport.visibility =
+                    View.VISIBLE
 
                 btnEdit.visibility =
                     View.GONE
@@ -452,6 +472,56 @@ class ItemDetailsActivity : AppCompatActivity() {
                 confirmDelete()
             }
         }
+    }
+
+
+    // =============================================
+    // REPORT ITEM
+    // =============================================
+
+    private fun openReportScreen() {
+
+        if (currentUserId == 0) {
+
+            Toast.makeText(
+                this,
+                "Please login again",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            return
+        }
+
+
+        if (itemOwnerId == currentUserId) {
+
+            Toast.makeText(
+                this,
+                "You cannot report your own item",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            return
+        }
+
+
+        val intent =
+            Intent(
+                this,
+                ReportItemActivity::class.java
+            )
+
+        intent.putExtra(
+            "itemId",
+            itemId
+        )
+
+        intent.putExtra(
+            "ownerUserId",
+            itemOwnerId
+        )
+
+        startActivity(intent)
     }
 
 

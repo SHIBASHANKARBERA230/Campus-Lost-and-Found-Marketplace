@@ -13,9 +13,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase
         UserEntity::class,
         NotificationEntity::class,
         ClaimEntity::class,
-        FavoriteEntity::class
+        FavoriteEntity::class,
+        ReportEntity::class
     ],
-    version = 7,
+    version = 8,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -29,6 +30,9 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun claimDao(): ClaimDao
 
     abstract fun favoriteDao(): FavoriteDao
+
+    abstract fun reportDao(): ReportDao
+
 
     companion object {
 
@@ -212,6 +216,36 @@ abstract class AppDatabase : RoomDatabase() {
 
 
         // =============================================
+        // Migration 7 → 8
+        // Adds reports table
+        // =============================================
+
+        private val MIGRATION_7_8 =
+            object : Migration(7, 8) {
+
+                override fun migrate(
+                    database: SupportSQLiteDatabase
+                ) {
+
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS reports (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                            itemId INTEGER NOT NULL,
+                            reporterUserId INTEGER NOT NULL,
+                            ownerUserId INTEGER NOT NULL,
+                            reason TEXT NOT NULL,
+                            details TEXT NOT NULL,
+                            status TEXT NOT NULL,
+                            createdAt INTEGER NOT NULL
+                        )
+                        """.trimIndent()
+                    )
+                }
+            }
+
+
+        // =============================================
         // GET DATABASE
         // =============================================
 
@@ -234,7 +268,8 @@ abstract class AppDatabase : RoomDatabase() {
                                 MIGRATION_3_4,
                                 MIGRATION_4_5,
                                 MIGRATION_5_6,
-                                MIGRATION_6_7
+                                MIGRATION_6_7,
+                                MIGRATION_7_8
                             )
                             .build()
                             .also {
