@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:clipToPadding="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingStart="16dp"
+        android:paddingTop="40dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="32dp">
+
+        <!-- TITLE -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🔔 Notifications"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:padding="8dp" />
+
+        <!-- MARK ALL AS READ -->
+
+        <Button
+            android:id="@+id/btnMarkAllRead"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="8dp"
+            android:text="Mark All as Read"
+            android:textSize="14sp" />
+
+        <!-- RESULT -->
+
+        <TextView
+            android:id="@+id/tvNotificationResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Loading notifications..."
+            android:textSize="14sp"
+            android:padding="8dp" />
+
+        <!-- NOTIFICATION LIST -->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerNotifications"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false"
+            android:paddingTop="4dp"
+            android:paddingBottom="16dp" />
+
+    </LinearLayout>
+
+</ScrollView>
