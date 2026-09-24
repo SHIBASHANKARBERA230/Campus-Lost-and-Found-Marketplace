@@ -33,6 +33,10 @@ interface UserDao {
         userId: Int
     ): UserEntity?
 
+    // =============================================
+    // PROFILE
+    // =============================================
+
     @Query(
         """
         UPDATE users
@@ -46,6 +50,10 @@ interface UserDao {
         name: String,
         phone: String
     )
+
+    // =============================================
+    // PASSWORD
+    // =============================================
 
     @Query(
         """
@@ -61,7 +69,10 @@ interface UserDao {
         passwordSalt: String
     )
 
-    // Check whether the user is an administrator
+    // =============================================
+    // ADMIN CHECK
+    // =============================================
+
     @Query(
         """
         SELECT * FROM users
@@ -73,4 +84,65 @@ interface UserDao {
     suspend fun getAdminById(
         userId: Int
     ): UserEntity?
+
+    // =============================================
+    // ADMIN USER MANAGEMENT
+    // =============================================
+
+    // Get all registered users
+    @Query(
+        """
+        SELECT * FROM users
+        ORDER BY id DESC
+        """
+    )
+    suspend fun getAllUsers(): List<UserEntity>
+
+    // Activate user
+    @Query(
+        """
+        UPDATE users
+        SET isActive = 1
+        WHERE id = :userId
+        """
+    )
+    suspend fun activateUser(
+        userId: Int
+    ): Int
+
+    // Deactivate user
+    @Query(
+        """
+        UPDATE users
+        SET isActive = 0
+        WHERE id = :userId
+        """
+    )
+    suspend fun deactivateUser(
+        userId: Int
+    ): Int
+
+    // Promote user to administrator
+    @Query(
+        """
+        UPDATE users
+        SET isAdmin = 1
+        WHERE id = :userId
+        """
+    )
+    suspend fun makeUserAdmin(
+        userId: Int
+    ): Int
+
+    // Remove administrator privilege
+    @Query(
+        """
+        UPDATE users
+        SET isAdmin = 0
+        WHERE id = :userId
+        """
+    )
+    suspend fun removeAdmin(
+        userId: Int
+    ): Int
 }

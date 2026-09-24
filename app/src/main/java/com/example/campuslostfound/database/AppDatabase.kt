@@ -16,7 +16,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
         FavoriteEntity::class,
         ReportEntity::class
     ],
-    version = 9,
+    version = 10,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -268,6 +268,28 @@ abstract class AppDatabase : RoomDatabase() {
 
 
         // =============================================
+        // Migration 9 → 10
+        // Adds isActive to users
+        // =============================================
+
+        private val MIGRATION_9_10 =
+            object : Migration(9, 10) {
+
+                override fun migrate(
+                    database: SupportSQLiteDatabase
+                ) {
+
+                    database.execSQL(
+                        """
+                        ALTER TABLE users
+                        ADD COLUMN isActive INTEGER NOT NULL DEFAULT 1
+                        """.trimIndent()
+                    )
+                }
+            }
+
+
+        // =============================================
         // GET DATABASE
         // =============================================
 
@@ -292,7 +314,8 @@ abstract class AppDatabase : RoomDatabase() {
                                 MIGRATION_5_6,
                                 MIGRATION_6_7,
                                 MIGRATION_7_8,
-                                MIGRATION_8_9
+                                MIGRATION_8_9,
+                                MIGRATION_9_10
                             )
                             .build()
                             .also {

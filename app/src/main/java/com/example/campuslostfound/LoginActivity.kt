@@ -34,16 +34,11 @@ class LoginActivity : AppCompatActivity() {
         val loginButton = findViewById<Button>(R.id.btnLogin)
         val registerText = findViewById<TextView>(R.id.tvRegister)
 
-        // =========================
-        // LOGIN
-        // =========================
-
         loginButton.setOnClickListener {
 
             val emailText = email.text.toString().trim()
             val passwordText = password.text.toString()
 
-            // Validate empty fields
             if (emailText.isEmpty() || passwordText.isEmpty()) {
 
                 registerText.text =
@@ -58,7 +53,6 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Validate email format
             if (!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
 
                 registerText.text =
@@ -69,7 +63,6 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Validate password length
             if (passwordText.length < 6) {
 
                 registerText.text =
@@ -80,7 +73,6 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Disable button while login is processing
             loginButton.isEnabled = false
             loginButton.text = "LOGGING IN..."
 
@@ -93,6 +85,18 @@ class LoginActivity : AppCompatActivity() {
                 loginButton.text = "LOGIN"
 
                 if (success && user != null) {
+
+                    // =========================
+                    // CHECK ACCOUNT STATUS
+                    // =========================
+
+                    if (!user.isActive) {
+
+                        registerText.text =
+                            "Your account has been deactivated ❌"
+
+                        return@login
+                    }
 
                     // =========================
                     // SAVE SESSION
@@ -121,7 +125,6 @@ class LoginActivity : AppCompatActivity() {
                     loginButton.text =
                         "SUCCESS ✅"
 
-                    // Open MainActivity
                     loginButton.postDelayed({
 
                         startActivity(
@@ -137,19 +140,11 @@ class LoginActivity : AppCompatActivity() {
 
                 } else {
 
-                    // =========================
-                    // LOGIN FAILED
-                    // =========================
-
                     registerText.text =
                         "Invalid email or password ❌"
                 }
             }
         }
-
-        // =========================
-        // OPEN REGISTER
-        // =========================
 
         registerText.setOnClickListener {
 

@@ -18,5 +18,7 @@ data class UserEntity(
 
     val passwordSalt: String,
 
-    val isAdmin: Boolean = false
+    val isAdmin: Boolean = false,
+
+    val isActive: Boolean = true
 )

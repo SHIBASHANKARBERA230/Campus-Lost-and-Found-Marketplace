@@ -214,6 +214,16 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
+
+        <!-- ===================================== -->
+        <!-- ADMIN USER MANAGEMENT -->
+        <!-- ===================================== -->
+
+        <activity
+            android:name=".AdminUsersActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
     </application>
 
 </manifest>

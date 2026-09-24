@@ -2,6 +2,7 @@ package com.example.campuslostfound
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -18,7 +19,9 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var tvProfileName: TextView
     private lateinit var tvProfileEmail: TextView
     private lateinit var tvProfilePhone: TextView
+
     private lateinit var btnAdminReports: Button
+    private lateinit var btnAdminUsers: Button
 
     private val userRepository by lazy {
         UserRepository(
@@ -44,6 +47,9 @@ class ProfileActivity : AppCompatActivity() {
 
         btnAdminReports =
             findViewById(R.id.btnAdminReports)
+
+        btnAdminUsers =
+            findViewById(R.id.btnAdminUsers)
 
         // EDIT PROFILE
         findViewById<Button>(
@@ -78,6 +84,17 @@ class ProfileActivity : AppCompatActivity() {
                 Intent(
                     this,
                     AdminReportsActivity::class.java
+                )
+            )
+        }
+
+        // ADMIN USER MANAGEMENT
+        btnAdminUsers.setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    AdminUsersActivity::class.java
                 )
             )
         }
@@ -154,16 +171,22 @@ class ProfileActivity : AppCompatActivity() {
             tvProfilePhone.text =
                 user.phone
 
-            // SHOW ADMIN REPORTS ONLY FOR ADMIN
+            // SHOW ADMIN FEATURES ONLY FOR ADMIN
             if (user.isAdmin) {
 
                 btnAdminReports.visibility =
-                    android.view.View.VISIBLE
+                    View.VISIBLE
+
+                btnAdminUsers.visibility =
+                    View.VISIBLE
 
             } else {
 
                 btnAdminReports.visibility =
-                    android.view.View.GONE
+                    View.GONE
+
+                btnAdminUsers.visibility =
+                    View.GONE
             }
         }
     }
