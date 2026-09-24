@@ -24,7 +24,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/auth/**",
                                 "/api/items/**",
-                                "/api/claims/**"
+                                "/api/claims/**",
+                                "/api/favorites/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 );
