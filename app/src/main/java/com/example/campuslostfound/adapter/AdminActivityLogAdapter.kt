@@ -20,16 +20,24 @@ class AdminActivityLogAdapter(
     ) : RecyclerView.ViewHolder(itemView) {
 
         val tvAction: TextView =
-            itemView.findViewById(R.id.tvActivityAction)
+            itemView.findViewById(
+                R.id.tvActivityAction
+            )
 
         val tvDetails: TextView =
-            itemView.findViewById(R.id.tvActivityDetails)
+            itemView.findViewById(
+                R.id.tvActivityDetails
+            )
 
         val tvAdmin: TextView =
-            itemView.findViewById(R.id.tvActivityAdmin)
+            itemView.findViewById(
+                R.id.tvActivityAdmin
+            )
 
         val tvDate: TextView =
-            itemView.findViewById(R.id.tvActivityDate)
+            itemView.findViewById(
+                R.id.tvActivityDate
+            )
     }
 
     override fun onCreateViewHolder(
@@ -37,12 +45,13 @@ class AdminActivityLogAdapter(
         viewType: Int
     ): ActivityViewHolder {
 
-        val view = LayoutInflater.from(parent.context)
-            .inflate(
-                R.layout.item_admin_activity,
-                parent,
-                false
-            )
+        val view =
+            LayoutInflater.from(parent.context)
+                .inflate(
+                    R.layout.item_admin_activity,
+                    parent,
+                    false
+                )
 
         return ActivityViewHolder(view)
     }
@@ -52,7 +61,8 @@ class AdminActivityLogAdapter(
         position: Int
     ) {
 
-        val activity = activities[position]
+        val activity =
+            activities[position]
 
         holder.tvAction.text =
             "Action: ${activity.action}"
@@ -63,13 +73,16 @@ class AdminActivityLogAdapter(
         holder.tvAdmin.text =
             "Admin User ID: ${activity.adminUserId}"
 
-        val formatter = SimpleDateFormat(
-            "dd MMM yyyy, hh:mm a",
-            Locale.getDefault()
-        )
+        val formatter =
+            SimpleDateFormat(
+                "dd MMM yyyy, hh:mm a",
+                Locale.getDefault()
+            )
 
         holder.tvDate.text =
-            formatter.format(Date(activity.createdAt))
+            formatter.format(
+                Date(activity.createdAt)
+            )
     }
 
     override fun getItemCount(): Int {
@@ -79,7 +92,10 @@ class AdminActivityLogAdapter(
     fun updateActivities(
         newActivities: List<AdminActivityEntity>
     ) {
-        activities = newActivities
+
+        activities =
+            newActivities
+
         notifyDataSetChanged()
     }
 }
