@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.campuslostfound.database.AdminActivityRepository
 import com.example.campuslostfound.database.AppDatabase
 import com.example.campuslostfound.database.PasswordHasher
 import com.example.campuslostfound.database.UserEntity
@@ -26,12 +27,20 @@ class AdminUsersActivity : AppCompatActivity() {
         AppDatabase.getDatabase(this)
     }
 
+    private val activityRepository by lazy {
+        AdminActivityRepository(
+            database.adminActivityDao()
+        )
+    }
+
     private var currentUserId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_admin_users)
+        setContentView(
+            R.layout.activity_admin_users
+        )
 
         usersContainer =
             findViewById(R.id.usersContainer)
@@ -63,6 +72,7 @@ class AdminUsersActivity : AppCompatActivity() {
 
         checkAdmin()
     }
+
 
     // =============================================
     // CHECK ADMIN
@@ -99,6 +109,36 @@ class AdminUsersActivity : AppCompatActivity() {
         }
     }
 
+
+    // =============================================
+    // LOG ADMIN ACTIVITY
+    // =============================================
+
+    private fun logAdminActivity(
+        action: String,
+        targetUserId: Int? = null,
+        details: String = ""
+    ) {
+
+        if (currentUserId == 0) {
+            return
+        }
+
+        lifecycleScope.launch {
+
+            withContext(Dispatchers.IO) {
+
+                activityRepository.logActivity(
+                    adminUserId = currentUserId,
+                    action = action,
+                    targetUserId = targetUserId,
+                    details = details
+                )
+            }
+        }
+    }
+
+
     // =============================================
     // LOAD USERS
     // =============================================
@@ -118,6 +158,7 @@ class AdminUsersActivity : AppCompatActivity() {
             displayUsers(users)
         }
     }
+
 
     // =============================================
     // DISPLAY USERS
@@ -160,6 +201,7 @@ class AdminUsersActivity : AppCompatActivity() {
         }
     }
 
+
     // =============================================
     // USER CARD
     // =============================================
@@ -181,6 +223,7 @@ class AdminUsersActivity : AppCompatActivity() {
             20
         )
 
+
         // NAME
 
         val name =
@@ -197,6 +240,7 @@ class AdminUsersActivity : AppCompatActivity() {
             Typeface.BOLD
         )
 
+
         // EMAIL
 
         val email =
@@ -208,6 +252,7 @@ class AdminUsersActivity : AppCompatActivity() {
         email.textSize =
             15f
 
+
         // PHONE
 
         val phone =
@@ -218,6 +263,7 @@ class AdminUsersActivity : AppCompatActivity() {
 
         phone.textSize =
             15f
+
 
         // ROLE
 
@@ -234,6 +280,7 @@ class AdminUsersActivity : AppCompatActivity() {
         role.textSize =
             15f
 
+
         // STATUS
 
         val status =
@@ -248,6 +295,7 @@ class AdminUsersActivity : AppCompatActivity() {
 
         status.textSize =
             15f
+
 
         // ADMIN BUTTON
 
@@ -277,16 +325,19 @@ class AdminUsersActivity : AppCompatActivity() {
             if (user.isAdmin) {
 
                 removeAdmin(
-                    user.id
+                    user.id,
+                    user.name
                 )
 
             } else {
 
                 makeAdmin(
-                    user.id
+                    user.id,
+                    user.name
                 )
             }
         }
+
 
         // ACTIVE BUTTON
 
@@ -316,16 +367,19 @@ class AdminUsersActivity : AppCompatActivity() {
             if (user.isActive) {
 
                 deactivateUser(
-                    user.id
+                    user.id,
+                    user.name
                 )
 
             } else {
 
                 activateUser(
-                    user.id
+                    user.id,
+                    user.name
                 )
             }
         }
+
 
         // RESET PASSWORD BUTTON
 
@@ -351,6 +405,7 @@ class AdminUsersActivity : AppCompatActivity() {
             showResetPasswordDialog(user)
         }
 
+
         // ADD VIEWS
 
         card.addView(name)
@@ -368,6 +423,7 @@ class AdminUsersActivity : AppCompatActivity() {
         card.addView(activeButton)
 
         card.addView(resetPasswordButton)
+
 
         // CARD MARGIN
 
@@ -391,6 +447,7 @@ class AdminUsersActivity : AppCompatActivity() {
             card
         )
     }
+
 
     // =============================================
     // RESET PASSWORD DIALOG
@@ -460,39 +517,48 @@ class AdminUsersActivity : AppCompatActivity() {
 
                 resetPassword(
                     user.id,
+                    user.name,
                     newPassword
                 )
             }
             .show()
     }
 
+
     private fun resetPassword(
         userId: Int,
+        userName: String,
         newPassword: String
     ) {
 
         lifecycleScope.launch {
 
-            val result =
-                withContext(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
 
-                    val salt =
-                        PasswordHasher.generateSalt()
+                val salt =
+                    PasswordHasher.generateSalt()
 
-                    val hash =
-                        PasswordHasher.hashPassword(
-                            newPassword,
-                            salt
-                        )
+                val hash =
+                    PasswordHasher.hashPassword(
+                        newPassword,
+                        salt
+                    )
 
-                    database
-                        .userDao()
-                        .updatePassword(
-                            userId,
-                            hash,
-                            salt
-                        )
-                }
+                database
+                    .userDao()
+                    .updatePassword(
+                        userId,
+                        hash,
+                        salt
+                    )
+            }
+
+            logAdminActivity(
+                action = "RESET_PASSWORD",
+                targetUserId = userId,
+                details =
+                    "Administrator reset password for $userName"
+            )
 
             Toast.makeText(
                 this@AdminUsersActivity,
@@ -502,12 +568,14 @@ class AdminUsersActivity : AppCompatActivity() {
         }
     }
 
+
     // =============================================
     // MAKE ADMIN
     // =============================================
 
     private fun makeAdmin(
-        userId: Int
+        userId: Int,
+        userName: String
     ) {
 
         lifecycleScope.launch {
@@ -523,6 +591,13 @@ class AdminUsersActivity : AppCompatActivity() {
                 }
 
             if (result > 0) {
+
+                logAdminActivity(
+                    action = "MAKE_ADMIN",
+                    targetUserId = userId,
+                    details =
+                        "Granted administrator role to $userName"
+                )
 
                 Toast.makeText(
                     this@AdminUsersActivity,
@@ -543,12 +618,14 @@ class AdminUsersActivity : AppCompatActivity() {
         }
     }
 
+
     // =============================================
     // REMOVE ADMIN
     // =============================================
 
     private fun removeAdmin(
-        userId: Int
+        userId: Int,
+        userName: String
     ) {
 
         lifecycleScope.launch {
@@ -564,6 +641,13 @@ class AdminUsersActivity : AppCompatActivity() {
                 }
 
             if (result > 0) {
+
+                logAdminActivity(
+                    action = "REMOVE_ADMIN",
+                    targetUserId = userId,
+                    details =
+                        "Removed administrator role from $userName"
+                )
 
                 Toast.makeText(
                     this@AdminUsersActivity,
@@ -584,12 +668,14 @@ class AdminUsersActivity : AppCompatActivity() {
         }
     }
 
+
     // =============================================
     // DEACTIVATE USER
     // =============================================
 
     private fun deactivateUser(
-        userId: Int
+        userId: Int,
+        userName: String
     ) {
 
         lifecycleScope.launch {
@@ -605,6 +691,13 @@ class AdminUsersActivity : AppCompatActivity() {
                 }
 
             if (result > 0) {
+
+                logAdminActivity(
+                    action = "DEACTIVATE_USER",
+                    targetUserId = userId,
+                    details =
+                        "Deactivated user $userName"
+                )
 
                 Toast.makeText(
                     this@AdminUsersActivity,
@@ -625,12 +718,14 @@ class AdminUsersActivity : AppCompatActivity() {
         }
     }
 
+
     // =============================================
     // ACTIVATE USER
     // =============================================
 
     private fun activateUser(
-        userId: Int
+        userId: Int,
+        userName: String
     ) {
 
         lifecycleScope.launch {
@@ -646,6 +741,13 @@ class AdminUsersActivity : AppCompatActivity() {
                 }
 
             if (result > 0) {
+
+                logAdminActivity(
+                    action = "ACTIVATE_USER",
+                    targetUserId = userId,
+                    details =
+                        "Activated user $userName"
+                )
 
                 Toast.makeText(
                     this@AdminUsersActivity,
@@ -665,6 +767,7 @@ class AdminUsersActivity : AppCompatActivity() {
             }
         }
     }
+
 
     // =============================================
     // REFRESH

@@ -89,7 +89,6 @@ interface UserDao {
     // ADMIN USER MANAGEMENT
     // =============================================
 
-    // Get all registered users
     @Query(
         """
         SELECT * FROM users
@@ -98,7 +97,6 @@ interface UserDao {
     )
     suspend fun getAllUsers(): List<UserEntity>
 
-    // Activate user
     @Query(
         """
         UPDATE users
@@ -110,7 +108,6 @@ interface UserDao {
         userId: Int
     ): Int
 
-    // Deactivate user
     @Query(
         """
         UPDATE users
@@ -122,7 +119,6 @@ interface UserDao {
         userId: Int
     ): Int
 
-    // Promote user to administrator
     @Query(
         """
         UPDATE users
@@ -134,7 +130,6 @@ interface UserDao {
         userId: Int
     ): Int
 
-    // Remove administrator privilege
     @Query(
         """
         UPDATE users
@@ -145,4 +140,37 @@ interface UserDao {
     suspend fun removeAdmin(
         userId: Int
     ): Int
+
+    // =============================================
+    // ADMIN DASHBOARD COUNTS
+    // =============================================
+
+    @Query(
+        "SELECT COUNT(*) FROM users"
+    )
+    suspend fun getTotalUsers(): Int
+
+    @Query(
+        """
+        SELECT COUNT(*) FROM users
+        WHERE isActive = 1
+        """
+    )
+    suspend fun getActiveUsers(): Int
+
+    @Query(
+        """
+        SELECT COUNT(*) FROM users
+        WHERE isActive = 0
+        """
+    )
+    suspend fun getInactiveUsers(): Int
+
+    @Query(
+        """
+        SELECT COUNT(*) FROM users
+        WHERE isAdmin = 1
+        """
+    )
+    suspend fun getAdminUsers(): Int
 }

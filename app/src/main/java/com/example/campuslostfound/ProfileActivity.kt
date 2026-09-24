@@ -22,6 +22,7 @@ class ProfileActivity : AppCompatActivity() {
 
     private lateinit var btnAdminReports: Button
     private lateinit var btnAdminUsers: Button
+    private lateinit var btnAdminDashboard: Button
 
     private val userRepository by lazy {
         UserRepository(
@@ -50,6 +51,9 @@ class ProfileActivity : AppCompatActivity() {
 
         btnAdminUsers =
             findViewById(R.id.btnAdminUsers)
+
+        btnAdminDashboard =
+            findViewById(R.id.btnAdminDashboard)
 
         // EDIT PROFILE
         findViewById<Button>(
@@ -84,6 +88,17 @@ class ProfileActivity : AppCompatActivity() {
                 Intent(
                     this,
                     AdminReportsActivity::class.java
+                )
+            )
+        }
+
+        // ADMIN DASHBOARD
+        btnAdminDashboard.setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    AdminDashboardActivity::class.java
                 )
             )
         }
@@ -177,12 +192,18 @@ class ProfileActivity : AppCompatActivity() {
                 btnAdminReports.visibility =
                     View.VISIBLE
 
+                btnAdminDashboard.visibility =
+                    View.VISIBLE
+
                 btnAdminUsers.visibility =
                     View.VISIBLE
 
             } else {
 
                 btnAdminReports.visibility =
+                    View.GONE
+
+                btnAdminDashboard.visibility =
                     View.GONE
 
                 btnAdminUsers.visibility =

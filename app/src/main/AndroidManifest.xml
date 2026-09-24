@@ -224,6 +224,15 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
+        <activity
+            android:name=".AdminDashboardActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".AdminActivityLogActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

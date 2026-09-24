@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.campuslostfound.database.AdminActivityRepository
 import com.example.campuslostfound.database.AppDatabase
 import com.example.campuslostfound.database.ReportEntity
 import kotlinx.coroutines.Dispatchers
@@ -22,24 +23,37 @@ class AdminReportsActivity : AppCompatActivity() {
         AppDatabase.getDatabase(this)
     }
 
+    private val activityRepository by lazy {
+        AdminActivityRepository(
+            database.adminActivityDao()
+        )
+    }
+
     private var currentUserId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_admin_reports)
-
-        reportsContainer = findViewById(R.id.reportsContainer)
-
-        val preferences = getSharedPreferences(
-            "user_session",
-            MODE_PRIVATE
+        setContentView(
+            R.layout.activity_admin_reports
         )
 
-        currentUserId = preferences.getInt(
-            "userId",
-            0
-        )
+        reportsContainer =
+            findViewById(
+                R.id.reportsContainer
+            )
+
+        val preferences =
+            getSharedPreferences(
+                "user_session",
+                MODE_PRIVATE
+            )
+
+        currentUserId =
+            preferences.getInt(
+                "userId",
+                0
+            )
 
         if (currentUserId == 0) {
 
@@ -60,11 +74,15 @@ class AdminReportsActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
 
-            val admin = withContext(Dispatchers.IO) {
+            val admin =
+                withContext(Dispatchers.IO) {
 
-                database.userDao()
-                    .getAdminById(currentUserId)
-            }
+                    database
+                        .userDao()
+                        .getAdminById(
+                            currentUserId
+                        )
+                }
 
             if (admin == null) {
 
@@ -75,6 +93,7 @@ class AdminReportsActivity : AppCompatActivity() {
                 ).show()
 
                 finish()
+
                 return@launch
             }
 
@@ -86,11 +105,13 @@ class AdminReportsActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
 
-            val reports = withContext(Dispatchers.IO) {
+            val reports =
+                withContext(Dispatchers.IO) {
 
-                database.reportDao()
-                    .getPendingReports()
-            }
+                    database
+                        .reportDao()
+                        .getPendingReports()
+                }
 
             displayReports(reports)
         }
@@ -104,10 +125,15 @@ class AdminReportsActivity : AppCompatActivity() {
 
         if (reports.isEmpty()) {
 
-            val emptyText = TextView(this)
+            val emptyText =
+                TextView(this)
 
-            emptyText.text = "No pending reports 🎉"
-            emptyText.textSize = 18f
+            emptyText.text =
+                "No pending reports 🎉"
+
+            emptyText.textSize =
+                18f
+
             emptyText.setPadding(
                 16,
                 32,
@@ -115,7 +141,9 @@ class AdminReportsActivity : AppCompatActivity() {
                 32
             )
 
-            reportsContainer.addView(emptyText)
+            reportsContainer.addView(
+                emptyText
+            )
 
             return
         }
@@ -130,9 +158,11 @@ class AdminReportsActivity : AppCompatActivity() {
         report: ReportEntity
     ) {
 
-        val card = LinearLayout(this)
+        val card =
+            LinearLayout(this)
 
-        card.orientation = LinearLayout.VERTICAL
+        card.orientation =
+            LinearLayout.VERTICAL
 
         card.setPadding(
             20,
@@ -141,40 +171,62 @@ class AdminReportsActivity : AppCompatActivity() {
             20
         )
 
-        val title = TextView(this)
+        val title =
+            TextView(this)
 
-        title.text = "🚩 Report #${report.id}"
-        title.textSize = 20f
+        title.text =
+            "🚩 Report #${report.id}"
+
+        title.textSize =
+            20f
+
         title.setTypeface(
             null,
             android.graphics.Typeface.BOLD
         )
 
-        val reason = TextView(this)
+        val reason =
+            TextView(this)
 
-        reason.text = "Reason: ${report.reason}"
-        reason.textSize = 16f
+        reason.text =
+            "Reason: ${report.reason}"
 
-        val details = TextView(this)
+        reason.textSize =
+            16f
 
-        details.text = "Details: ${report.details}"
-        details.textSize = 15f
+        val details =
+            TextView(this)
 
-        val itemId = TextView(this)
+        details.text =
+            "Details: ${report.details}"
 
-        itemId.text = "Item ID: ${report.itemId}"
-        itemId.textSize = 14f
+        details.textSize =
+            15f
 
-        val viewButton = Button(this)
+        val itemId =
+            TextView(this)
 
-        viewButton.text = "VIEW ITEM"
+        itemId.text =
+            "Item ID: ${report.itemId}"
+
+        itemId.textSize =
+            14f
+
+        // VIEW ITEM
+
+        val viewButton =
+            Button(this)
+
+        viewButton.text =
+            "VIEW ITEM"
 
         viewButton.setOnClickListener {
 
-            val intent = Intent(
-                this,
-                ItemDetailsActivity::class.java
-            )
+            val intent =
+                Intent(
+                    this,
+                    ItemDetailsActivity::class.java
+                )
 
             intent.putExtra(
                 "itemId",
@@ -184,21 +236,29 @@ class AdminReportsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val dismissButton = Button(this)
+        // DISMISS REPORT
 
-        dismissButton.text = "DISMISS REPORT"
+        val dismissButton =
+            Button(this)
+
+        dismissButton.text =
+            "DISMISS REPORT"
 
         dismissButton.setOnClickListener {
 
             updateReportStatus(
-                report.id,
+                report,
                 "DISMISSED"
             )
         }
 
-        val removeButton = Button(this)
+        // REMOVE REPORTED ITEM
 
-        removeButton.text = "REMOVE REPORTED ITEM"
+        val removeButton =
+            Button(this)
+
+        removeButton.text =
+            "REMOVE REPORTED ITEM"
 
         removeButton.setOnClickListener {
 
@@ -213,10 +273,11 @@ class AdminReportsActivity : AppCompatActivity() {
         card.addView(dismissButton)
         card.addView(removeButton)
 
-        val params = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
+        val params =
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
 
         params.setMargins(
             0,
@@ -225,13 +286,20 @@ class AdminReportsActivity : AppCompatActivity() {
             24
         )
 
-        card.layoutParams = params
+        card.layoutParams =
+            params
 
-        reportsContainer.addView(card)
+        reportsContainer.addView(
+            card
+        )
     }
 
+    // ============================================
+    // UPDATE REPORT STATUS
+    // ============================================
+
     private fun updateReportStatus(
-        reportId: Int,
+        report: ReportEntity,
         status: String
     ) {
 
@@ -239,11 +307,25 @@ class AdminReportsActivity : AppCompatActivity() {
 
             withContext(Dispatchers.IO) {
 
-                database.reportDao()
+                database
+                    .reportDao()
                     .updateReportStatus(
-                        reportId,
+                        report.id,
                         status
                     )
+            }
+
+            // LOG ADMIN ACTION
+
+            if (status == "DISMISSED") {
+
+                logAdminActivity(
+                    action = "DISMISS_REPORT",
+                    targetUserId = report.reporterUserId,
+                    targetItemId = report.itemId,
+                    details =
+                        "Administrator dismissed report #${report.id} for item ${report.itemId}"
+                )
             }
 
             Toast.makeText(
@@ -256,30 +338,47 @@ class AdminReportsActivity : AppCompatActivity() {
         }
     }
 
+    // ============================================
+    // REMOVE REPORTED ITEM
+    // ============================================
+
     private fun removeReportedItem(
         report: ReportEntity
     ) {
 
         lifecycleScope.launch {
 
-            val deleted = withContext(Dispatchers.IO) {
+            val deleted =
+                withContext(Dispatchers.IO) {
 
-                database.itemDao()
-                    .deleteItemById(
-                        report.itemId
-                    )
-            }
+                    database
+                        .itemDao()
+                        .deleteItemById(
+                            report.itemId
+                        )
+                }
 
             if (deleted > 0) {
 
                 withContext(Dispatchers.IO) {
 
-                    database.reportDao()
+                    database
+                        .reportDao()
                         .updateReportStatus(
                             report.id,
                             "RESOLVED"
                         )
                 }
+
+                // LOG ADMIN ACTION
+
+                logAdminActivity(
+                    action = "REMOVE_REPORTED_ITEM",
+                    targetUserId = report.reporterUserId,
+                    targetItemId = report.itemId,
+                    details =
+                        "Administrator removed reported item ${report.itemId} from report #${report.id}"
+                )
 
                 Toast.makeText(
                     this@AdminReportsActivity,
@@ -298,17 +397,49 @@ class AdminReportsActivity : AppCompatActivity() {
                 ).show()
 
                 updateReportStatus(
-                    report.id,
+                    report,
                     "RESOLVED"
                 )
             }
         }
     }
 
+    // ============================================
+    // ADMIN ACTIVITY LOG
+    // ============================================
+
+    private fun logAdminActivity(
+        action: String,
+        targetUserId: Int? = null,
+        targetItemId: Int? = null,
+        details: String
+    ) {
+
+        lifecycleScope.launch {
+
+            if (currentUserId == 0) {
+                return@launch
+            }
+
+            withContext(Dispatchers.IO) {
+
+                activityRepository.logActivity(
+                    adminUserId = currentUserId,
+                    action = action,
+                    targetUserId = targetUserId,
+                    targetItemId = targetItemId,
+                    details = details
+                )
+            }
+        }
+    }
+
     override fun onResume() {
+
         super.onResume()
 
         if (currentUserId != 0) {
+
             loadReports()
         }
     }

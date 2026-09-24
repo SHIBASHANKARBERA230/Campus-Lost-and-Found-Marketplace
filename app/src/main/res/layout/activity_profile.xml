@@ -58,8 +58,6 @@
         android:text="🔐 CHANGE PASSWORD" />
 
     <!-- ADMIN REPORTS -->
-    <!-- Hidden for normal users -->
-    <!-- ProfileActivity shows it only when isAdmin = true -->
 
     <Button
         android:id="@+id/btnAdminReports"
@@ -67,6 +65,26 @@
         android:layout_height="56dp"
         android:layout_marginTop="16dp"
         android:text="🚩 ADMIN REPORTS"
+        android:visibility="gone" />
+
+    <!-- ADMIN DASHBOARD -->
+
+    <Button
+        android:id="@+id/btnAdminDashboard"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:text="📊 ADMIN DASHBOARD"
+        android:visibility="gone" />
+
+    <!-- ADMIN USER MANAGEMENT -->
+
+    <Button
+        android:id="@+id/btnAdminUsers"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:text="👥 USER MANAGEMENT"
         android:visibility="gone" />
 
     <!-- LOGOUT -->
@@ -78,12 +96,4 @@
         android:layout_marginTop="16dp"
         android:text="🚪 LOGOUT" />
 
-
-    <Button
-        android:id="@+id/btnAdminUsers"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginTop="16dp"
-        android:text="👥 USER MANAGEMENT"
-        android:visibility="gone" />
 </LinearLayout>

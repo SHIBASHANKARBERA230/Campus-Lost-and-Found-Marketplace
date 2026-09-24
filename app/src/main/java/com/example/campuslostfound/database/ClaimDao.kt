@@ -12,72 +12,98 @@ interface ClaimDao {
         claim: ClaimEntity
     ): Long
 
-    @Query("""
+    @Query(
+        """
         SELECT * FROM claims
         WHERE id = :claimId
         LIMIT 1
-    """)
+        """
+    )
     suspend fun getClaimById(
         claimId: Int
     ): ClaimEntity?
 
-    @Query("""
+    @Query(
+        """
         SELECT * FROM claims
         WHERE itemId = :itemId
         ORDER BY id DESC
-    """)
+        """
+    )
     suspend fun getClaimsForItem(
         itemId: Int
     ): List<ClaimEntity>
 
-    @Query("""
+    @Query(
+        """
         SELECT * FROM claims
         WHERE claimantUserId = :userId
         ORDER BY id DESC
-    """)
+        """
+    )
     suspend fun getMyClaims(
         userId: Int
     ): List<ClaimEntity>
 
-    @Query("""
+    @Query(
+        """
         SELECT * FROM claims
         WHERE ownerUserId = :userId
         ORDER BY id DESC
-    """)
+        """
+    )
     suspend fun getClaimsForOwner(
         userId: Int
     ): List<ClaimEntity>
 
-    @Query("""
+    @Query(
+        """
         SELECT COUNT(*) FROM claims
         WHERE itemId = :itemId
         AND claimantUserId = :userId
         AND status = 'PENDING'
-    """)
+        """
+    )
     suspend fun hasPendingClaim(
         itemId: Int,
         userId: Int
     ): Int
 
-    @Query("""
+    @Query(
+        """
         UPDATE claims
         SET status = :status
         WHERE id = :claimId
-    """)
+        """
+    )
     suspend fun updateClaimStatus(
         claimId: Int,
         status: String
     )
 
-    @Query("""
+    @Query(
+        """
         UPDATE claims
         SET status = 'REJECTED'
         WHERE itemId = :itemId
         AND id != :approvedClaimId
         AND status = 'PENDING'
-    """)
+        """
+    )
     suspend fun rejectOtherPendingClaims(
         itemId: Int,
         approvedClaimId: Int
     )
+
+    // =========================================
+    // ADMIN DASHBOARD COUNTS
+    // =========================================
+
+    @Query(
+        """
+        SELECT COUNT(*) FROM claims
+        WHERE status = 'PENDING'
+        """
+    )
+    suspend fun getPendingClaimsCount(): Int
 }
