@@ -25,7 +25,8 @@ public class SecurityConfig {
                                 "/api/auth/**",
                                 "/api/items/**",
                                 "/api/claims/**",
-                                "/api/favorites/**"
+                                "/api/favorites/**",
+                                "/api/notifications/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 );
