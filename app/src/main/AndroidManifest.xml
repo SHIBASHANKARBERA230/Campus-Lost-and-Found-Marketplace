@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.CampusLostFound">
+
+        <!-- ===================================== -->
+        <!-- SPLASH SCREEN -->
+        <!-- ===================================== -->
+
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+
+            <intent-filter>
+
+                <action
+                    android:name="android.intent.action.MAIN" />
+
+                <category
+                    android:name="android.intent.category.LAUNCHER" />
+
+            </intent-filter>
+
+        </activity>
+
+
+        <!-- ===================================== -->
+        <!-- LOGIN -->
+        <!-- ===================================== -->
+
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+
+        <!-- ===================================== -->
+        <!-- REGISTER -->
+        <!-- ===================================== -->
+
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+
+        <!-- ===================================== -->
+        <!-- MAIN -->
+        <!-- ===================================== -->
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+
+        <!-- ===================================== -->
+        <!-- LOST ITEMS -->
+        <!-- ===================================== -->
+
+        <activity
+            android:name=".LostItemsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+
+        <!-- ===================================== -->
+        <!-- FOUND ITEMS -->
+        <!-- ===================================== -->
+
+        <activity
+            android:name=".FoundItemsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+
+        <!-- ===================================== -->
+        <!-- ITEM DETAILS -->
+        <!-- ===================================== -->
+
+        <activity
+            android:name=".ItemDetailsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+
+        <!-- ===================================== -->
+        <!-- POST ITEM -->
+        <!-- ===================================== -->
+
+        <activity
+            android:name=".PostItemActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+
+        <!-- ===================================== -->
+        <!-- SEARCH -->
+        <!-- ===================================== -->
+
+        <activity
+            android:name=".SearchActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+
+        <!-- ===================================== -->
+        <!-- PROFILE -->
+        <!-- ===================================== -->
+
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".EditProfileActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+
+        <!-- ===================================== -->
+        <!-- MY ITEMS -->
+        <!-- ===================================== -->
+
+        <activity
+            android:name=".MyItemsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+
+        <!-- ===================================== -->
+        <!-- NOTIFICATIONS -->
+        <!-- ===================================== -->
+
+        <activity
+            android:name=".NotificationActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+
+        <!-- ===================================== -->
+        <!-- CLAIM ITEM -->
+        <!-- ===================================== -->
+
+        <activity
+            android:name=".ClaimItemActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+
+        <!-- ===================================== -->
+        <!-- CLAIM REQUESTS -->
+        <!-- ===================================== -->
+
+        <activity
+            android:name=".ClaimRequestsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+
+        <!-- ===================================== -->
+        <!-- MY CLAIMS -->
+        <!-- ===================================== -->
+
+        <activity
+            android:name=".MyClaimsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+
+        <!-- ===================================== -->
+        <!-- FAVORITES -->
+        <!-- ===================================== -->
+
+        <activity
+            android:name=".FavoriteItemsActivity"
+            android:exported="false" />
+
+
+        <!-- ===================================== -->
+        <!-- REPORT ITEM -->
+        <!-- ===================================== -->
+
+        <activity
+            android:name=".ReportItemActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+    </application>
+
+</manifest>
