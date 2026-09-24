@@ -18,6 +18,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var tvProfileName: TextView
     private lateinit var tvProfileEmail: TextView
     private lateinit var tvProfilePhone: TextView
+    private lateinit var btnAdminReports: Button
 
     private val userRepository by lazy {
         UserRepository(
@@ -41,8 +42,10 @@ class ProfileActivity : AppCompatActivity() {
         tvProfilePhone =
             findViewById(R.id.tvProfilePhone)
 
-        // EDIT PROFILE
+        btnAdminReports =
+            findViewById(R.id.btnAdminReports)
 
+        // EDIT PROFILE
         findViewById<Button>(
             R.id.btnEditProfile
         ).setOnClickListener {
@@ -56,7 +59,6 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         // CHANGE PASSWORD
-
         findViewById<Button>(
             R.id.btnChangePassword
         ).setOnClickListener {
@@ -69,8 +71,18 @@ class ProfileActivity : AppCompatActivity() {
             )
         }
 
-        // LOGOUT
+        // ADMIN REPORTS
+        btnAdminReports.setOnClickListener {
 
+            startActivity(
+                Intent(
+                    this,
+                    AdminReportsActivity::class.java
+                )
+            )
+        }
+
+        // LOGOUT
         findViewById<Button>(
             R.id.btnLogout
         ).setOnClickListener {
@@ -141,6 +153,18 @@ class ProfileActivity : AppCompatActivity() {
 
             tvProfilePhone.text =
                 user.phone
+
+            // SHOW ADMIN REPORTS ONLY FOR ADMIN
+            if (user.isAdmin) {
+
+                btnAdminReports.visibility =
+                    android.view.View.VISIBLE
+
+            } else {
+
+                btnAdminReports.visibility =
+                    android.view.View.GONE
+            }
         }
     }
 

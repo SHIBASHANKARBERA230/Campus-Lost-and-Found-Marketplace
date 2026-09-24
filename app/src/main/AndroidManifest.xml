@@ -15,7 +15,7 @@
         android:theme="@style/Theme.CampusLostFound">
 
         <!-- ===================================== -->
-        <!-- SPLASH SCREEN -->
+        <!-- SPLASH SCREEN / ONLY LAUNCHER -->
         <!-- ===================================== -->
 
         <activity
@@ -201,6 +201,16 @@
 
         <activity
             android:name=".ReportItemActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+
+        <!-- ===================================== -->
+        <!-- ADMIN REPORTS -->
+        <!-- ===================================== -->
+
+        <activity
+            android:name=".AdminReportsActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 

@@ -8,15 +8,29 @@ import androidx.room.Update
 @Dao
 interface ItemDao {
 
+    // =========================================
+    // INSERT ITEM
+    // =========================================
+
     @Insert
     suspend fun insertItem(
         item: ItemEntity
     ): Long
 
+
+    // =========================================
+    // UPDATE ITEM
+    // =========================================
+
     @Update
     suspend fun updateItem(
         item: ItemEntity
     ): Int
+
+
+    // =========================================
+    // GET ITEM BY ID
+    // =========================================
 
     @Query("""
         SELECT * FROM items
@@ -27,11 +41,21 @@ interface ItemDao {
         itemId: Int
     ): ItemEntity?
 
+
+    // =========================================
+    // GET ALL ITEMS
+    // =========================================
+
     @Query("""
         SELECT * FROM items
         ORDER BY id DESC
     """)
     suspend fun getAllItems(): List<ItemEntity>
+
+
+    // =========================================
+    // GET LOST ITEMS
+    // =========================================
 
     @Query("""
         SELECT * FROM items
@@ -40,12 +64,22 @@ interface ItemDao {
     """)
     suspend fun getLostItems(): List<ItemEntity>
 
+
+    // =========================================
+    // GET FOUND ITEMS
+    // =========================================
+
     @Query("""
         SELECT * FROM items
         WHERE type = 'FOUND'
         ORDER BY id DESC
     """)
     suspend fun getFoundItems(): List<ItemEntity>
+
+
+    // =========================================
+    // SEARCH ITEMS
+    // =========================================
 
     @Query("""
         SELECT * FROM items
@@ -59,6 +93,11 @@ interface ItemDao {
         query: String
     ): List<ItemEntity>
 
+
+    // =========================================
+    // GET ITEMS BY CATEGORY
+    // =========================================
+
     @Query("""
         SELECT * FROM items
         WHERE category = :category
@@ -67,6 +106,11 @@ interface ItemDao {
     suspend fun getItemsByCategory(
         category: String
     ): List<ItemEntity>
+
+
+    // =========================================
+    // GET ITEMS BY TYPE AND CATEGORY
+    // =========================================
 
     @Query("""
         SELECT * FROM items
@@ -79,6 +123,11 @@ interface ItemDao {
         category: String
     ): List<ItemEntity>
 
+
+    // =========================================
+    // GET ITEM BY OWNER
+    // =========================================
+
     @Query("""
         SELECT * FROM items
         WHERE id = :itemId
@@ -90,6 +139,12 @@ interface ItemDao {
         userId: Int
     ): ItemEntity?
 
+
+    // =========================================
+    // DELETE ITEM BY OWNER
+    // Normal user
+    // =========================================
+
     @Query("""
         DELETE FROM items
         WHERE id = :itemId
@@ -99,6 +154,25 @@ interface ItemDao {
         itemId: Int,
         userId: Int
     ): Int
+
+
+    // =========================================
+    // DELETE ITEM BY ID
+    // Admin moderation
+    // =========================================
+
+    @Query("""
+        DELETE FROM items
+        WHERE id = :itemId
+    """)
+    suspend fun deleteItemById(
+        itemId: Int
+    ): Int
+
+
+    // =========================================
+    // UPDATE ITEM BY OWNER
+    // =========================================
 
     @Query("""
         UPDATE items
@@ -120,6 +194,11 @@ interface ItemDao {
         date: String
     ): Int
 
+
+    // =========================================
+    // UPDATE ITEM STATUS BY OWNER
+    // =========================================
+
     @Query("""
         UPDATE items
         SET status = :status
@@ -132,6 +211,11 @@ interface ItemDao {
         status: String
     ): Int
 
+
+    // =========================================
+    // GET ITEMS BY USER
+    // =========================================
+
     @Query("""
         SELECT * FROM items
         WHERE userId = :userId
@@ -140,6 +224,7 @@ interface ItemDao {
     suspend fun getItemsByUser(
         userId: Int
     ): List<ItemEntity>
+
 
     // =========================================
     // FIND POSSIBLE LOST / FOUND MATCHES
@@ -162,6 +247,7 @@ interface ItemDao {
         name: String,
         userId: Int
     ): List<ItemEntity>
+
 
     // =========================================
     // GET RECENT ITEMS

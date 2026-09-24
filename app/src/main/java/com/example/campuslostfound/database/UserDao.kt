@@ -60,4 +60,17 @@ interface UserDao {
         passwordHash: String,
         passwordSalt: String
     )
+
+    // Check whether the user is an administrator
+    @Query(
+        """
+        SELECT * FROM users
+        WHERE id = :userId
+        AND isAdmin = 1
+        LIMIT 1
+        """
+    )
+    suspend fun getAdminById(
+        userId: Int
+    ): UserEntity?
 }
