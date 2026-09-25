@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -10,154 +9,160 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:paddingTop="6dp"
-        android:paddingBottom="12dp">
+        android:padding="12dp">
 
-        <!-- ================= ITEM IMAGE ================= -->
+        <!-- PAGE TITLE -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📄 ITEM DETAILS"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:paddingBottom="12dp" />
+
+        <!-- ITEM IMAGE -->
 
         <ImageView
             android:id="@+id/ivItemImage"
             android:layout_width="match_parent"
             android:layout_height="260dp"
-            android:scaleType="centerCrop"
-            android:contentDescription="@string/item_image" />
+            android:contentDescription="@string/item_image"
+            android:scaleType="centerCrop" />
 
-        <!-- ================= ITEM NAME ================= -->
+        <!-- ITEM NAME -->
 
         <TextView
             android:id="@+id/tvItemName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textSize="21sp"
+            android:layout_marginTop="12dp"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
-        <!-- ================= DESCRIPTION ================= -->
+        <!-- DESCRIPTION -->
 
         <TextView
             android:id="@+id/tvDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textSize="14sp" />
+            android:layout_marginTop="8dp"
+            android:padding="6dp"
+            android:textSize="16sp" />
 
-        <!-- ================= CATEGORY ================= -->
+        <!-- CATEGORY -->
 
         <TextView
             android:id="@+id/tvCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textSize="14sp" />
+            android:layout_marginTop="6dp"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
-        <!-- ================= TYPE ================= -->
+        <!-- TYPE -->
 
         <TextView
             android:id="@+id/tvType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textSize="14sp" />
+            android:layout_marginTop="6dp"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
-        <!-- ================= LOCATION ================= -->
+        <!-- LOCATION -->
 
         <TextView
             android:id="@+id/tvLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textSize="14sp" />
+            android:layout_marginTop="6dp"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
-        <!-- ================= DATE ================= -->
+        <!-- DATE -->
 
         <TextView
             android:id="@+id/tvDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textSize="14sp" />
+            android:layout_marginTop="6dp"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
-        <!-- ================= STATUS ================= -->
+        <!-- STATUS -->
 
         <TextView
             android:id="@+id/tvStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textSize="14sp"
+            android:layout_marginTop="6dp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
-        <!-- ================= FAVORITE ================= -->
+        <!-- FAVORITE -->
 
         <Button
             android:id="@+id/btnFavorite"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="9dp"
-            android:text="@string/add_to_favorites"
-            android:textSize="12sp" />
+            android:layout_height="50dp"
+            android:layout_marginTop="16dp"
+            android:text="⭐ ADD TO FAVORITES" />
 
-        <!-- ================= REPORT ITEM ================= -->
+        <!-- REPORT -->
 
         <Button
             android:id="@+id/btnReport"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="6dp"
-            android:text="🚩 REPORT ITEM"
-            android:textSize="12sp" />
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:text="🚩 REPORT ITEM" />
 
-        <!-- ================= CONTACT OWNER ================= -->
+        <!-- CONTACT OWNER -->
 
         <Button
             android:id="@+id/btnContactOwner"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="6dp"
-            android:text="@string/contact_owner"
-            android:textSize="12sp" />
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:text="📞 CONTACT OWNER" />
 
-        <!-- ================= CLAIM ITEM ================= -->
+        <!-- CLAIM ITEM -->
 
         <Button
             android:id="@+id/btnClaimItem"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="6dp"
-            android:text="@string/claim_item"
-            android:textSize="12sp" />
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:text="📦 CLAIM ITEM" />
 
-        <!-- ================= EDIT ITEM ================= -->
+        <!-- EDIT -->
 
         <Button
             android:id="@+id/btnEdit"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="6dp"
-            android:text="@string/edit_item"
-            android:textSize="12sp" />
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:text="✏️ EDIT ITEM" />
 
-        <!-- ================= MARK RESOLVED ================= -->
+        <!-- MARK RESOLVED -->
 
         <Button
             android:id="@+id/btnMarkResolved"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="6dp"
-            android:text="@string/mark_as_resolved"
-            android:textSize="12sp" />
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:text="✅ MARK AS RESOLVED" />
 
-        <!-- ================= DELETE ITEM ================= -->
+        <!-- DELETE -->
 
         <Button
             android:id="@+id/btnDelete"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="6dp"
-            android:text="@string/delete_item"
-            android:textSize="12sp" />
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:text="🗑 DELETE ITEM" />
 
     </LinearLayout>
 

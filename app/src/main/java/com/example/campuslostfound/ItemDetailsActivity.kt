@@ -272,26 +272,36 @@ class ItemDetailsActivity : AppCompatActivity() {
             // LOAD ITEM DATA
             // =====================================
 
-            tvItemName.text =
-                item.name
+            tvItemName.text = item.name.uppercase()
 
             tvDescription.text =
-                "Description: ${item.description}"
+                "📝 Description: ${item.description}"
 
             tvCategory.text =
-                "Category: ${item.category}"
+                "🏷 Category: ${item.category}"
 
             tvType.text =
-                "Type: ${item.type}"
+                "📌 Type: ${item.type}"
 
             tvLocation.text =
-                "Location: ${item.location}"
+                "📍 Location: ${item.location}"
 
             tvDate.text =
-                "Date: ${item.date}"
+                "📅 Date: ${item.date}"
 
-            tvStatus.text =
-                "Status: ${item.status}"
+            tvStatus.text = "Status: ${item.status}"
+
+            when (item.status.uppercase()) {
+                "LOST" -> {
+                    tvStatus.setTextColor(getColor(android.R.color.holo_red_dark))
+                }
+                "FOUND" -> {
+                    tvStatus.setTextColor(getColor(android.R.color.holo_green_dark))
+                }
+                "RESOLVED" -> {
+                    tvStatus.setTextColor(getColor(android.R.color.holo_blue_dark))
+                }
+            }
 
 
             // =====================================
