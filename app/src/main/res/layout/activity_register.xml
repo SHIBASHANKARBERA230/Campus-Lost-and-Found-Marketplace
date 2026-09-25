@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#F8F9FC">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,62 +13,202 @@
         android:orientation="vertical"
         android:padding="24dp">
 
+        <!-- Header -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             android:text="Create Account"
-            android:textSize="28sp"
+            android:textColor="#171923"
+            android:textSize="30sp"
             android:textStyle="bold"
-            android:gravity="center"
-            android:layout_marginBottom="24dp" />
+            android:gravity="center" />
 
-        <EditText
-            android:id="@+id/etName"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="28dp"
+            android:text="Create an account to get started"
+            android:textColor="#707582"
+            android:textSize="15sp"
+            android:gravity="center" />
+
+        <!-- Full Name -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
             android:hint="Full Name"
-            android:inputType="textPersonName"
-            android:layout_marginBottom="12dp" />
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp">
 
-        <EditText
-            android:id="@+id/etEmail"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:padding="14dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Email -->
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="14dp"
+            android:hint="Email Address"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp">
 
-        <EditText
-            android:id="@+id/etPhone"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:padding="14dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Phone -->
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
             android:hint="Phone Number"
-            android:inputType="phone"
-            android:layout_marginBottom="12dp" />
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp">
 
-        <EditText
-            android:id="@+id/etPassword"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:padding="14dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Password -->
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:hint="Password"
-            android:inputType="textPassword"
-            android:layout_marginBottom="20dp" />
+            app:endIconMode="password_toggle"
+            app:boxBackgroundMode="outline"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp">
 
-        <Button
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:padding="14dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Register Button -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="REGISTER"
-            android:layout_marginBottom="16dp" />
+            android:layout_height="56dp"
+            android:text="CREATE ACCOUNT"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="20dp"
+            app:cornerRadius="14dp"
+            app:backgroundTint="#4F46E5" />
 
-        <TextView
-            android:id="@+id/tvLogin"
+        <!-- OR Divider -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Already have an account? Login"
-            android:textSize="16sp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="20dp">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="#D9DCE5" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:text="OR"
+                android:textColor="#858997"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="#D9DCE5" />
+
+        </LinearLayout>
+
+        <!-- Google Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGoogleRegister"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Continue with Google"
+            android:textColor="#202124"
+            android:textSize="15sp"
+            android:textStyle="bold"
             android:gravity="center"
-            android:padding="12dp" />
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@android:color/white"
+            app:cornerRadius="14dp"
+            app:strokeColor="#DADCE0"
+            app:strokeWidth="1dp"
+            app:icon="@drawable/ic_google"
+            app:iconGravity="textStart"
+            app:iconSize="22dp"
+            app:iconTint="@null" />
+
+        <!-- Login -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Already have an account? "
+                android:textColor="#707582"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Login"
+                android:textColor="#4F46E5"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:padding="6dp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
