@@ -1,143 +1,29 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- ================= APP ================= -->
+    <!-- Existing strings can remain here -->
 
-    <string name="app_name">Campus Lost &amp; Found</string>
+    <string name="create_account">CREATE ACCOUNT</string>
+    <string name="create_account_subtitle">Create an account to get started</string>
 
+    <string name="full_name">Full Name</string>
+    <string name="email_address">Email Address</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="password">Password</string>
 
-    <!-- ================= ITEM ================= -->
+    <string name="or_text">OR</string>
+    <string name="continue_with_google">Continue with Google</string>
 
-    <string name="invalid_item">
-        Invalid item
-    </string>
+    <string name="already_have_account">Already have an account? </string>
+    <string name="login">Login</string>
 
-    <string name="item_not_found">
-        Item not found
-    </string>
+    <string name="processing">PROCESSING...</string>
+    <string name="registration_success">SUCCESS ✅</string>
 
+    <string name="error_fill_all_fields">Please fill all fields ❌</string>
+    <string name="error_invalid_email">Please enter a valid email address ❌</string>
+    <string name="error_invalid_phone">Phone number must contain 10 digits ❌</string>
+    <string name="error_short_password">Password must contain at least 6 characters ❌</string>
 
-    <!-- ================= CLAIM SUBMISSION ================= -->
-
-    <string name="claim_reason_required">
-        Please explain why this is your item
-    </string>
-
-    <string name="claim_details_required">
-        Please provide additional details
-    </string>
-
-    <string name="login_again">
-        Please login again
-    </string>
-
-    <string name="owner_not_found">
-        Unable to identify item owner
-    </string>
-
-    <string name="cannot_claim_own_item">
-        You cannot claim your own item
-    </string>
-
-    <string name="claim_already_submitted">
-        You already have a pending claim for this item
-    </string>
-
-    <string name="claim_submit_failed">
-        Failed to submit claim
-    </string>
-
-    <string name="new_claim_request">
-        New Claim Request
-    </string>
-
-    <string name="claim_notification_message">
-        Someone has submitted a claim for %1$s
-    </string>
-
-    <string name="claim_submitted_successfully">
-        Claim submitted successfully
-    </string>
-
-
-    <!-- ================= CLAIM REQUESTS ================= -->
-
-    <string name="no_claim_requests">
-        No claim requests yet
-    </string>
-
-    <string name="claim_item_id">
-        Item ID: %1$d
-    </string>
-
-    <string name="claim_reason">
-        Reason: %1$s
-    </string>
-
-    <string name="claim_details">
-        Details: %1$s
-    </string>
-
-    <string name="claim_status">
-        Status: %1$s
-    </string>
-
-
-    <!-- ================= CLAIM PROCESSING ================= -->
-
-    <string name="claim_not_found">
-        Claim not found
-    </string>
-
-    <string name="claim_already_processed">
-        This claim has already been processed
-    </string>
-
-    <string name="claim_approved_title">
-        Claim Approved
-    </string>
-
-    <string name="claim_approved_message">
-        Your claim has been approved
-    </string>
-
-    <string name="claim_approved">
-        Claim approved
-    </string>
-
-    <string name="claim_rejected_title">
-        Claim Rejected
-    </string>
-
-    <string name="claim_rejected_message">
-        Your claim has been rejected
-    </string>
-
-    <string name="claim_rejected">
-        Claim rejected
-    </string>
-
-
-    <!-- ================= MAIN SCREEN ================= -->
-
-    <string name="claim_requests">
-        📋 CLAIM REQUESTS
-    </string>
-
-    <string name="notifications">
-        🔔 NOTIFICATIONS
-    </string>
-
-    <string name="notifications_with_count">
-        🔔 NOTIFICATIONS (%1$d)
-    </string>
-
-    <string name="item_image">Item image</string>
-    <string name="add_to_favorites">☆ ADD TO FAVORITES</string>
-    <string name="contact_owner">📞 CONTACT OWNER</string>
-    <string name="claim_item">📋 CLAIM ITEM</string>
-    <string name="edit_item">✏️ EDIT ITEM</string>
-    <string name="mark_as_resolved">✅ MARK AS RESOLVED</string>
-    <string name="delete_item">🗑️ DELETE ITEM</string>
+    <string name="google_registration_coming_soon">Google registration coming soon...</string>
 
 </resources>

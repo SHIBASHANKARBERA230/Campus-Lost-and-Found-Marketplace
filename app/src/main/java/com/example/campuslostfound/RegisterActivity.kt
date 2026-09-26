@@ -3,7 +3,6 @@ package com.example.campuslostfound
 import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
-import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -12,6 +11,7 @@ import com.example.campuslostfound.database.AppDatabase
 import com.example.campuslostfound.database.UserRepository
 import com.example.campuslostfound.viewmodel.UserViewModel
 import com.example.campuslostfound.viewmodel.UserViewModelFactory
+import com.google.android.material.button.MaterialButton
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -28,22 +28,36 @@ class RegisterActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_register)
 
+        // Input fields
         val name = findViewById<EditText>(R.id.etName)
         val email = findViewById<EditText>(R.id.etEmail)
         val phone = findViewById<EditText>(R.id.etPhone)
         val password = findViewById<EditText>(R.id.etPassword)
 
-        val registerButton = findViewById<Button>(R.id.btnRegister)
-        val loginText = findViewById<TextView>(R.id.tvLogin)
+        // Buttons
+        val registerButton =
+            findViewById<MaterialButton>(R.id.btnRegister)
 
+        val googleButton =
+            findViewById<MaterialButton>(R.id.btnGoogleRegister)
+
+        // Message and Login
+        val messageText =
+            findViewById<TextView>(R.id.tvMessage)
+
+        val loginText =
+            findViewById<TextView>(R.id.tvLogin)
+
+        // Register button
         registerButton.setOnClickListener {
-
-            registerButton.text = "PROCESSING..."
 
             val nameText = name.text.toString().trim()
             val emailText = email.text.toString().trim()
             val phoneText = phone.text.toString().trim()
             val passwordText = password.text.toString()
+
+            // Clear previous message
+            messageText.text = ""
 
             // Validate required fields
             if (nameText.isEmpty() ||
@@ -52,54 +66,50 @@ class RegisterActivity : AppCompatActivity() {
                 passwordText.isEmpty()
             ) {
 
-                registerButton.text = "REGISTER"
-
-                loginText.text = "Please fill all fields ❌"
+                messageText.text = getString(R.string.error_fill_all_fields)
 
                 return@setOnClickListener
             }
 
-            // Validate email format
+            // Validate email
             if (!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
 
-                registerButton.text = "REGISTER"
-
-                loginText.text =
-                    "Please enter a valid email address ❌"
+                messageText.text =
+                    getString(R.string.error_invalid_email)
 
                 email.requestFocus()
 
                 return@setOnClickListener
             }
 
-            // Validate phone number
+            // Validate phone
             if (!phoneText.matches(Regex("^[0-9]{10}$"))) {
 
-                registerButton.text = "REGISTER"
-
-                loginText.text =
-                    "Phone number must contain 10 digits ❌"
+                messageText.text =
+                    getString(R.string.error_invalid_phone)
 
                 phone.requestFocus()
 
                 return@setOnClickListener
             }
 
-            // Validate password length
+            // Validate password
             if (passwordText.length < 6) {
 
-                registerButton.text = "REGISTER"
-
-                loginText.text =
-                    "Password must contain at least 6 characters ❌"
+                messageText.text =
+                    getString(R.string.error_short_password)
 
                 password.requestFocus()
 
                 return@setOnClickListener
             }
 
+            // Disable button while processing
             registerButton.isEnabled = false
+            registerButton.text =
+                getString(R.string.processing)
 
+            // Register user
             viewModel.register(
                 name = nameText,
                 email = emailText,
@@ -108,16 +118,14 @@ class RegisterActivity : AppCompatActivity() {
             ) { success, message ->
 
                 registerButton.isEnabled = true
-                registerButton.text = "REGISTER"
 
-                // Show registration result
-                loginText.text = message
+                messageText.text = message
 
                 if (success) {
 
-                    registerButton.text = "SUCCESS ✅"
+                    registerButton.text =
+                        getString(R.string.registration_success)
 
-                    // Open Login screen after successful registration
                     registerButton.postDelayed({
 
                         startActivity(
@@ -130,11 +138,25 @@ class RegisterActivity : AppCompatActivity() {
                         finish()
 
                     }, 1200)
+
+                } else {
+
+                    registerButton.text =
+                        getString(R.string.create_account)
                 }
             }
         }
 
-        // Open Login screen
+        // Google registration
+        googleButton.setOnClickListener {
+
+            messageText.text =
+                getString(R.string.google_registration_coming_soon)
+
+            // Real Google authentication will be implemented here later.
+        }
+
+        // Login
         loginText.setOnClickListener {
 
             startActivity(
