@@ -12,6 +12,7 @@ import com.example.campuslostfound.database.AppDatabase
 import com.example.campuslostfound.database.UserRepository
 import com.example.campuslostfound.viewmodel.UserViewModel
 import com.example.campuslostfound.viewmodel.UserViewModelFactory
+import com.google.android.material.button.MaterialButton
 
 class LoginActivity : AppCompatActivity() {
 
@@ -28,11 +29,29 @@ class LoginActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_login)
 
+        // =========================
+        // INPUT FIELDS
+        // =========================
+
         val email = findViewById<EditText>(R.id.etEmail)
         val password = findViewById<EditText>(R.id.etPassword)
 
-        val loginButton = findViewById<Button>(R.id.btnLogin)
-        val registerText = findViewById<TextView>(R.id.tvRegister)
+        // =========================
+        // BUTTONS
+        // =========================
+
+        val loginButton =
+            findViewById<Button>(R.id.btnLogin)
+
+        val googleLoginButton =
+            findViewById<MaterialButton>(R.id.btnGoogleLogin)
+
+        // =========================
+        // REGISTER TEXT
+        // =========================
+
+        val registerText =
+            findViewById<TextView>(R.id.tvRegister)
 
         // =========================
         // LOGIN
@@ -145,6 +164,19 @@ class LoginActivity : AppCompatActivity() {
                         "Invalid email or password ❌"
                 }
             }
+        }
+
+        // =========================
+        // GOOGLE LOGIN
+        // =========================
+
+        googleLoginButton.setOnClickListener {
+
+            registerText.text =
+                "Google login coming soon..."
+
+            // Real Google authentication
+            // will be implemented here later.
         }
 
         // =========================
