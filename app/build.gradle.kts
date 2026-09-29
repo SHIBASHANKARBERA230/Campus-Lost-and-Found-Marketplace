@@ -65,7 +65,4 @@ dependencies {
     // Android testing
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
-    // Coroutine testing
-    androidTestImplementation(libs.kotlinx.coroutines.test)
 }
