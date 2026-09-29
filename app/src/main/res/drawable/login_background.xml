@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Main light background -->
+    <item>
+        <shape android:shape="rectangle">
+
+            <solid android:color="#F8F7FC" />
+
+        </shape>
+    </item>
+
+    <!-- Top purple shape -->
+    <item
+        android:gravity="top|end"
+        android:top="-80dp"
+        android:right="-70dp">
+
+        <shape android:shape="oval">
+
+            <size
+                android:width="230dp"
+                android:height="230dp" />
+
+            <solid android:color="#E9E4FF" />
+
+        </shape>
+
+    </item>
+
+    <!-- Bottom cyan shape -->
+    <item
+        android:gravity="bottom|start"
+        android:bottom="-70dp"
+        android:left="-70dp">
+
+        <shape android:shape="oval">
+
+            <size
+                android:width="190dp"
+                android:height="190dp" />
+
+            <solid android:color="#DDF7FA" />
+
+        </shape>
+
+    </item>
+
+</layer-list>
