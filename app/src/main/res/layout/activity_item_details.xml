@@ -41,6 +41,17 @@
             android:textSize="22sp"
             android:textStyle="bold" />
 
+        <!-- ITEM INFORMATION HEADER -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="📋 Item Information"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingBottom="6dp" />
+
         <!-- DESCRIPTION -->
 
         <TextView
@@ -48,7 +59,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:padding="6dp"
+            android:background="#F5F5F5"
+            android:padding="8dp"
             android:textSize="16sp" />
 
         <!-- CATEGORY -->
@@ -58,6 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
+            android:padding="4dp"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -68,6 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
+            android:padding="4dp"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -78,6 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
+            android:padding="4dp"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -88,6 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
+            android:padding="4dp"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -98,8 +114,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
+            android:padding="4dp"
             android:textSize="16sp"
             android:textStyle="bold" />
+
+        <!-- ACTIONS HEADER -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="⚙️ Available Actions"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingBottom="6dp" />
 
         <!-- FAVORITE -->
 
@@ -107,7 +135,7 @@
             android:id="@+id/btnFavorite"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="⭐ ADD TO FAVORITES" />
 
         <!-- REPORT -->
