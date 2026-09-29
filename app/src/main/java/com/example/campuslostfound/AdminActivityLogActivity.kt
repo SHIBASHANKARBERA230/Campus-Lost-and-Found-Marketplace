@@ -1,12 +1,15 @@
 package com.example.campuslostfound
 
+import android.graphics.Color
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.campuslostfound.adapter.AdminActivityLogAdapter
+import com.example.campuslostfound.database.AdminActivityEntity
 import com.example.campuslostfound.database.AppDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,8 +23,25 @@ class AdminActivityLogActivity : AppCompatActivity() {
 
     private lateinit var adapter: AdminActivityLogAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    private var allActivities =
+        emptyList<AdminActivityEntity>()
+
+    override fun onCreate(
+        savedInstanceState: Bundle?
+    ) {
+
         super.onCreate(savedInstanceState)
+
+        /*
+         * Set the status bar color to match
+         * the Activity Log background.
+         */
+        window.statusBarColor =
+            Color.rgb(
+                245,
+                245,
+                245
+            )
 
         setContentView(
             R.layout.activity_admin_activity_log
@@ -40,6 +60,7 @@ class AdminActivityLogActivity : AppCompatActivity() {
             )
 
         if (currentUserId == 0) {
+
             Toast.makeText(
                 this,
                 "Please login first",
@@ -52,7 +73,11 @@ class AdminActivityLogActivity : AppCompatActivity() {
 
         setupRecyclerView()
 
-        checkAdmin(currentUserId)
+        setupFilterButtons()
+
+        checkAdmin(
+            currentUserId
+        )
     }
 
     private fun setupRecyclerView() {
@@ -74,6 +99,44 @@ class AdminActivityLogActivity : AppCompatActivity() {
             adapter
     }
 
+    private fun setupFilterButtons() {
+
+        findViewById<Button>(
+            R.id.btnFilterAll
+        ).setOnClickListener {
+
+            showAllActivities()
+        }
+
+        findViewById<Button>(
+            R.id.btnFilterUsers
+        ).setOnClickListener {
+
+            showUserActivities()
+        }
+
+        findViewById<Button>(
+            R.id.btnFilterReports
+        ).setOnClickListener {
+
+            showReportActivities()
+        }
+
+        findViewById<Button>(
+            R.id.btnFilterItems
+        ).setOnClickListener {
+
+            showItemActivities()
+        }
+
+        findViewById<Button>(
+            R.id.btnFilterSecurity
+        ).setOnClickListener {
+
+            showSecurityActivities()
+        }
+    }
+
     private fun checkAdmin(
         userId: Int
     ) {
@@ -82,7 +145,9 @@ class AdminActivityLogActivity : AppCompatActivity() {
 
             val admin =
                 withContext(Dispatchers.IO) {
-                    database.userDao()
+
+                    database
+                        .userDao()
                         .getAdminById(userId)
                 }
 
@@ -95,6 +160,7 @@ class AdminActivityLogActivity : AppCompatActivity() {
                 ).show()
 
                 finish()
+
                 return@launch
             }
 
@@ -114,13 +180,98 @@ class AdminActivityLogActivity : AppCompatActivity() {
                         .getAllActivities()
                 }
 
-            adapter.updateActivities(
+            allActivities =
                 activities
-            )
+
+            showAllActivities()
         }
     }
 
+    private fun showAllActivities() {
+
+        adapter.updateActivities(
+            allActivities
+        )
+    }
+
+    private fun showUserActivities() {
+
+        val filteredActivities =
+            allActivities.filter {
+
+                when (it.action) {
+
+                    "MAKE_ADMIN",
+                    "REMOVE_ADMIN",
+                    "DEACTIVATE_USER",
+                    "ACTIVATE_USER" -> true
+
+                    else -> false
+                }
+            }
+
+        adapter.updateActivities(
+            filteredActivities
+        )
+    }
+
+    private fun showReportActivities() {
+
+        val filteredActivities =
+            allActivities.filter {
+
+                when (it.action) {
+
+                    "DISMISS_REPORT",
+                    "REMOVE_REPORTED_ITEM" -> true
+
+                    else -> false
+                }
+            }
+
+        adapter.updateActivities(
+            filteredActivities
+        )
+    }
+
+    private fun showItemActivities() {
+
+        val filteredActivities =
+            allActivities.filter {
+
+                when (it.action) {
+
+                    "REMOVE_REPORTED_ITEM" -> true
+
+                    else -> false
+                }
+            }
+
+        adapter.updateActivities(
+            filteredActivities
+        )
+    }
+
+    private fun showSecurityActivities() {
+
+        val filteredActivities =
+            allActivities.filter {
+
+                when (it.action) {
+
+                    "RESET_PASSWORD" -> true
+
+                    else -> false
+                }
+            }
+
+        adapter.updateActivities(
+            filteredActivities
+        )
+    }
+
     override fun onResume() {
+
         super.onResume()
 
         val preferences =
@@ -136,6 +287,7 @@ class AdminActivityLogActivity : AppCompatActivity() {
             )
 
         if (userId != 0) {
+
             loadActivities()
         }
     }

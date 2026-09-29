@@ -56,18 +56,32 @@ interface ClaimDao {
         userId: Int
     ): List<ClaimEntity>
 
+    // =========================================
+    // CHECK DUPLICATE CLAIM
+    // =========================================
+    // Checks whether this user has EVER
+    // submitted a claim for this item.
+    //
+    // It checks PENDING, APPROVED and REJECTED.
+    // Therefore the same user cannot submit
+    // another claim for the same item.
+    // =========================================
+
     @Query(
         """
         SELECT COUNT(*) FROM claims
         WHERE itemId = :itemId
         AND claimantUserId = :userId
-        AND status = 'PENDING'
         """
     )
     suspend fun hasPendingClaim(
         itemId: Int,
         userId: Int
     ): Int
+
+    // =========================================
+    // UPDATE CLAIM STATUS
+    // =========================================
 
     @Query(
         """
@@ -80,6 +94,14 @@ interface ClaimDao {
         claimId: Int,
         status: String
     )
+
+    // =========================================
+    // REJECT OTHER PENDING CLAIMS
+    // =========================================
+    // When one claim is approved, all other
+    // pending claims for the same item are
+    // rejected.
+    // =========================================
 
     @Query(
         """
