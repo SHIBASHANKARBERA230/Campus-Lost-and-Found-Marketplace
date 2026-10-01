@@ -135,7 +135,11 @@ class LostItemsActivity : AppCompatActivity() {
             } else {
 
                 tvResult.text =
-                    "${databaseItems.size} lost item(s) found"
+                    if (category == "All Categories") {
+                        "Showing ${databaseItems.size} lost item(s)"
+                    } else {
+                        "$category • ${databaseItems.size} lost item(s)"
+                    }
 
                 recyclerView.adapter =
                     ItemAdapter(databaseItems) { item ->
