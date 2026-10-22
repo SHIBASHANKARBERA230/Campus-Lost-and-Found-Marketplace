@@ -33,10 +33,6 @@ interface UserDao {
         userId: Int
     ): UserEntity?
 
-    // =============================================
-    // PROFILE
-    // =============================================
-
     @Query(
         """
         UPDATE users
@@ -51,10 +47,6 @@ interface UserDao {
         phone: String
     )
 
-    // =============================================
-    // PASSWORD
-    // =============================================
-
     @Query(
         """
         UPDATE users
@@ -68,109 +60,4 @@ interface UserDao {
         passwordHash: String,
         passwordSalt: String
     )
-
-    // =============================================
-    // ADMIN CHECK
-    // =============================================
-
-    @Query(
-        """
-        SELECT * FROM users
-        WHERE id = :userId
-        AND isAdmin = 1
-        LIMIT 1
-        """
-    )
-    suspend fun getAdminById(
-        userId: Int
-    ): UserEntity?
-
-    // =============================================
-    // ADMIN USER MANAGEMENT
-    // =============================================
-
-    @Query(
-        """
-        SELECT * FROM users
-        ORDER BY id DESC
-        """
-    )
-    suspend fun getAllUsers(): List<UserEntity>
-
-    @Query(
-        """
-        UPDATE users
-        SET isActive = 1
-        WHERE id = :userId
-        """
-    )
-    suspend fun activateUser(
-        userId: Int
-    ): Int
-
-    @Query(
-        """
-        UPDATE users
-        SET isActive = 0
-        WHERE id = :userId
-        """
-    )
-    suspend fun deactivateUser(
-        userId: Int
-    ): Int
-
-    @Query(
-        """
-        UPDATE users
-        SET isAdmin = 1
-        WHERE id = :userId
-        """
-    )
-    suspend fun makeUserAdmin(
-        userId: Int
-    ): Int
-
-    @Query(
-        """
-        UPDATE users
-        SET isAdmin = 0
-        WHERE id = :userId
-        """
-    )
-    suspend fun removeAdmin(
-        userId: Int
-    ): Int
-
-    // =============================================
-    // ADMIN DASHBOARD COUNTS
-    // =============================================
-
-    @Query(
-        "SELECT COUNT(*) FROM users"
-    )
-    suspend fun getTotalUsers(): Int
-
-    @Query(
-        """
-        SELECT COUNT(*) FROM users
-        WHERE isActive = 1
-        """
-    )
-    suspend fun getActiveUsers(): Int
-
-    @Query(
-        """
-        SELECT COUNT(*) FROM users
-        WHERE isActive = 0
-        """
-    )
-    suspend fun getInactiveUsers(): Int
-
-    @Query(
-        """
-        SELECT COUNT(*) FROM users
-        WHERE isAdmin = 1
-        """
-    )
-    suspend fun getAdminUsers(): Int
 }
