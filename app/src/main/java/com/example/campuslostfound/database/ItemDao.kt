@@ -8,181 +8,99 @@ import androidx.room.Update
 @Dao
 interface ItemDao {
 
-    // =========================================
-    // INSERT ITEM
-    // =========================================
-
     @Insert
     suspend fun insertItem(
         item: ItemEntity
     ): Long
-
-    // =========================================
-    // UPDATE ITEM
-    // =========================================
 
     @Update
     suspend fun updateItem(
         item: ItemEntity
     ): Int
 
-    // =========================================
-    // GET ITEM BY ID
-    // =========================================
-
-    @Query(
-        """
+    @Query("""
         SELECT * FROM items
         WHERE id = :itemId
         LIMIT 1
-        """
-    )
+    """)
     suspend fun getItemById(
         itemId: Int
     ): ItemEntity?
 
-    // =========================================
-    // GET ALL ITEMS
-    // =========================================
-
-    @Query(
-        """
+    @Query("""
         SELECT * FROM items
         ORDER BY id DESC
-        """
-    )
+    """)
     suspend fun getAllItems(): List<ItemEntity>
 
-    // =========================================
-    // GET LOST ITEMS
-    // =========================================
-
-    @Query(
-        """
+    @Query("""
         SELECT * FROM items
         WHERE type = 'LOST'
         ORDER BY id DESC
-        """
-    )
+    """)
     suspend fun getLostItems(): List<ItemEntity>
 
-    // =========================================
-    // GET FOUND ITEMS
-    // =========================================
-
-    @Query(
-        """
+    @Query("""
         SELECT * FROM items
         WHERE type = 'FOUND'
         ORDER BY id DESC
-        """
-    )
+    """)
     suspend fun getFoundItems(): List<ItemEntity>
 
-    // =========================================
-    // SEARCH ITEMS
-    // =========================================
-
-    @Query(
-        """
+    @Query("""
         SELECT * FROM items
         WHERE name LIKE '%' || :query || '%'
         OR description LIKE '%' || :query || '%'
         OR category LIKE '%' || :query || '%'
         OR location LIKE '%' || :query || '%'
         ORDER BY id DESC
-        """
-    )
+    """)
     suspend fun searchItems(
         query: String
     ): List<ItemEntity>
 
-    // =========================================
-    // GET ITEMS BY CATEGORY
-    // =========================================
-
-    @Query(
-        """
+    @Query("""
         SELECT * FROM items
         WHERE category = :category
         ORDER BY id DESC
-        """
-    )
+    """)
     suspend fun getItemsByCategory(
         category: String
     ): List<ItemEntity>
 
-    // =========================================
-    // GET ITEMS BY TYPE AND CATEGORY
-    // =========================================
-
-    @Query(
-        """
+    @Query("""
         SELECT * FROM items
         WHERE type = :type
         AND category = :category
         ORDER BY id DESC
-        """
-    )
+    """)
     suspend fun getItemsByTypeAndCategory(
         type: String,
         category: String
     ): List<ItemEntity>
 
-    // =========================================
-    // GET ITEM BY OWNER
-    // =========================================
-
-    @Query(
-        """
+    @Query("""
         SELECT * FROM items
         WHERE id = :itemId
         AND userId = :userId
         LIMIT 1
-        """
-    )
+    """)
     suspend fun getItemByOwner(
         itemId: Int,
         userId: Int
     ): ItemEntity?
 
-    // =========================================
-    // DELETE ITEM BY OWNER
-    // =========================================
-
-    @Query(
-        """
+    @Query("""
         DELETE FROM items
         WHERE id = :itemId
         AND userId = :userId
-        """
-    )
+    """)
     suspend fun deleteItemByOwner(
         itemId: Int,
         userId: Int
     ): Int
 
-    // =========================================
-    // DELETE ITEM BY ID
-    // Admin moderation
-    // =========================================
-
-    @Query(
-        """
-        DELETE FROM items
-        WHERE id = :itemId
-        """
-    )
-    suspend fun deleteItemById(
-        itemId: Int
-    ): Int
-
-    // =========================================
-    // UPDATE ITEM BY OWNER
-    // =========================================
-
-    @Query(
-        """
+    @Query("""
         UPDATE items
         SET name = :name,
             description = :description,
@@ -191,8 +109,7 @@ interface ItemDao {
             date = :date
         WHERE id = :itemId
         AND userId = :userId
-        """
-    )
+    """)
     suspend fun updateItemByOwner(
         itemId: Int,
         userId: Int,
@@ -203,35 +120,23 @@ interface ItemDao {
         date: String
     ): Int
 
-    // =========================================
-    // UPDATE ITEM STATUS BY OWNER
-    // =========================================
-
-    @Query(
-        """
+    @Query("""
         UPDATE items
         SET status = :status
         WHERE id = :itemId
         AND userId = :userId
-        """
-    )
+    """)
     suspend fun updateItemStatusByOwner(
         itemId: Int,
         userId: Int,
         status: String
     ): Int
 
-    // =========================================
-    // GET ITEMS BY USER
-    // =========================================
-
-    @Query(
-        """
+    @Query("""
         SELECT * FROM items
         WHERE userId = :userId
         ORDER BY id DESC
-        """
-    )
+    """)
     suspend fun getItemsByUser(
         userId: Int
     ): List<ItemEntity>
@@ -240,8 +145,7 @@ interface ItemDao {
     // FIND POSSIBLE LOST / FOUND MATCHES
     // =========================================
 
-    @Query(
-        """
+    @Query("""
         SELECT * FROM items
         WHERE type = :oppositeType
         AND category = :category
@@ -251,8 +155,7 @@ interface ItemDao {
             OR :name LIKE '%' || name || '%'
         )
         ORDER BY id DESC
-        """
-    )
+    """)
     suspend fun findMatchingItems(
         oppositeType: String,
         category: String,
@@ -264,37 +167,10 @@ interface ItemDao {
     // GET RECENT ITEMS
     // =========================================
 
-    @Query(
-        """
+    @Query("""
         SELECT * FROM items
         ORDER BY id DESC
         LIMIT 5
-        """
-    )
+    """)
     suspend fun getRecentItems(): List<ItemEntity>
-
-    // =========================================
-    // ADMIN DASHBOARD COUNTS
-    // =========================================
-
-    @Query(
-        "SELECT COUNT(*) FROM items"
-    )
-    suspend fun getTotalItems(): Int
-
-    @Query(
-        """
-        SELECT COUNT(*) FROM items
-        WHERE type = 'LOST'
-        """
-    )
-    suspend fun getTotalLostItems(): Int
-
-    @Query(
-        """
-        SELECT COUNT(*) FROM items
-        WHERE type = 'FOUND'
-        """
-    )
-    suspend fun getTotalFoundItems(): Int
 }
